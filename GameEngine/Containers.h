@@ -11,3 +11,4 @@ Creation date: 10/3/2013
 #pragma once
 
 #include <string>
+#include <vector>

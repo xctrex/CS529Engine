@@ -63,7 +63,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="CoreTime.cpp" />
+    <ClCompile Include="DebugDiagnostic.cpp" />
+    <ClCompile Include="Precomp.cpp" />
+    <ClCompile Include="WindowsSystem.cpp" />
     <ClCompile Include="WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Containers.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="CoreTime.h" />
+    <ClInclude Include="DebugDiagnostic.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="Precomp.h" />
+    <ClInclude Include="System.h" />
+    <ClInclude Include="WindowsIncludes.h" />
+    <ClInclude Include="WindowsSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

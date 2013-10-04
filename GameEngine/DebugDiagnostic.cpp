@@ -1,13 +1,21 @@
 /* Start Header -------------------------------------------------------
 Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
-File Name: Precomp.h
-Purpose: This is the precompiled header file for the game engine final project
+File Name: DebugDiagnostic.cpp
+Purpose: Implementation for error/assertion and debug printing
 Language: C++
 Platform: Windows
 Project: CS529_twalton_FinalProject
 Author: Tommy Walton, t.walton, 130000812
-Creation date: 10/1/2013
+Creation date: 10/3/2013
 - End Header -----------------------------------------------------*/
-#include "WindowsIncludes.h"
-#include "Containers.h"
 #include "DebugDiagnostic.h"
+
+// If the condition is true, print a message
+void ErrorIf(bool conditional, char * message)
+{
+    if(conditional)
+    {
+        // TODO: Create a more robust IfError function
+        printf_s("%s\n", message);
+    }
+}

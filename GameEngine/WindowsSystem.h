@@ -10,17 +10,27 @@ Creation date: 10/3/2013
 - End Header -----------------------------------------------------*/
 #pragma once
 
+#include "Engine.h"
+#include "WindowsIncludes.h"
+#include "Containers.h"
+
 namespace Framework
 {
     // Window manager. Implements Windows message pump and
     // broadcasts user input to all systems
     class WindowsSystem : public ISystem
     {
-        WindowsSystem();
+    public:
+        WindowsSystem(int ClientWidth, int ClientHeight);
         ~WindowsSystem();
 
         void ActivateWindow();
         virtual void Update(float dt);
         virtual std::string GetName() {return "Windows";}
+
+        HWND hWnd;
+        HINSTANCE hInstance;
+    private:
+        std::string WindowsClassName;
     };
 }

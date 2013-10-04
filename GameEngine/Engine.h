@@ -13,3 +13,4 @@ Creation date: 10/3/2013
 #include "Containers.h"
 #include "Message.h"
 #include "System.h"
+#include "Core.h"

@@ -1,7 +1,7 @@
 /* Start Header -------------------------------------------------------
 Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
-File Name: System.h
-Purpose: Defines the system interface
+File Name: CoreTime.h
+Purpose: Header file for a time class for the engine
 Language: C++
 Platform: Windows
 Project: CS529_twalton_FinalProject
@@ -10,18 +10,25 @@ Creation date: 10/3/2013
 - End Header -----------------------------------------------------*/
 #pragma once
 
-#include "Message.h"
-#include "Containers.h"
+#include "Precomp.h"
+
+#define MILLESECONDS_PER_SECOND 1000
 
 namespace Framework
 {
-    class ISystem
+    class CoreTime
     {
     public:
-        virtual void SendMessage(Message* message) {};
-        virtual void Update(float timeslice) = 0;
-        virtual std::string GetName() = 0;
-        virtual void Initialize(){};
-        virtual ~ISystem(){};
+        CoreTime();
+        ~CoreTime(){};
+
+        unsigned int GetTimeInMilliseconds(void);
+        unsigned int GetFrameTimeInMilliseconds(void);
+        
+    private:
+        LARGE_INTEGER TicksPerSecond;
+        LARGE_INTEGER PerformanceCounterStart;
+        LARGE_INTEGER PerformanceCounterLast;
+        LARGE_INTEGER PerformanceCounterCurrent;
     };
 }
