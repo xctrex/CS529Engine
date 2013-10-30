@@ -31,6 +31,9 @@
     <Filter Include="BaseEngine\Debug">
       <UniqueIdentifier>{d6485726-7739-400f-b404-e0271d69befc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Graphics">
+      <UniqueIdentifier>{00be610e-b2bc-4497-af55-9fdcb2ab4b66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -50,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="DebugDiagnostic.cpp">
       <Filter>BaseEngine\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsSystem.cpp">
+      <Filter>Systems\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="DebugDiagnostic.h">
       <Filter>BaseEngine\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsSystem.h">
+      <Filter>Systems\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

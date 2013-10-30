@@ -12,11 +12,6 @@ Creation date: 10/3/2013
 
 namespace Framework
 {
-    void WindowsSystem::Update(float dt)
-    {
-
-    }
-
     // Message handling procedure for the game
     LRESULT WINAPI MessageHandler(
         HWND hWnd,
@@ -25,8 +20,18 @@ namespace Framework
         LPARAM lParam
         )
     {
+        switch (msg)
+        {
+            // this message is read when the window is closed
+            case WM_DESTROY:
+            {
+                // close the application entirely
+                PostQuitMessage(0);
+                return 0;
+            } break;
+        }
         // The engine didn't completely handle the message, so pass it on for Windows to handle.
-		return DefWindowProc(hWnd, msg, wParam, lParam);
+        return DefWindowProc(hWnd, msg, wParam, lParam);
     }
 
     WindowsSystem::WindowsSystem(int ClientWidth, int ClientHeight) : WindowsClassName("GameEngineWindowClass")
@@ -84,11 +89,32 @@ namespace Framework
         UnregisterClass(WindowsClassName.c_str(), hInstance);
     }
 
+    void WindowsSystem::Update(float dt)
+    {
+		MSG msg;
+		//Look for any pending windows messages, remove them, then handle them
+		//The second parameter is the window handle--NULL just means get any message from the current thread
+		//The third and forth parameters are the start and end message types to process
+		//The last parameter determines whether or not the message is removed
+		if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE)) //It is important to get all windows messages available not just one
+		{
+			TranslateMessage(&msg);	//Makes sure WM_CHAR and similar messages are generated
+			DispatchMessage(&msg);	//Calls the message procedure (see below) with this message
+
+			//If we get a quit message, broadcast it to all systems
+			if (msg.message == WM_QUIT)
+			{
+				/*MessageQuit q;
+				CORE->BroadcastMessage(&q);*/
+			}
+		}
+    }
+    
     void WindowsSystem::ActivateWindow()
     {
         // Show the window
         ShowWindow(hWnd, SW_SHOWMAXIMIZED);
         // Send a WM_PAINT message to the window
         UpdateWindow(hWnd);
-    }
+    }    
 }

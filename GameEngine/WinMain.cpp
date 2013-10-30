@@ -12,6 +12,7 @@ Creation date: 10/1/2013
 #include "Precomp.h"
 #include "Engine.h"
 #include "WindowsSystem.h"
+#include "GraphicsSystem.h"
 
 using namespace Framework;
 
@@ -26,9 +27,12 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // Create the windows system
     WindowsSystem* windows = new WindowsSystem(ClientWidth, ClientHeight);
+	// Create the graphics system
+	GraphicsSystem* graphics = new GraphicsSystem(windows->hWnd, ClientWidth, ClientHeight);
 
     // Add the systems
     engine->AddSystem(windows);
+	engine->AddSystem(graphics);
 
     // Initialize the engine and it's systems
     engine->InitializeSystems();
