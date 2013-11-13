@@ -12,3 +12,7 @@ Creation date: 10/3/2013
 
 #include <string>
 #include <vector>
+#include <list>
+#include <hash_map>
+
+#include "ObjectLinkedList.h"

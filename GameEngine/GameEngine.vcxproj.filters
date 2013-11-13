@@ -57,6 +57,9 @@
     <ClCompile Include="GraphicsSystem.cpp">
       <Filter>Systems\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Systems\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsSystem.h">
@@ -92,5 +95,16 @@
     <ClInclude Include="GraphicsSystem.h">
       <Filter>Systems\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectLinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Systems\Graphics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\default.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

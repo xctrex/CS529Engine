@@ -26,7 +26,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -47,11 +47,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Users\Tommy\Documents\GitHub\CS529Engine\DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;"C:\Users\Tommy\Documents\GitHub\CS529Engine\DirectXTK\Bin\Desktop_2013\Win32\Debug\DirectXTK.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -60,11 +62,13 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>C:\Users\Tommy\Documents\GitHub\CS529Engine\DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <OptimizeReferences>false</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;"C:\Users\Tommy\Documents\GitHub\CS529Engine\DirectXTK\Bin\Desktop_2013\Win32\Release\DirectXTK.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -73,6 +77,7 @@
     <ClCompile Include="DebugDiagnostic.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="Precomp.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="WindowsSystem.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -84,10 +89,15 @@
     <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Message.h" />
+    <ClInclude Include="ObjectLinkedList.h" />
     <ClInclude Include="Precomp.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="WindowsIncludes.h" />
     <ClInclude Include="WindowsSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\default.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

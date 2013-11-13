@@ -26,7 +26,7 @@ namespace Framework
         // Get the current time
         QueryPerformanceCounter(&PerformanceCounterCurrent);
         // Return the difference between the current time and the start time
-        return ((PerformanceCounterCurrent.QuadPart - PerformanceCounterStart.QuadPart) / (TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
+        return (unsigned int)((PerformanceCounterCurrent.QuadPart - PerformanceCounterStart.QuadPart) / (TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
     }
 
     unsigned int CoreTime::GetFrameTimeInMilliseconds()
@@ -34,7 +34,7 @@ namespace Framework
         // Get the current time
         QueryPerformanceCounter(&PerformanceCounterCurrent);
         // Calculate the difference between the current time and the previous frame
-        unsigned int dt = ((PerformanceCounterCurrent.QuadPart - PerformanceCounterLast.QuadPart) / (TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
+        unsigned int dt = (unsigned int)((PerformanceCounterCurrent.QuadPart - PerformanceCounterLast.QuadPart) / (TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
         // Set the new last frame to the current time
         PerformanceCounterLast = PerformanceCounterCurrent;
         // Return the difference between the last frame and the current time

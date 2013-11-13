@@ -14,12 +14,23 @@ using namespace DirectX;
 
 namespace Framework
 {
+    // Global pointer to Graphics.
+    GraphicsSystem* GRAPHICS = NULL;
+
     GraphicsSystem::GraphicsSystem(HWND hw, int w, int h) : 
 		m_HWnd(hw),
 		m_ScreenWidth(w),
-		m_ScreenHeight(h) {}
+		m_ScreenHeight(h) 
+    {
+        CoInitialize(NULL);
+        m_TextureMap.clear();
+        GRAPHICS = this;
+    }
 
-    GraphicsSystem::~GraphicsSystem(){}
+    GraphicsSystem::~GraphicsSystem()
+    {
+        CoUninitialize();
+    }
 
     
     void GraphicsSystem::Initialize()
@@ -35,6 +46,9 @@ namespace Framework
         scd.OutputWindow = m_HWnd;
         scd.SampleDesc.Count = 4;
         scd.Windowed = TRUE;
+        scd.BufferDesc.Width = m_ScreenWidth;
+        scd.BufferDesc.Height = m_ScreenHeight;
+        //scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // allow full screen switching
 
 		HRESULT hr = S_OK;
 		hr = D3D11CreateDeviceAndSwapChain(
@@ -49,7 +63,7 @@ namespace Framework
 		    m_spSwapChain.GetAddressOf(),
 			m_spDevice.GetAddressOf(),
 			NULL,
-            m_spDeviceContext.GetAddressOf()
+            m_spD3DDeviceContext.GetAddressOf()
 			);
 
 		// Get the address of the back buffer
@@ -68,7 +82,7 @@ namespace Framework
 			);
 
 		// Set the render target as the back buffer
-        m_spDeviceContext->OMSetRenderTargets(
+        m_spD3DDeviceContext->OMSetRenderTargets(
 			1,
 			m_spRTVBackBuffer.GetAddressOf(),
 			NULL
@@ -83,17 +97,79 @@ namespace Framework
 		viewport.Width = (float)m_ScreenWidth;
 		viewport.Height = (float)m_ScreenHeight;
 
-		m_spDeviceContext->RSSetViewports(1, &viewport);
+		m_spD3DDeviceContext->RSSetViewports(1, &viewport);
+
+        // Load the textures
+        LoadTextures();
+
+        // Initialize the sprite batch
+        m_spSpriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(m_spD3DDeviceContext.Get()));
+        // TODO: temporarily add a sprite to the list to make sure things work
+        // The spritelist should be managed by the game logic
+    }
+
+    void GraphicsSystem::LoadTextures()
+    {
+        HRESULT hr = S_OK;
+        ID3D11ShaderResourceView *pSRV;
+        
+        // For starters, always load the same, hard coded texture
+        // Will eventually create this object using metadata
+
+        //Use D3DX to load the texture
+        hr = DirectX::CreateWICTextureFromFile(
+            m_spDevice.Get(),
+            m_spD3DDeviceContext.Get(),
+            L"C:\\Users\\Tommy\\Documents\\GitHub\\CS529Engine\\GameEngine\\Assets\\Default.png",
+            0,
+            &pSRV
+            );
+
+        if (hr == S_OK)
+        {
+            //TODO: handle textures with different paths but the same name
+            //Add to Graphics list of textures: Textures[texturefile.FileName.c_str()] = newTexture;
+            //m_TextureMap[std::string("Default")] = spSRV;
+            m_TextureMap.insert(std::pair<std::string, ID3D11ShaderResourceView* >("Default", pSRV));
+        }
+        else
+        {
+            //Error
+            //ErrorIf(false, "Failed to load texture %s in %s", "C:\Assets\Default.png", "C:\Assets\Default");
+        }
+    }
+
+    ID3D11ShaderResourceView* GraphicsSystem::GetTexture(std::string TextureName)
+    {
+        std::hash_map<std::string, ID3D11ShaderResourceView* >::iterator it = m_TextureMap.find(TextureName);
+        if (it != m_TextureMap.end())
+            return it->second;
+        else
+            return NULL;
+    }
+
+    void GraphicsSystem::DrawSprites()
+    {
+        m_spSpriteBatch->Begin();
+
+        //Iterate through the link list of sprites
+        std::list<Sprite>::iterator it = m_SpriteList.begin();
+        for (; it != m_SpriteList.end(); ++it)
+            it->Draw(m_spSpriteBatch);
+
+        m_spSpriteBatch->End();
     }
 
     void GraphicsSystem::Update(float timeslice)
 	{
 		HRESULT hr = S_OK;
         const float clearColor[4] = { 0.7f, 0.0f, 0.8f, 1.0f };
-        m_spDeviceContext->ClearRenderTargetView(
+        m_spD3DDeviceContext->ClearRenderTargetView(
 			m_spRTVBackBuffer.Get(),
             clearColor
             );
+
+        DrawSprites();
 
         hr = m_spSwapChain->Present(0, 0);
     }

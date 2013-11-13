@@ -16,8 +16,9 @@ Creation date: 10/1/2013
 
 using namespace Framework;
 
-const int ClientWidth = 800;
-const int ClientHeight = 600;
+// TODO: get computer's resolution
+const int ClientWidth = 1920;
+const int ClientHeight = 1080;
 
 // Application entry point
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -36,6 +37,11 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // Initialize the engine and it's systems
     engine->InitializeSystems();
+
+    // Add a sprite to GRAPHICS
+    // TODO: this should be managed elsewhere
+    Sprite s;
+    s.Initialize();
 
     // Activate the window
     windows->ActivateWindow();
