@@ -13,9 +13,13 @@ Creation date: 10/20/2013
 #include "Engine.h"
 #include "WindowsIncludes.h"
 #include "Containers.h"
-#include <d3d11.h>
+#include <d3d11_2.h>
 #include <DirectXMath.h>
+#include <d2d1_2.h>
+#include <dwrite_2.h>
+#include <wincodec.h>
 
+#include "tinyXML2\tinyxml2.h"
 #include <WICTextureLoader.h>
 #include <SpriteBatch.h>
 
@@ -23,6 +27,16 @@ Creation date: 10/20/2013
 
 namespace Framework
 {
+    // Throw on error //TODO: Convert DirectX error codes to exceptions.
+    inline void DXThrowIfFailed(HRESULT hr)
+    {
+        if (FAILED(hr))
+        {
+            // Set a breakpoint on this line to catch DX API errors.
+            throw;
+        }
+    }
+
     // Graphics manager
     class GraphicsSystem : public ISystem
     {
@@ -37,16 +51,39 @@ namespace Framework
         virtual std::string GetName() {return "Windows";}
 
         void LoadTextures();
+        void LoadTexture(std::string TextureName, std::string TextureFilePath);
         ID3D11ShaderResourceView *GetTexture(std::string TextureName);
         void DrawSprites();
 
-        std::list<Sprite> m_SpriteList;
+        std::list<Sprite> m_SpriteList;//TODO: investigate if we should use Sprite* here, allowing the sprites to be modified by something other than the graphics compononent
     private:
+
+    void CreateDeviceIndependentResources();
+    void CreateDeviceResources();
+    void CreateWindowSizeDependentResources();
 	
-    ComPtr<IDXGISwapChain> m_spSwapChain;
-	ComPtr<ID3D11Device> m_spDevice;
-	ComPtr<ID3D11DeviceContext> m_spD3DDeviceContext;
-	ComPtr<ID3D11RenderTargetView> m_spRTVBackBuffer;
+    // DXGI Resources
+    ComPtr<IDXGISwapChain1> m_spSwapChain;
+
+    // D3D Resources
+    ComPtr<ID3D11Device2> m_spD3DDevice;
+	ComPtr<ID3D11DeviceContext2> m_spD3DDeviceContext;
+	ComPtr<ID3D11RenderTargetView> m_spD3DRenderTargetView;
+    ComPtr<ID3D11DepthStencilView> m_spD3DDepthStencilView;
+    D3D_FEATURE_LEVEL m_FeatureLevel;
+
+    // D2D Resources
+    ComPtr<ID2D1Factory2> m_spD2DFactory;
+    ComPtr<ID2D1Device1> m_spD2DDevice;
+    ComPtr<ID2D1DeviceContext1> m_spD2DDeviceContext;
+    ComPtr<ID2D1RenderTarget> m_spD2DRenderTarget;
+    ComPtr<ID2D1Bitmap1> m_spD2DTargetBitmap;
+
+    // DWrite Resources
+    ComPtr<IDWriteFactory2> m_spDWriteFactory;
+
+    // WIC Resources
+    ComPtr<IWICImagingFactory2> m_spWICFactory;
 
     std::unique_ptr<SpriteBatch> m_spSpriteBatch;
     std::hash_map<std::string, ID3D11ShaderResourceView* > m_TextureMap;
@@ -54,6 +91,8 @@ namespace Framework
 	HWND m_HWnd;
 	int m_ScreenWidth;
 	int m_ScreenHeight;
+    float m_DPIX;
+    float m_DPIY;
     };
 
     // Global pointer to Graphics.

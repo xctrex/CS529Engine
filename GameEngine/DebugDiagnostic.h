@@ -10,6 +10,8 @@ Creation date: 10/3/2013
 - End Header -----------------------------------------------------*/
 #pragma once
 
+#define VERIFY_SUCCEEDED(hr) return hr == S_OK;
+
 #include <stdio.h>
 
 // If the condition is true, print a message

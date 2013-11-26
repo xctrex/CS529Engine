@@ -13,4 +13,5 @@ Creation date: 10/3/2013
 #include <Windows.h>
 #include <wrl\client.h> // Include for ComPtr.
 #include <windowsx.h>
+
 #define ComPtr Microsoft::WRL::ComPtr

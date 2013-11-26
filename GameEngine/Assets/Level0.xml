@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<GraphicsResources>
+    <Texture 
+        Name="Default" 
+        Path="Assets\Default.png"
+    />
+    <Texture 
+        Name="Default2"
+        Path="Assets\Default2.png"
+    />
+</GraphicsResources>
+
+<Sprite
+    TextureName="Default"
+    PositionX="50.0"
+    PositionY="100.0"
+/>
+
+<Sprite
+    TextureName="Default2"
+    PositionX="350.0"
+    PositionY="100.0"
+/>

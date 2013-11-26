@@ -14,5 +14,10 @@ Creation date: 10/3/2013
 #include <vector>
 #include <list>
 #include <hash_map>
+#include <memory>
 
-#include "ObjectLinkedList.h"
+namespace Framework
+{
+    template <typename T>
+    std::unique_ptr<T> p_to_unique_ptr(T* p);
+}

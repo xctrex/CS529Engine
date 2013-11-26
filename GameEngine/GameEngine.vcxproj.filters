@@ -34,6 +34,12 @@
     <Filter Include="Systems\Graphics">
       <UniqueIdentifier>{00be610e-b2bc-4497-af55-9fdcb2ab4b66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tinyXML2">
+      <UniqueIdentifier>{e7cb4873-85c9-4dab-88c7-ef82eade9085}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseEngine\Composition">
+      <UniqueIdentifier>{f9f68107-4030-433e-9325-0b57be81b5a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -59,6 +65,12 @@
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Systems\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyXML2\tinyxml2.cpp">
+      <Filter>tinyXML2</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,16 +107,30 @@
     <ClInclude Include="GraphicsSystem.h">
       <Filter>Systems\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectLinkedList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>Systems\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="tinyXML2\tinyxml2.h">
+      <Filter>tinyXML2</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>BaseEngine\Composition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\default.jpg">
+    <Image Include="Assets\Default.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Default2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Assets\Level0.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+    <Xml Include="Assets\Textures.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

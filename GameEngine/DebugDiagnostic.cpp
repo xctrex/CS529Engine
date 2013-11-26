@@ -17,5 +17,6 @@ void ErrorIf(bool conditional, char * message)
     {
         // TODO: Create a more robust IfError function
         printf_s("%s\n", message);
+        throw;
     }
 }

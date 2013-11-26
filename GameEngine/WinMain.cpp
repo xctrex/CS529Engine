@@ -38,10 +38,26 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // Initialize the engine and it's systems
     engine->InitializeSystems();
 
+    tinyxml2::XMLDocument txmlDoc;
+    ErrorIf(
+        tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Level0.xml"),
+        "Failed to load Assets\\Level0.xml"
+        );
+
+    // Get the first sprite out of Level0.xml
+    tinyxml2::XMLElement* textureElement = txmlDoc.FirstChildElement("Sprite");
+
     // Add a sprite to GRAPHICS
-    // TODO: this should be managed elsewhere
+    // TODO: sprites should be managed elsewhere
     Sprite s;
-    s.Initialize();
+    s.Initialize(textureElement);
+
+    // Move on to the next sprite
+    textureElement = textureElement->NextSiblingElement("Sprite");
+
+    Sprite s2;
+    s2.SetPosition(50.0f, 100.0f);
+    s2.Initialize(textureElement);
 
     // Activate the window
     windows->ActivateWindow();

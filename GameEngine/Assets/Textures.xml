@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<Texture 
+    name="Default" 
+    path="Assets\Default.png"
+/>
+<Texture 
+    name="Default2"
+    path="Assets\Default2.png"
+/>
