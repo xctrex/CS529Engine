@@ -72,6 +72,12 @@
     <ClCompile Include="Containers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>BaseEngine\Composition</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>BaseEngine\Composition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsSystem.h">
@@ -114,6 +120,9 @@
       <Filter>tinyXML2</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
+      <Filter>BaseEngine\Composition</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
       <Filter>BaseEngine\Composition</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,8 +20,8 @@ namespace Framework
         void SetPosition(float x, float y);
 
         // TODO: implement the rest of the pure virtual functions
-        virtual void SendEvent(){};
-        virtual void OnEvent(){};
+        //virtual void SendEvent(){};
+        //virtual void OnEvent(){};
         virtual void Serialize(tinyxml2::XMLDocument *txmlDoc){};
     private:
         ComPtr<ID3D11ShaderResourceView> m_spSRV;

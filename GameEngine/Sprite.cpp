@@ -3,6 +3,8 @@
 
 namespace Framework
 {
+    //Component* g_ComponentHandleTable[MAX_COMPONENTS];
+
     Sprite::Sprite() : 
         m_spSRV(NULL),
         m_pSRV(NULL),
@@ -12,7 +14,9 @@ namespace Framework
         m_Rotation(0.0f),
         m_Origin({0.0f, 0.0f}),
         m_Scale({ 1.0f, 1.0f })
-    {};
+    {
+        g_ComponentHandleTable[this->GetHandleIndex()] = this;
+    };
     Sprite::~Sprite() 
     {
         if (m_pSRV) // TODO: what if more than one sprite has the same SRV?
@@ -66,6 +70,8 @@ namespace Framework
             SpriteEffects::SpriteEffects_None,
             0.0f
             );
+        Sprite* s = static_cast<Sprite*>(g_ComponentHandleTable[0]);
+        Component * c = g_ComponentHandleTable[0];
     }
 
 

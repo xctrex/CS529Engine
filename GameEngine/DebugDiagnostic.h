@@ -15,4 +15,5 @@ Creation date: 10/3/2013
 #include <stdio.h>
 
 // If the condition is true, print a message
-void ErrorIf(bool, char *);
+void ThrowErrorIf(bool, char *);
+

@@ -329,9 +329,12 @@ namespace Framework
 
     void GraphicsSystem::LoadTextures()
     {
+        // TODO: (low pri) Give the graphics system a file name so that different textures.xml files can be used for different levels.
+        // instead of hard coding Assets\\Textures.xml. The level file can then tell the graphics system which textures file to use.
+        // For now, always loading all textures is OK.
         tinyxml2::XMLDocument txmlDoc;
-        ErrorIf(
-            tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Textures.xml"),
+        ThrowErrorIf(
+            tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Textures.xml"), 
             "Failed to load Assets\\Textures.xml"
             );
                 

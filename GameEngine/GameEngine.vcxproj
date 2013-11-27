@@ -72,10 +72,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Containers.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="CoreTime.cpp" />
     <ClCompile Include="DebugDiagnostic.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="Precomp.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -85,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Containers.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="CoreTime.h" />

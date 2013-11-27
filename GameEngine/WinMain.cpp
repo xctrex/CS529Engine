@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     engine->InitializeSystems();
 
     tinyxml2::XMLDocument txmlDoc;
-    ErrorIf(
+    ThrowErrorIf(
         tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Level0.xml"),
         "Failed to load Assets\\Level0.xml"
         );

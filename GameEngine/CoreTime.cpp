@@ -15,7 +15,7 @@ namespace Framework
     CoreTime::CoreTime()
     {
         // Get the frequency
-        ErrorIf(!QueryPerformanceFrequency(&TicksPerSecond), "The installed hardware does not support a high frequency timer"); // TODO: create a fall back plan if this fails
+        ThrowErrorIf(!QueryPerformanceFrequency(&TicksPerSecond), "The installed hardware does not support a high frequency timer"); // TODO: create a fall back plan if this fails
         // Set the start time, previous time, and current time
         QueryPerformanceCounter(&PerformanceCounterStart);
         PerformanceCounterLast = PerformanceCounterCurrent = PerformanceCounterStart;
