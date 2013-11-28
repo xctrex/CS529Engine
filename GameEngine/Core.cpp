@@ -12,7 +12,11 @@ Creation date: 10/3/2013
 
 namespace Framework
 {
-    CoreEngine::CoreEngine() : LastTime(0), GameActive(true){};
+    CoreEngine::CoreEngine() :
+        LastTime(0),
+        GameActive(true)
+    {};
+
     CoreEngine::~CoreEngine(){};
 
     // Add a new system to the core

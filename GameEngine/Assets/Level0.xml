@@ -1,23 +1,64 @@
 <?xml version="1.0" ?>
-<GraphicsResources>
-    <Texture 
-        Name="Default" 
+<Textures>
+    <Texture
+        Name="Metal" 
+        Path="Assets\Metal.png"
+    />
+    <Texture
+        Name="Wood"
+        Path="Assets\Wood.png"
+    />
+    <Texture
+        Name="Earth" 
+        Path="Assets\Earth.png"
+    />
+    <Texture
+        Name="Water"
+        Path="Assets\Water.png"
+    />
+    <Texture
+        Name="Fire" 
+        Path="Assets\Fire.png"
+    />
+    <Texture
+        Name="MetalPhoenix" 
+        Path="Assets\MetalPhoenix.png"
+    />
+    <Texture
+        Name="WoodPhoenix"
+        Path="Assets\WoodPhoenix.png"
+    />
+    <Texture
+        Name="EarthPhoenix" 
+        Path="Assets\EarthPhoenix.png"
+    />
+    <Texture
+        Name="WaterPhoenix"
+        Path="Assets\WaterPhoenix.png"
+    />
+    <Texture
+        Name="FirePhoenix" 
+        Path="Assets\FirePhoenix.png"
+    />
+    <Texture
+        Name="Default"
         Path="Assets\Default.png"
     />
-    <Texture 
-        Name="Default2"
-        Path="Assets\Default2.png"
+</Textures>
+
+<GameObject Name="Phoenix" UniqueID="0"> 
+    <Sprite
+        TextureName="FirePhoenix"
+        PositionX="50.0"
+        PositionY="100.0"
+        Parent="0"
     />
-</GraphicsResources>
+</GameObject>
 
-<Sprite
-    TextureName="Default"
-    PositionX="50.0"
-    PositionY="100.0"
-/>
-
-<Sprite
-    TextureName="Default2"
-    PositionX="350.0"
-    PositionY="100.0"
-/>
+<GameObject Name="StaticSprite">
+    <Sprite
+        TextureName="Default"
+        PositionX="350.0"
+        PositionY="100.0"
+    />
+</GameObject>

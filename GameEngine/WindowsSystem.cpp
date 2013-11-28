@@ -34,7 +34,8 @@ namespace Framework
         return DefWindowProc(hWnd, msg, wParam, lParam);
     }
 
-    WindowsSystem::WindowsSystem(int ClientWidth, int ClientHeight) : WindowsClassName("GameEngineWindowClass")
+    WindowsSystem::WindowsSystem(int ClientWidth, int ClientHeight) :
+        WindowsClassName("GameEngineWindowClass")
     {
         // The size passed to CreateWindow is the full size including the windows border and caption 
 		// AdjustWindowRect will adjust the provided rect so that the client size of the window is the desired size

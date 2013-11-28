@@ -4,13 +4,17 @@
 #include <d3d11.h>
 #include <SpriteBatch.h>
 #include "Component.h"
+#include "GameObject.h"
 
 using namespace DirectX;
 
 namespace Framework
 {
+    // Forward declaration for GameObjectHandle
+    class GameObjectHandle;
+
     // Sprite class has a texture, size and transform
-    class Sprite : Component
+    class Sprite : public Component
     {
     public:
         Sprite();
@@ -32,5 +36,7 @@ namespace Framework
         float m_Rotation;
         XMFLOAT2 m_Origin;
         XMFLOAT2 m_Scale;
+
+//        GameObjectHandle m_Parent;
     };
 }

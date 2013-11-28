@@ -1,12 +1,24 @@
 #pragma once
 
 #include "tinyXML2\tinyxml2.h"
-#include "GameObject.h"
+#include "DebugDiagnostic.h"
+
+typedef unsigned int ComponentID;
+
+enum COMPONENT_TYPE
+{
+    COMPONENT_TYPE_NONE = 0,
+    COMPONENT_TYPE_SPRITE
+};
 
 //TODO: having handles for components and handles for game objects duplicates a lot of code
 namespace Framework
 {
+    // Define the size of the handle table and thus the maximum number of game objects
+    static const unsigned int MAX_COMPONENTS = 1024;
+
     unsigned int FindFreeSlotInComponentHandleTable();
+    unsigned int AssignUniqueObjectID();
 
     class Component
     {
@@ -21,6 +33,7 @@ namespace Framework
     private:
         ComponentID m_UniqueID;
         unsigned int m_HandleIndex;
+        COMPONENT_TYPE m_Type;
 
         // Give the handle class access to GUID and index
         friend class ComponentHandle;
@@ -30,10 +43,17 @@ namespace Framework
     class ComponentHandle
     {
     public:
+        ComponentHandle() :
+            m_HandleIndex(MAX_COMPONENTS),
+            m_UniqueID(UINT_MAX)
+        {}
+
         explicit ComponentHandle(Component& component) :
             m_HandleIndex(component.m_HandleIndex),
             m_UniqueID(component.m_UniqueID)
         {}
+
+        void Initialize(unsigned int index, ComponentID id);
 
         // This function dereferences the handle
         Component* ToObject() const;
@@ -44,7 +64,5 @@ namespace Framework
     };
 
 
-    // Define the size of the handle table and thus the maximum number of game objects
-    static const unsigned int MAX_COMPONENTS = 1024;
-    extern Component* g_ComponentHandleTable[MAX_GAME_OBJECTS]; //TODO: with the current implementation, dynamic casting does not work. Only static casting. This may be acceptable.
+    extern Component* g_ComponentHandleTable[MAX_COMPONENTS]; //TODO: with the current implementation, dynamic casting does not work. Only static casting. This may be acceptable.
 }

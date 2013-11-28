@@ -320,31 +320,25 @@ namespace Framework
         CreateDeviceResources();
         CreateWindowSizeDependentResources();
         
-        // Load the textures
-        LoadTextures();
-
         // Initialize the sprite batch
         m_spSpriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(m_spD3DDeviceContext.Get()));
     }
 
-    void GraphicsSystem::LoadTextures()
+    void GraphicsSystem::LoadTextures(tinyxml2::XMLElement *txmlElement)
     {
-        // TODO: (low pri) Give the graphics system a file name so that different textures.xml files can be used for different levels.
-        // instead of hard coding Assets\\Textures.xml. The level file can then tell the graphics system which textures file to use.
-        // For now, always loading all textures is OK.
-        tinyxml2::XMLDocument txmlDoc;
+        /*tinyxml2::XMLDocument txmlDoc;
         ThrowErrorIf(
             tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Textures.xml"), 
             "Failed to load Assets\\Textures.xml"
-            );
+            );*/
                 
         // Loop through all the textures and load each one
-        tinyxml2::XMLElement* textureElement = txmlDoc.FirstChildElement("Texture");
+        tinyxml2::XMLElement* textureElement = txmlElement->FirstChildElement("Texture");
         while (textureElement != nullptr)
         {
             LoadTexture(
-                textureElement->Attribute("name"),
-                textureElement->Attribute("path")
+                textureElement->Attribute("Name"),
+                textureElement->Attribute("Path")
                 );
 
             textureElement = textureElement->NextSiblingElement("Texture");

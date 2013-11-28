@@ -20,6 +20,24 @@ using namespace Framework;
 const int ClientWidth = 1920;
 const int ClientHeight = 1080;
 
+void LoadLevel(tinyxml2::XMLDocument *txmlDoc)
+{
+    tinyxml2::XMLElement* txmlElement = txmlDoc->FirstChildElement();
+    while (txmlElement)
+    {
+        if (strcmp(txmlElement->Name(),"Textures") == 0)
+        {
+            GRAPHICS->LoadTextures(txmlElement);
+        }
+        else if (strcmp(txmlElement->Name(), "GameObject") == 0)
+        {
+            GameObject* pObj = new GameObject();
+            pObj->Initialize(txmlElement);
+        }
+        txmlElement = txmlElement->NextSiblingElement();
+    }
+}
+
 // Application entry point
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -39,25 +57,16 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     engine->InitializeSystems();
 
     tinyxml2::XMLDocument txmlDoc;
+
     ThrowErrorIf(
         tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Level0.xml"),
         "Failed to load Assets\\Level0.xml"
         );
 
+    LoadLevel(&txmlDoc);
+
     // Get the first sprite out of Level0.xml
     tinyxml2::XMLElement* textureElement = txmlDoc.FirstChildElement("Sprite");
-
-    // Add a sprite to GRAPHICS
-    // TODO: sprites should be managed elsewhere
-    Sprite s;
-    s.Initialize(textureElement);
-
-    // Move on to the next sprite
-    textureElement = textureElement->NextSiblingElement("Sprite");
-
-    Sprite s2;
-    s2.SetPosition(50.0f, 100.0f);
-    s2.Initialize(textureElement);
 
     // Activate the window
     windows->ActivateWindow();

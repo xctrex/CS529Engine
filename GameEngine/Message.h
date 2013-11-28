@@ -24,7 +24,10 @@ namespace Framework
     class Message
     {
     public:
-        Message(MID::MessageIDType id) : MessageID(id){};
+        Message(MID::MessageIDType id) :
+            MessageID(id)
+        {};
+
         MID::MessageIDType MessageID;
         virtual ~Message(){};
     };

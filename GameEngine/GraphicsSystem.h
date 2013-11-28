@@ -50,7 +50,7 @@ namespace Framework
         virtual void Update(float timeslice);
         virtual std::string GetName() {return "Windows";}
 
-        void LoadTextures();
+        void LoadTextures(tinyxml2::XMLElement* txmlElement);
         void LoadTexture(std::string TextureName, std::string TextureFilePath);
         ID3D11ShaderResourceView *GetTexture(std::string TextureName);
         void DrawSprites();

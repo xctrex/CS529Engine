@@ -51,8 +51,17 @@ namespace Framework
             m_Rotation = txmlElement->FloatAttribute("Rotation");
         }
         //TODO: add initialization for origin and scale
-
+        if (txmlElement->Attribute("Parent"))
+        {
+            //TODO: for now, assuming components don't need pointers to their parents
+            /*m_Parent.Initialize(
+                GetGameObjectHandleIndexFromUniqueID(txmlElement->UnsignedAttribute("Parent")),
+                txmlElement->UnsignedAttribute("Parent")
+                );*/
+        }
+        
         m_pSRV = GRAPHICS->GetTexture(m_TextureName);
+        ThrowErrorIf(!m_pSRV, "Failed to get texture from GRAPHICS");
         GRAPHICS->m_SpriteList.push_back(*this);
     }
 
@@ -70,8 +79,6 @@ namespace Framework
             SpriteEffects::SpriteEffects_None,
             0.0f
             );
-        Sprite* s = static_cast<Sprite*>(g_ComponentHandleTable[0]);
-        Component * c = g_ComponentHandleTable[0];
     }
 
 
