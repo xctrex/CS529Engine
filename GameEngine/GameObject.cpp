@@ -46,7 +46,7 @@ namespace Framework
     GameObject::GameObject() :
         m_Name("DefaultGameObjectName")
     {
-        m_UniqueID = AssignUniqueObjectID();
+        m_UniqueID = GetUniqueIDFromString(m_Name); //TODO: All game objects that are not given a unique name will not have unique IDs
         m_HandleIndex = FindFreeSlotInGameObjectHandleTable();
         g_GameObjectHandleTable[m_HandleIndex] = this;
     }
@@ -63,10 +63,7 @@ namespace Framework
         if (txmlGameObjectElement->Attribute("Name"))
         {
             m_Name = txmlGameObjectElement->Attribute("Name");
-        }
-        if (txmlGameObjectElement->Attribute("UniqueID"))
-        {
-            m_UniqueID = txmlGameObjectElement->UnsignedAttribute("UniqueID");
+            m_UniqueID = GetUniqueIDFromString(m_Name);
         }
 
         // For each child, create a component and add it to the object

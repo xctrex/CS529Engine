@@ -46,17 +46,19 @@
     />
 </Textures>
 
-<GameObject Name="Phoenix" UniqueID="0"> 
+<GameObject Name="Phoenix"> 
     <Sprite
+        Name="FirePhoenixSprite"
         TextureName="FirePhoenix"
         PositionX="50.0"
         PositionY="100.0"
-        Parent="0"
+        Parent="Phoenix"
     />
 </GameObject>
 
 <GameObject Name="StaticSprite">
     <Sprite
+        Name="StaticDefaultSprite"
         TextureName="Default"
         PositionX="350.0"
         PositionY="100.0"

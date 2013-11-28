@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Precomp.h"
 #include "tinyXML2\tinyxml2.h"
 #include "DebugDiagnostic.h"
 
@@ -21,7 +21,7 @@ namespace Framework
     static const unsigned int MAX_COMPONENTS = 1024;
 
     unsigned int FindFreeSlotInComponentHandleTable();
-    unsigned int AssignUniqueObjectID();
+    ComponentID GetUniqueIDFromString(std::string str);
 
     class Component
     {
@@ -39,7 +39,7 @@ namespace Framework
         ComponentID m_UniqueID;
         unsigned int m_HandleIndex;
         COMPONENT_TYPE m_Type;
-
+        std::string m_Name;
 //TODO: Enable Component class to have a handle to its parent
 //        GameObjectHandle m_Parent;
 

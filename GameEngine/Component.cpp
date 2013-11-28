@@ -4,9 +4,11 @@ namespace Framework
 {
     Component* g_ComponentHandleTable[MAX_COMPONENTS];
 
-    ComponentID AssignUniqueObjectID()
+    std::hash<std::string> g_HashString;
+
+    ComponentID GetUniqueIDFromString(std::string str)
     {
-        return rand(); // TODO: create a better GUID system using boost
+        return g_HashString(str);
     }
 
     unsigned int FindFreeSlotInComponentHandleTable()
@@ -20,9 +22,10 @@ namespace Framework
     }
 
     Component::Component() :
-        m_Type(COMPONENT_TYPE_NONE)
+        m_Type(COMPONENT_TYPE_NONE),
+        m_Name("DefaultComponentName")
     {
-        m_UniqueID = AssignUniqueObjectID();
+        m_UniqueID = GetUniqueIDFromString(m_Name);
         m_HandleIndex = FindFreeSlotInComponentHandleTable();
         ThrowErrorIf(m_HandleIndex == MAX_COMPONENTS, "Exceeded maximum number of components");
         //g_ComponentHandleTable[m_HandleIndex] = this;

@@ -1,8 +1,7 @@
 #pragma once
 
+#include "Precomp.h"
 #include "tinyXML2\tinyxml2.h"
-#include "DebugDiagnostic.h"
-#include "Containers.h"
 #include "Component.h"
 #include "Sprite.h"
 
