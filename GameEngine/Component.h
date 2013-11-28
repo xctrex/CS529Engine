@@ -14,6 +14,9 @@ enum COMPONENT_TYPE
 //TODO: having handles for components and handles for game objects duplicates a lot of code
 namespace Framework
 {
+    // Forward declaration for GameObjectHandle
+    class GameObjectHandle;
+
     // Define the size of the handle table and thus the maximum number of game objects
     static const unsigned int MAX_COMPONENTS = 1024;
 
@@ -29,11 +32,16 @@ namespace Framework
         ComponentID GetUniqueID(){ return m_UniqueID; }
         unsigned int GetHandleIndex(){ return m_HandleIndex; }
 
+ //       void SetParent(GameObjectHandle handle){ m_Parent = handle; }
+//        GameObjectHandle GetParent(){ return m_Parent; }
 
     private:
         ComponentID m_UniqueID;
         unsigned int m_HandleIndex;
         COMPONENT_TYPE m_Type;
+
+//TODO: Enable Component class to have a handle to its parent
+//        GameObjectHandle m_Parent;
 
         // Give the handle class access to GUID and index
         friend class ComponentHandle;

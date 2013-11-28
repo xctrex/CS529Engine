@@ -3,8 +3,6 @@
 
 namespace Framework
 {
-    //Component* g_ComponentHandleTable[MAX_COMPONENTS];
-
     Sprite::Sprite() : 
         m_spSRV(NULL),
         m_pSRV(NULL),
@@ -53,11 +51,17 @@ namespace Framework
         //TODO: add initialization for origin and scale
         if (txmlElement->Attribute("Parent"))
         {
-            //TODO: for now, assuming components don't need pointers to their parents
-            /*m_Parent.Initialize(
+            /* At this point, I have a handle to the parent, but no way to give the sprite or
+            component class a handle to their parents.
+
+            GameObjectHandle c;
+            c.Initialize(
                 GetGameObjectHandleIndexFromUniqueID(txmlElement->UnsignedAttribute("Parent")),
                 txmlElement->UnsignedAttribute("Parent")
-                );*/
+                );
+
+            SetParent(c);
+            */
         }
         
         m_pSRV = GRAPHICS->GetTexture(m_TextureName);

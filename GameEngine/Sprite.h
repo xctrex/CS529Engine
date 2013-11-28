@@ -10,9 +10,6 @@ using namespace DirectX;
 
 namespace Framework
 {
-    // Forward declaration for GameObjectHandle
-    class GameObjectHandle;
-
     // Sprite class has a texture, size and transform
     class Sprite : public Component
     {
@@ -36,7 +33,5 @@ namespace Framework
         float m_Rotation;
         XMFLOAT2 m_Origin;
         XMFLOAT2 m_Scale;
-
-//        GameObjectHandle m_Parent;
     };
 }
