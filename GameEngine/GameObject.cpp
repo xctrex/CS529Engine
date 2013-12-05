@@ -29,6 +29,13 @@ namespace Framework
             pInput->Initialize(txmlElement);
             c.Initialize(pInput->GetHandleIndex(), pInput->GetUniqueID());
         }
+        else if (strcmp(txmlElement->Name(), "Text") == 0)
+        {
+            Text* pText = new Text();
+            pText->m_Parent = this;
+            pText->Initialize(txmlElement);
+            c.Initialize(pText->GetHandleIndex(), pText->GetUniqueID());
+        }
         else
         {
             ThrowErrorIf(true, "Component Type not recognized");

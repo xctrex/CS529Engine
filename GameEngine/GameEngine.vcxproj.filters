@@ -90,6 +90,9 @@
     <ClCompile Include="GameLogicSystem.cpp">
       <Filter>Systems\GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Systems\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsSystem.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="GameLogicSystem.h">
       <Filter>Systems\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Systems\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

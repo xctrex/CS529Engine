@@ -1,34 +1,23 @@
-#include "Sprite.h"
+﻿#include "Text.h"
 #include "Transform.h"
 #include "GraphicsSystem.h"
 
 namespace Framework
 {
-    Sprite::Sprite() :
-        m_spSRV(NULL),
-        m_pSRV(NULL),
-        m_TextureName("Default"),
-        m_Color(Colors::White),
-        m_Origin({0.0f, 0.0f}),
+    Text::Text() :
+        m_TextContent("DefaultText"),
         m_pTransform(NULL),
-        m_RecursionLevel(0)
+        m_RecursionLevel(0),
+        m_Rect({0.0f, 0.0f, 512.0f, 512.0f}),
+        m_Font("Gabriola")
     {
-        m_Type = COMPONENT_TYPE_SPRITE;
+        m_Type = COMPONENT_TYPE_TEXT;
         
-        m_Position = { 0.0f, 0.0f };
-        m_Rotation = 0.0f;
-        m_Scale = { 1.0f, 1.0f };
-
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
     };
-    Sprite::~Sprite() 
+    Text::~Text()
     {
-        if (m_pSRV) // TODO: what if more than one sprite has the same SRV?
-        {
-            m_pSRV->Release();
-        }
-
-        // Only free the transform if it does not belong to the parent of the sprite
+        // Only free the transform if it does not belong to the parent of the text
         Transform* pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
         if (pTransform == NULL)
         {
@@ -39,7 +28,7 @@ namespace Framework
         }
     };
 
-    void Sprite::Initialize(tinyxml2::XMLElement *txmlElement)
+    void Text::Initialize(tinyxml2::XMLElement *txmlElement)
     {
         if (!m_pTransform)
         {
@@ -68,13 +57,13 @@ namespace Framework
                     ++m_RecursionLevel;
                     this->Initialize(txmlRecursiveElement);
                     break;
-                }                
+                }
                 txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
             }
         }
-        if (txmlElement->Attribute("TextureName"))
+        if (txmlElement->Attribute("TextContent"))
         {
-            m_TextureName = txmlElement->Attribute("TextureName");
+            m_TextContent = txmlElement->Attribute("TextContent");
         }
         if (txmlElement->Attribute("PositionX"))
         {
@@ -102,6 +91,10 @@ namespace Framework
             m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
             //m_Scale.y = txmlElement->FloatAttribute("ScaleY");
         }
+        if (txmlElement->Attribute("Font"))
+        {
+            m_Font = txmlElement->Attribute("Font");
+        }
         //TODO: add initialization for origin and scale
         if (txmlElement->Attribute("Parent"))
         {
@@ -110,19 +103,17 @@ namespace Framework
 
             GameObjectHandle c;
             c.Initialize(
-                GetGameObjectHandleIndexFromUniqueID(txmlElement->UnsignedAttribute("Parent")),
-                txmlElement->UnsignedAttribute("Parent")
-                );
+            GetGameObjectHandleIndexFromUniqueID(txmlElement->UnsignedAttribute("Parent")),
+            txmlElement->UnsignedAttribute("Parent")
+            );
 
             SetParent(c);
             */
         }
-        
+
         if (m_RecursionLevel == 0)
         {
-            m_pSRV = g_GRAPHICS->GetTexture(m_TextureName);
-            ThrowErrorIf(!m_pSRV, "Failed to get texture from GRAPHICS");
-            g_GRAPHICS->m_SpriteList.push_back(*this);
+            g_GRAPHICS->m_TextList.push_back(*this);
         }
         else
         {
@@ -130,27 +121,59 @@ namespace Framework
         }
     }
 
-    void Sprite::Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch)
+    void Text::Draw(ComPtr<ID2D1DeviceContext1> sp_DeviceContext, ComPtr<ID2D1SolidColorBrush> sp_Brush, ComPtr<IDWriteFactory2> sp_DWriteFactory)
     {
-        //spSpriteBatch->Draw(m_pSRV, XMFLOAT2(0, 0));
-        spSpriteBatch->Draw(
-            m_pSRV,
-            m_pTransform->m_Position,
-            //m_Position,
-            NULL,
-            m_Color,
-            m_pTransform->m_Rotation,
-            //m_Rotation,
-            m_Origin,
-            m_pTransform->m_Scale,
-            //m_Scale,
-            SpriteEffects::SpriteEffects_None,
-            0.0f
+        sp_DeviceContext->BeginDraw();
+        wchar_t content[512];
+        swprintf(content, m_TextContent.length(), L"%hs", m_TextContent.c_str());
+
+
+        m_Rect.left = m_pTransform->m_Position.x;
+        m_Rect.top = m_pTransform->m_Position.y;
+
+        ComPtr<IDWriteTextFormat> sp_DWriteTextFormat;
+        if (strcmp(m_Font.c_str(), "Gabriola") == 0)
+        {
+            sp_DWriteFactory->CreateTextFormat(
+                L"Gabriola",
+                NULL,
+                DWRITE_FONT_WEIGHT_REGULAR,
+                DWRITE_FONT_STYLE_NORMAL,
+                DWRITE_FONT_STRETCH_NORMAL,
+                32.0f,
+                L"en-us",
+                &sp_DWriteTextFormat
+                );
+        }
+        else
+        {
+            sp_DWriteFactory->CreateTextFormat(
+                L"Brush Script Std",
+                NULL,
+                DWRITE_FONT_WEIGHT_REGULAR,
+                DWRITE_FONT_STYLE_NORMAL,
+                DWRITE_FONT_STRETCH_NORMAL,
+                32.0f,
+                L"en-us",
+                &sp_DWriteTextFormat
+                );
+           // swprintf(content, m_TextContent.length(), L"%hs", m_TextContent.c_str());
+
+            
+        }
+        sp_DeviceContext->DrawTextA(
+            content,
+            m_TextContent.length(),
+            sp_DWriteTextFormat.Get(),
+            m_Rect,
+            sp_Brush.Get()
             );
+        sp_DeviceContext->EndDraw();
+
     }
 
 
-    void Sprite::SetPosition(float x, float y)
+    void Text::SetPosition(float x, float y)
     {
         m_pTransform->m_Position.x = x;
         //m_Position.x = x;

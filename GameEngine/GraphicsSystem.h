@@ -24,6 +24,7 @@ Creation date: 10/20/2013
 #include <SpriteBatch.h>
 
 #include "Sprite.h"
+#include "Text.h"
 
 namespace Framework
 {
@@ -54,8 +55,10 @@ namespace Framework
         void LoadTexture(std::string TextureName, std::string TextureFilePath);
         ID3D11ShaderResourceView *GetTexture(std::string TextureName);
         void DrawSprites();
+        void DrawText();
 
         std::list<Sprite> m_SpriteList;//TODO: investigate if we should use Sprite* here, allowing the sprites to be modified by something other than the graphics compononent
+        std::list<Text> m_TextList;//TODO: investigate if we should use Text* here, 
     private:
 
     void CreateDeviceIndependentResources();

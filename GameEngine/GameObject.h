@@ -6,6 +6,7 @@
 #include "Sprite.h"
 #include "Transform.h"
 #include "InputHandler.h"
+#include "Text.h"
 
 typedef unsigned int GameObjectID;
 

@@ -83,6 +83,7 @@
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Precomp.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="tinyXML2\tinyxml2.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WindowsSystem.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="Precomp.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="tinyXML2\tinyxml2.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="WindowsIncludes.h" />

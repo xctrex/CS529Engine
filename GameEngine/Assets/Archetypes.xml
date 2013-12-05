@@ -1,0 +1,11 @@
+<DefaultSpriteArchetype
+    Name="DefaultSpriteArchetype"
+    TextureName="Default"
+    PositionX="50.0"
+    PositionY="50.0"
+/>
+<SmallDefaultSpriteArchetype
+    Archetype="DefaultSpriteArchetype"
+    ScaleX="0.5"
+    ScaleY="0.5"
+/>

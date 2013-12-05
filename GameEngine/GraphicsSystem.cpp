@@ -397,11 +397,36 @@ namespace Framework
         
     }
 
+    void GraphicsSystem::DrawText()
+    {
+        ComPtr<ID2D1SolidColorBrush> sp_BlackBrush;
+        D2D1_COLOR_F color;
+        color.a = 1.0f;
+        color.r = 1.0f;
+        color.g = 1.0f;
+        color.b = 1.0f;
+
+        m_spD2DDeviceContext->CreateSolidColorBrush(
+            color,
+            sp_BlackBrush.GetAddressOf()
+            );
+
+        //m_spD2DDeviceContext->BeginDraw();
+
+        //Iterate through the linked list of sprites
+        std::list<Text>::iterator it = m_TextList.begin();
+        for (; it != m_TextList.end(); ++it)
+            it->Draw(m_spD2DDeviceContext, sp_BlackBrush, m_spDWriteFactory);
+
+        //m_spD2DDeviceContext->EndDraw();
+        //     );
+    }
+
     void GraphicsSystem::Update(float timeslice)
 	{
         m_spD3DDeviceContext->OMSetRenderTargets(1, m_spD3DRenderTargetView.GetAddressOf(), m_spD3DDepthStencilView.Get());
 		HRESULT hr = S_OK;
-        const float clearColor[4] = { 0.7f, 0.0f, 0.8f, 1.0f };
+        const float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
         m_spD3DDeviceContext->ClearRenderTargetView(
 			m_spD3DRenderTargetView.Get(),
             clearColor
@@ -409,27 +434,7 @@ namespace Framework
 
         DrawSprites();
         
-        ComPtr<ID2D1SolidColorBrush> sp_BlackBrush;
-        D2D1_COLOR_F color;
-        color.a = 1.0f;
-        color.r = 1.0f;
-        color.g = 0.0f;
-        color.b = 0.0f;
-
-        m_spD2DDeviceContext->CreateSolidColorBrush(
-        color,
-        sp_BlackBrush.GetAddressOf()
-        );
-
-        m_spD2DDeviceContext->BeginDraw();
-
-        m_spD2DDeviceContext->DrawRectangle(
-        D2D1::RectF(10.0f, 10.0f, 500.0f, 500.0f),
-        sp_BlackBrush.Get()
-        );
-        //TODO: check hrVERIFY_SUCCEEDED(
-        m_spD2DDeviceContext->EndDraw();
-        //     );
+        DrawText();
 
         DXThrowIfFailed(
             m_spSwapChain->Present(1, 0)

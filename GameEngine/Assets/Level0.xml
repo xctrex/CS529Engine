@@ -63,11 +63,36 @@
     />
 </GameObject>
 
-<GameObject Name="StaticSprite">
+<GameObject Name="StaticSpriteObject">
     <Sprite
+        Archetype="DefaultSpriteArchetype"
         Name="StaticDefaultSprite"
-        TextureName="Default"
         PositionX="350.0"
         PositionY="100.0"
+    />
+</GameObject>
+
+<GameObject Name="StaticArchetypeSpriteObject">
+    <Sprite
+        Archetype="SmallDefaultSpriteArchetype"
+        Name="ArcheTypeSprite"
+        PositionX="650.0"
+        PositionY="100.0"
+    />
+</GameObject>
+
+<GameObject Name="StaticTextObject">
+    <Text
+        Name="StaticText"
+        TextContent="I can write anything I want here."
+    />
+</GameObject>
+
+<GameObject Name="StaticJapaneseTextObject">
+    <Text
+        Name="StaticJapaneseText"
+        TextContent="I can even use different fonts."
+        Font="Brush Script Std"
+        PositionY="300"
     />
 </GameObject>
