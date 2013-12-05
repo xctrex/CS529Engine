@@ -40,7 +40,7 @@
     <Filter Include="BaseEngine\Composition">
       <UniqueIdentifier>{f9f68107-4030-433e-9325-0b57be81b5a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameLogic">
+    <Filter Include="Systems\GameLogic">
       <UniqueIdentifier>{d2b48d9b-d58a-42e5-93b7-a7c64f9a2b68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -82,10 +82,13 @@
       <Filter>BaseEngine\Composition</Filter>
     </ClCompile>
     <ClCompile Include="InputHandler.cpp">
-      <Filter>GameLogic</Filter>
+      <Filter>Systems\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Systems\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogicSystem.cpp">
+      <Filter>Systems\GameLogic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,10 +138,13 @@
       <Filter>BaseEngine\Engine</Filter>
     </ClInclude>
     <ClInclude Include="InputHandler.h">
-      <Filter>GameLogic</Filter>
+      <Filter>Systems\GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Systems\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogicSystem.h">
+      <Filter>Systems\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

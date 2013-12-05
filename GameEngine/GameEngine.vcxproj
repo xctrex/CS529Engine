@@ -77,6 +77,7 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="CoreTime.cpp" />
     <ClCompile Include="DebugDiagnostic.cpp" />
+    <ClCompile Include="GameLogicSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="InputHandler.cpp" />
@@ -89,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
+    <ClInclude Include="GameLogicSystem.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Containers.h" />
     <ClInclude Include="Core.h" />

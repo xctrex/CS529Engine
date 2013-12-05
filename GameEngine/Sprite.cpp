@@ -96,9 +96,9 @@ namespace Framework
             */
         }
         
-        m_pSRV = GRAPHICS->GetTexture(m_TextureName);
+        m_pSRV = g_GRAPHICS->GetTexture(m_TextureName);
         ThrowErrorIf(!m_pSRV, "Failed to get texture from GRAPHICS");
-        GRAPHICS->m_SpriteList.push_back(*this);
+        g_GRAPHICS->m_SpriteList.push_back(*this);
     }
 
     void Sprite::Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch)

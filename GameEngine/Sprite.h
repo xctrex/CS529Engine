@@ -2,7 +2,6 @@
 
 #include <SpriteBatch.h>
 #include "GameObject.h"
-//#include "Transform.h"
 
 using namespace DirectX;
 

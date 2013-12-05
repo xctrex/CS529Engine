@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "Sprite.h"
 #include "Transform.h"
+#include "InputHandler.h"
 
 typedef unsigned int GameObjectID;
 

@@ -1,16 +1,38 @@
 #include "InputHandler.h"
+#include "WindowsSystem.h"
+#include "GameLogicSystem.h"
 
 namespace Framework
 {
+    InputHandler::InputHandler() :
+        m_Speed(10.0f)
+    { 
+        m_Type = COMPONENT_TYPE_INPUT_HANDLER;
+    };
+
+    void InputHandler::Initialize(tinyxml2::XMLElement* txmlElement)
+    {
+        m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
+        if (!m_pTransform)
+            m_pTransform = new Transform();
+
+        if (txmlElement->Attribute("Speed"))
+        {
+            m_Speed = txmlElement->FloatAttribute("Speed");
+        }
+
+        g_LOGIC->m_InputHandler = this;
+    }
+
     void InputHandler::Update(float dt)
     {
         if (IsUpHeld())
-            m_Position.y -= m_Speed * dt;
+            m_pTransform->m_Position.y -= m_Speed * dt;
         if (IsDownHeld())
-            m_Position.y += m_Speed * dt;
+            m_pTransform->m_Position.y += m_Speed * dt;
         if (IsLeftHeld())
-            m_Position.x += m_Speed * dt;
+            m_pTransform->m_Position.x -= m_Speed * dt;
         if (IsRightHeld())
-            m_Position.x -= m_Speed * dt;
+            m_pTransform->m_Position.x += m_Speed * dt;
     }
 }

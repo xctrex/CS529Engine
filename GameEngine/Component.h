@@ -10,7 +10,8 @@ enum COMPONENT_TYPE
 {
     COMPONENT_TYPE_NONE = 0,
     COMPONENT_TYPE_SPRITE,
-    COMPONENT_TYPE_TRANSFORM
+    COMPONENT_TYPE_TRANSFORM,
+    COMPONENT_TYPE_INPUT_HANDLER
 };
 
 //TODO: having handles for components and handles for game objects duplicates a lot of code

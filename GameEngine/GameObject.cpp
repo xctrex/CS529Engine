@@ -22,6 +22,13 @@ namespace Framework
             pTransform->Initialize(txmlElement);
             c.Initialize(pTransform->GetHandleIndex(), pTransform->GetUniqueID());
         }
+        else if (strcmp(txmlElement->Name(), "InputHandler") == 0)
+        {
+            InputHandler* pInput = new InputHandler();
+            pInput->m_Parent = this;
+            pInput->Initialize(txmlElement);
+            c.Initialize(pInput->GetHandleIndex(), pInput->GetUniqueID());
+        }
         else
         {
             ThrowErrorIf(true, "Component Type not recognized");

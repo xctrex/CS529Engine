@@ -46,13 +46,20 @@
     />
 </Textures>
 
-<GameObject Name="Phoenix"> 
-    <Sprite
-        Name="FirePhoenixSprite"
-        TextureName="FirePhoenix"
+<GameObject Name="Ship"> 
+    <Transform
+        Name="ShipTransform"
         PositionX="50.0"
         PositionY="100.0"
-        Parent="Phoenix"
+        Parent="Ship"
+    />
+    <InputHandler
+        Speed="100.0"
+    />
+    <Sprite
+        Name="ShipSprite"
+        TextureName="FirePhoenix"
+        Parent="Ship"
     />
 </GameObject>
 
@@ -64,10 +71,3 @@
         PositionY="100.0"
     />
 </GameObject>
-
-<Connections>
-    <Connection
-        Signal="HID"
-        Slot="FirePhoenixSprite"
-    />
-</Connections>

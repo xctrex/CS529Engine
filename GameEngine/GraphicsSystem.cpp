@@ -17,7 +17,7 @@ using namespace DirectX;
 namespace Framework
 {
     // Global pointer to Graphics.
-    GraphicsSystem* GRAPHICS = NULL;
+    GraphicsSystem* g_GRAPHICS = NULL;
 
     GraphicsSystem::GraphicsSystem(HWND hw, int w, int h) : 
 		m_HWnd(hw),
@@ -26,7 +26,10 @@ namespace Framework
     {
         CoInitialize(NULL);
         m_TextureMap.clear();
-        GRAPHICS = this;
+
+        //Set up the global pointer
+        ThrowErrorIf(g_GRAPHICS != NULL, "Graphics already initialized");
+        g_GRAPHICS = this;
     }
 
     GraphicsSystem::~GraphicsSystem()

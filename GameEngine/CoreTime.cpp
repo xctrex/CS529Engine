@@ -29,12 +29,12 @@ namespace Framework
         return (unsigned int)((PerformanceCounterCurrent.QuadPart - PerformanceCounterStart.QuadPart) / (TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
     }
 
-    unsigned int CoreTime::GetFrameTimeInMilliseconds()
+    float CoreTime::GetFrameTimeInMilliseconds()
     {
         // Get the current time
         QueryPerformanceCounter(&PerformanceCounterCurrent);
         // Calculate the difference between the current time and the previous frame
-        unsigned int dt = (unsigned int)((PerformanceCounterCurrent.QuadPart - PerformanceCounterLast.QuadPart) / (TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
+        float dt = ((float)(PerformanceCounterCurrent.QuadPart - PerformanceCounterLast.QuadPart) / (float)(TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
         // Set the new last frame to the current time
         PerformanceCounterLast = PerformanceCounterCurrent;
         // Return the difference between the last frame and the current time

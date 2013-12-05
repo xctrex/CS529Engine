@@ -29,7 +29,7 @@ namespace Framework
         m_UniqueID = GetUniqueIDFromString(m_Name);
         m_HandleIndex = FindFreeSlotInComponentHandleTable();
         ThrowErrorIf(m_HandleIndex == MAX_COMPONENTS, "Exceeded maximum number of components");
-        //g_ComponentHandleTable[m_HandleIndex] = this;
+        g_ComponentHandleTable[m_HandleIndex] = this;
     }
 
     //================================================================

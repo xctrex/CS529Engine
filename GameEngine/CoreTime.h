@@ -12,7 +12,7 @@ Creation date: 10/3/2013
 
 #include "Precomp.h"
 
-#define MILLESECONDS_PER_SECOND 1000
+#define MILLESECONDS_PER_SECOND 1000.0f
 
 namespace Framework
 {
@@ -23,7 +23,7 @@ namespace Framework
         ~CoreTime(){};
 
         unsigned int GetTimeInMilliseconds(void);
-        unsigned int GetFrameTimeInMilliseconds(void);
+        float GetFrameTimeInMilliseconds(void);
         
     private:
         LARGE_INTEGER TicksPerSecond;

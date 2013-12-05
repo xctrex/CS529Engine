@@ -48,7 +48,7 @@ namespace Framework
         //virtual void SendMessage(Message* message) {};
         virtual void Initialize();
         virtual void Update(float timeslice);
-        virtual std::string GetName() {return "Windows";}
+        virtual std::string GetName() {return "Graphics";}
 
         void LoadTextures(tinyxml2::XMLElement* txmlElement);
         void LoadTexture(std::string TextureName, std::string TextureFilePath);
@@ -96,5 +96,5 @@ namespace Framework
     };
 
     // Global pointer to Graphics.
-    extern GraphicsSystem* GRAPHICS;
+    extern GraphicsSystem* g_GRAPHICS;
 }

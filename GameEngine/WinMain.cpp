@@ -13,6 +13,7 @@ Creation date: 10/1/2013
 #include "Engine.h"
 #include "WindowsSystem.h"
 #include "GraphicsSystem.h"
+#include "GameLogicSystem.h"
 
 using namespace Framework;
 
@@ -30,7 +31,7 @@ void LoadLevel(tinyxml2::XMLDocument* txmlDoc)
     {
         if (strcmp(txmlElement->Name(),"Textures") == 0)
         {
-            GRAPHICS->LoadTextures(txmlElement);
+            g_GRAPHICS->LoadTextures(txmlElement);
         }
         else if (strcmp(txmlElement->Name(), "GameObject") == 0)
         {
@@ -72,10 +73,13 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     WindowsSystem* windows = new WindowsSystem(ClientWidth, ClientHeight);
 	// Create the graphics system
 	GraphicsSystem* graphics = new GraphicsSystem(windows->hWnd, ClientWidth, ClientHeight);
+    // Create the logic system
+    GameLogicSystem* logic = new GameLogicSystem();
 
     // Add the systems
     engine->AddSystem(windows);
 	engine->AddSystem(graphics);
+    engine->AddSystem(logic);
 
     // Initialize the engine and it's systems
     engine->InitializeSystems();
