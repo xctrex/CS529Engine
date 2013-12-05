@@ -11,7 +11,7 @@ Creation date: 10/3/2013
 #pragma once
 
 #include "Precomp.h"
-#include "Message.h"
+#include "Event.h"
 #include "System.h"
 #include "Core.h"
 #include "GameObject.h"

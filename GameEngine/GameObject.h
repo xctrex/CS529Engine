@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Precomp.h"
-#include "tinyXML2\tinyxml2.h"
+#include "Event.h"
 #include "Component.h"
 #include "Sprite.h"
+#include "Transform.h"
 
 typedef unsigned int GameObjectID;
 
@@ -29,8 +30,14 @@ namespace Framework
         void Initialize(tinyxml2::XMLElement* txmlElement);
         void Serialize(tinyxml2::XMLDocument* txmlDoc);
 
+        // Event will be passed to each component in this composition
+        void OnEvent(Event* e);
+
         GameObjectID GetID(){ return m_UniqueID; }
 
+        // Get the component if it exists, otherwise return NULL
+        Component* GetComponent(COMPONENT_TYPE type);
+        ComponentHandle GameObject::CreateComponent(tinyxml2::XMLElement* txmlElement);
     private:
         GameObjectID m_UniqueID;
         unsigned int m_HandleIndex;
@@ -58,8 +65,8 @@ namespace Framework
         void Initialize(unsigned int index, GameObjectID id);
 
         // This function dereferences the handle
-        GameObject* ToObject() const;        
-        
+        GameObject* ToObject() const;
+                
     private:
         unsigned int m_HandleIndex;
         GameObjectID m_UniqueID; // A unique ID avoids stale pointers

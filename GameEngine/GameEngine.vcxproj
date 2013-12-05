@@ -79,9 +79,11 @@
     <ClCompile Include="DebugDiagnostic.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Precomp.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="tinyXML2\tinyxml2.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WindowsSystem.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -94,11 +96,13 @@
     <ClInclude Include="DebugDiagnostic.h" />
     <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="Message.h" />
+    <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="Precomp.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="tinyXML2\tinyxml2.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="WindowsIncludes.h" />
     <ClInclude Include="WindowsSystem.h" />
   </ItemGroup>

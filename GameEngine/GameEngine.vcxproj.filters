@@ -40,6 +40,9 @@
     <Filter Include="BaseEngine\Composition">
       <UniqueIdentifier>{f9f68107-4030-433e-9325-0b57be81b5a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameLogic">
+      <UniqueIdentifier>{d2b48d9b-d58a-42e5-93b7-a7c64f9a2b68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -78,15 +81,18 @@
     <ClCompile Include="Component.cpp">
       <Filter>BaseEngine\Composition</Filter>
     </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Systems\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsSystem.h">
       <Filter>Systems\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h">
-      <Filter>BaseEngine\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Message.h">
       <Filter>BaseEngine\Engine</Filter>
     </ClInclude>
     <ClInclude Include="System.h">
@@ -124,6 +130,15 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>BaseEngine\Composition</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>BaseEngine\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Systems\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

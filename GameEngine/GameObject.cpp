@@ -5,14 +5,22 @@ namespace Framework
     GameObject* g_GameObjectHandleTable[MAX_GAME_OBJECTS];
 
     // TODO: This could be replaced by a component factory class
-    ComponentHandle CreateComponent(tinyxml2::XMLElement* txmlElement)
+    ComponentHandle GameObject::CreateComponent(tinyxml2::XMLElement* txmlElement)
     {
         ComponentHandle c;
         if (strcmp(txmlElement->Name(), "Sprite") == 0)
         {
             Sprite* pSprite = new Sprite();
+            pSprite->m_Parent = this;
             pSprite->Initialize(txmlElement);
             c.Initialize(pSprite->GetHandleIndex(), pSprite->GetUniqueID());
+        }
+        else if (strcmp(txmlElement->Name(), "Transform") == 0)
+        {
+            Transform* pTransform = new Transform();
+            pTransform->m_Parent = this;
+            pTransform->Initialize(txmlElement);
+            c.Initialize(pTransform->GetHandleIndex(), pTransform->GetUniqueID());
         }
         else
         {
@@ -46,6 +54,7 @@ namespace Framework
     GameObject::GameObject() :
         m_Name("DefaultGameObjectName")
     {
+        m_ComponentVector.clear();
         m_UniqueID = GetUniqueIDFromString(m_Name); //TODO: All game objects that are not given a unique name will not have unique IDs
         m_HandleIndex = FindFreeSlotInGameObjectHandleTable();
         g_GameObjectHandleTable[m_HandleIndex] = this;
@@ -75,7 +84,24 @@ namespace Framework
         }
     }
     
+    void GameObject::OnEvent(Event* e)
+    {
+        // Send the event to each component
+        for (size_t i = 0; i < m_ComponentVector.size(); ++i)
+        {
+            m_ComponentVector[i].ToObject()->OnEvent(e);
+        }
+    }
 
+    Component* GameObject::GetComponent(COMPONENT_TYPE type)
+    {
+        for (size_t i = 0; i < m_ComponentVector.size(); ++i)
+        {
+            if (m_ComponentVector[i].ToObject()->m_Type == type)
+                return m_ComponentVector[i].ToObject();
+        }
+        return NULL;
+    }
     //================================================================
     // GameObjectHandle
     //================================================================

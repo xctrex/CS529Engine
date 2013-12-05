@@ -8,6 +8,10 @@ Project: CS529_twalton_FinalProject
 Author: Tommy Walton, t.walton, 130000812
 Creation date: 10/1/2013
 - End Header -----------------------------------------------------*/
+#pragma once
+
 #include "WindowsIncludes.h"
 #include "Containers.h"
 #include "DebugDiagnostic.h"
+#include "tinyXML2\tinyxml2.h"
+

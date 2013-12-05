@@ -20,7 +20,10 @@ using namespace Framework;
 const int ClientWidth = 1920;
 const int ClientHeight = 1080;
 
-void LoadLevel(tinyxml2::XMLDocument *txmlDoc)
+void LoadLevel(tinyxml2::XMLDocument* txmlDoc);
+//void MakeConnections(tinyxml2::XMLElement* txmlElement);
+
+void LoadLevel(tinyxml2::XMLDocument* txmlDoc)
 {
     tinyxml2::XMLElement* txmlElement = txmlDoc->FirstChildElement();
     while (txmlElement)
@@ -34,9 +37,30 @@ void LoadLevel(tinyxml2::XMLDocument *txmlDoc)
             GameObject* pObj = new GameObject();
             pObj->Initialize(txmlElement);
         }
+        /*if (strcmp(txmlElement->Name(), "Textures") == 0)
+        {
+            MakeConnections(txmlElement);
+        }*/
         txmlElement = txmlElement->NextSiblingElement();
     }
 }
+/*
+void MakeConnections(tinyxml2::XMLElement* txmlElement)
+{
+    // Loop through all the textures and load each one
+    tinyxml2::XMLElement* connectionElement = txmlElement->FirstChildElement("Connection");
+    while (connectionElement != nullptr)
+    {
+        if (strcmp(connectionElement->Attribute("SignalObject"), "WindowsSystem"))
+        {
+            if (strcmp(connectionElement->Attribute("SignalFunction"), "MoveUp"))
+            {
+
+            }
+        }
+        connectionElement = connectionElement->NextSiblingElement("Connection");
+    }
+}*/
 
 // Application entry point
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -64,9 +88,6 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         );
 
     LoadLevel(&txmlDoc);
-
-    // Get the first sprite out of Level0.xml
-    tinyxml2::XMLElement* textureElement = txmlDoc.FirstChildElement("Sprite");
 
     // Activate the window
     windows->ActivateWindow();

@@ -12,6 +12,9 @@ Creation date: 10/3/2013
 
 namespace Framework
 {
+    // A global pointer to the windows system
+    WindowsSystem* g_WINDOWSSYSTEM = NULL;
+
     // Message handling procedure for the game
     LRESULT WINAPI MessageHandler(
         HWND hWnd,
@@ -22,6 +25,56 @@ namespace Framework
     {
         switch (msg)
         {
+        case WM_CHAR: //A character key was pressed
+        {
+            //Create a key event
+            CharacterKeyEvent key;
+            //Set the character pressed (the wParam is the ascii value)
+            key.m_Character = wParam;
+            //Broadcast the message to all systems
+            g_CORE->BroadcastEvent(&key);
+            break;
+        }
+        case WM_LBUTTONDOWN:
+        {
+            MouseButtonEvent m(MouseButtonEvent::LeftMouse, true, XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+            g_CORE->BroadcastEvent(&m);
+            break;
+        }
+        case WM_RBUTTONDOWN:
+        {
+                               MouseButtonEvent m(MouseButtonEvent::RightMouse, true, XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+            g_CORE->BroadcastEvent(&m);
+            break;
+        }
+        case WM_LBUTTONUP:
+        {
+                             MouseButtonEvent m(MouseButtonEvent::LeftMouse, false, XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+            g_CORE->BroadcastEvent(&m);
+            break;
+        }
+        case WM_RBUTTONUP:
+        {
+                             MouseButtonEvent m(MouseButtonEvent::RightMouse, false, XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+            g_CORE->BroadcastEvent(&m);
+            break;
+        }
+        case WM_MOUSEMOVE:
+        {
+            g_WINDOWSSYSTEM->m_MousePosition = MAKEPOINTS(lParam);
+            MouseMovedEvent m(XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+            g_CORE->BroadcastEvent(&m);
+            break;
+        }
+        case WM_KEYDOWN: //A key was pressed
+            //TODO: Handle any key logic you might need for game controls
+            //Use virtual key codes (VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN, VK_SPACE, etc.)
+            //to detect specific keys (the wParam is the key pressed) and then
+            //broadcast whatever message you need
+            break;
+        case WM_KEYUP: //A key was released
+            //TODO: Handle any key logic you might need for game controls
+            break;
             // this message is read when the window is closed
             case WM_DESTROY:
             {
@@ -35,8 +88,11 @@ namespace Framework
     }
 
     WindowsSystem::WindowsSystem(int ClientWidth, int ClientHeight) :
-        WindowsClassName("GameEngineWindowClass")
+        m_WindowsClassName("GameEngineWindowClass")
     {
+        // Set the global pointer for the windows system
+        g_WINDOWSSYSTEM = this;
+
         // The size passed to CreateWindow is the full size including the windows border and caption 
 		// AdjustWindowRect will adjust the provided rect so that the client size of the window is the desired size
 		RECT fullWinRect = {0, 0, ClientWidth, ClientHeight};
@@ -59,7 +115,7 @@ namespace Framework
             LoadCursor(NULL, IDC_ARROW),        // Predefined arrow
             NULL,                               // Background brush - NULL
             NULL,                               // Name of menu resource - NULL
-            WindowsClassName.c_str(),           // Name of window class
+            m_WindowsClassName.c_str(),           // Name of window class
             NULL                                // Small class icon - NULL
         };
         
@@ -70,7 +126,7 @@ namespace Framework
 
         // Create the game's window
         hWnd = CreateWindow(
-            WindowsClassName.c_str(),
+            m_WindowsClassName.c_str(),
             "GameWindow",
             WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT,
@@ -87,7 +143,7 @@ namespace Framework
     WindowsSystem::~WindowsSystem()
     {
         // Unregister the window class
-        UnregisterClass(WindowsClassName.c_str(), hInstance);
+        UnregisterClass(m_WindowsClassName.c_str(), hInstance);
     }
 
     void WindowsSystem::Update(float dt)
@@ -118,4 +174,9 @@ namespace Framework
         // Send a WM_PAINT message to the window
         UpdateWindow(hWnd);
     }    
+
+    bool IsUpHeld(){ return GetKeyState(VK_UP) < 0; }
+    bool IsDownHeld(){ return GetKeyState(VK_DOWN) < 0; }
+    bool IsLeftHeld(){ return GetKeyState(VK_LEFT) < 0; }
+    bool IsRightHeld(){ return GetKeyState(VK_RIGHT) < 0; }
 }

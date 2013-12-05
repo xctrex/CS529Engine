@@ -12,23 +12,24 @@ Creation date: 10/3/2013
 
 namespace Framework
 {
-    namespace MID // Message ID
+    enum EVENT_TYPE
     {
-        enum MessageIDType
-        {
-            None,
-            Quit
-        };
-    }
+        EVENT_TYPE_NONE,
+        EVENT_TYPE_QUIT,
+        EVENT_TYPE_CHARACTER_KEY,
+        EVENT_TYPE_MOUSE_BUTTON,
+        EVENT_TYPE_MOUSE_MOVE
+    };
 
-    class Message
+    // Base event class
+    class Event
     {
     public:
-        Message(MID::MessageIDType id) :
-            MessageID(id)
+        Event(EVENT_TYPE type) :
+            m_Type(type)
         {};
 
-        MID::MessageIDType MessageID;
-        virtual ~Message(){};
+        EVENT_TYPE m_Type;
+        virtual ~Event(){};
     };
 }

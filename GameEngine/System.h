@@ -11,14 +11,14 @@ Creation date: 10/3/2013
 #pragma once
 
 #include "Precomp.h"
-#include "Message.h"
+#include "Event.h"
 
 namespace Framework
 {
     class ISystem
     {
     public:
-        virtual void SendMessage(Message* message) {};
+        virtual void OnEvent(Event* e) {};
         virtual void Update(float timeslice) = 0;
         virtual std::string GetName() = 0;
         virtual void Initialize(){};

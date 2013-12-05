@@ -64,3 +64,10 @@
         PositionY="100.0"
     />
 </GameObject>
+
+<Connections>
+    <Connection
+        Signal="HID"
+        Slot="FirePhoenixSprite"
+    />
+</Connections>

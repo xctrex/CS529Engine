@@ -28,15 +28,27 @@ namespace Framework
         void InitializeSystems(void);
         // Update all the systems until the game is no longer active
         void GameLoop();
+        // Broadcasts an event to all systems
+        void BroadcastEvent(Event* e);
 
     private:
         // Tracks all the systems the game uses
-        std::vector<ISystem*> Systems;
+        std::vector<ISystem*> m_Systems;
         // The last time the game was updated
         unsigned int LastTime;
         // True if the game is running, false otherwise
-        bool GameActive;
+        bool m_GameActive;
         // Timer class
         CoreTime time;
     };
+
+    // Event telling the game to quit
+    class QuitEvent : public Event
+    {
+    public:
+        QuitEvent() : Event(EVENT_TYPE_QUIT) {};
+    };
+
+    // Global pointer to the core engine
+    extern CoreEngine* g_CORE;
 }

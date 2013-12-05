@@ -23,6 +23,7 @@ namespace Framework
 
     Component::Component() :
         m_Type(COMPONENT_TYPE_NONE),
+        m_Parent(NULL),
         m_Name("DefaultComponentName")
     {
         m_UniqueID = GetUniqueIDFromString(m_Name);
