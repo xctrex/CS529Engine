@@ -44,30 +44,21 @@
         Name="Default"
         Path="Assets\Default.png"
     />
+    <Texture
+        Name="asteroid-sprite"
+        Path="Assets\asteroid-sprite.gif"
+    />
+    <Texture
+        Name="asteroid"
+        Path="Assets\asteroid.png"
+    />
 </Textures>
-
-<GameObject Name="Ship"> 
-    <Transform
-        Name="ShipTransform"
-        PositionX="50.0"
-        PositionY="100.0"
-        Parent="Ship"
-    />
-    <InputHandler
-        Speed="100.0"
-    />
-    <Sprite
-        Name="ShipSprite"
-        TextureName="FirePhoenix"
-        Parent="Ship"
-    />
-</GameObject>
 
 <GameObject Name="StaticSpriteObject">
     <Sprite
         Archetype="DefaultSpriteArchetype"
         Name="StaticDefaultSprite"
-        PositionX="350.0"
+        PositionX="450.0"
         PositionY="100.0"
     />
 </GameObject>
@@ -76,7 +67,7 @@
     <Sprite
         Archetype="SmallDefaultSpriteArchetype"
         Name="ArcheTypeSprite"
-        PositionX="650.0"
+        PositionX="950.0"
         PositionY="100.0"
     />
 </GameObject>
@@ -94,5 +85,21 @@
         TextContent="I can even use different fonts."
         Font="Brush Script Std"
         PositionY="300"
+    />
+</GameObject>
+
+<GameObject Name="Ship"> 
+    <Transform
+        Name="ShipTransform"
+        PositionX="50.0"
+        PositionY="100.0"
+    />
+    <InputHandler
+        Speed="200.0"
+    />
+    <Sprite
+        Name="ShipSprite"
+        TextureName="FirePhoenix"
+        Layer="1.0"
     />
 </GameObject>

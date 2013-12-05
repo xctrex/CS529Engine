@@ -27,12 +27,18 @@ namespace Framework
     void InputHandler::Update(float dt)
     {
         if (IsUpHeld())
-            m_pTransform->m_Position.y -= m_Speed * dt;
+        {
+            m_pTransform->m_Position.y -= m_Speed * dt * cosf(m_pTransform->m_Rotation);
+            m_pTransform->m_Position.x += m_Speed * dt * sinf(m_pTransform->m_Rotation);
+        }
         if (IsDownHeld())
-            m_pTransform->m_Position.y += m_Speed * dt;
+        {
+            m_pTransform->m_Position.y += m_Speed * dt * cosf(m_pTransform->m_Rotation);
+            m_pTransform->m_Position.x -= m_Speed * dt * sinf(m_pTransform->m_Rotation);
+        }
         if (IsLeftHeld())
-            m_pTransform->m_Position.x -= m_Speed * dt;
+            m_pTransform->m_Rotation -= (m_Speed / 40.0f) * dt;
         if (IsRightHeld())
-            m_pTransform->m_Position.x += m_Speed * dt;
+            m_pTransform->m_Rotation += (m_Speed / 40.0f) * dt;
     }
 }

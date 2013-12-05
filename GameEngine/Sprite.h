@@ -34,6 +34,7 @@ namespace Framework
 
         XMVECTOR m_Color;
         XMFLOAT2 m_Origin;
+        float m_Layer;
         int m_RecursionLevel;
     };
 }

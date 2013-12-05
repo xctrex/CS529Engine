@@ -9,9 +9,10 @@ namespace Framework
         m_pSRV(NULL),
         m_TextureName("Default"),
         m_Color(Colors::White),
-        m_Origin({0.0f, 0.0f}),
+        m_Origin({128.0f, 128.0f}),
         m_pTransform(NULL),
-        m_RecursionLevel(0)
+        m_RecursionLevel(0),
+        m_Layer(0.0f)
     {
         m_Type = COMPONENT_TYPE_SPRITE;
         
@@ -102,6 +103,10 @@ namespace Framework
             m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
             //m_Scale.y = txmlElement->FloatAttribute("ScaleY");
         }
+        if (txmlElement->Attribute("Layer"))
+        {
+            m_Layer = txmlElement->FloatAttribute("Layer");
+        }
         //TODO: add initialization for origin and scale
         if (txmlElement->Attribute("Parent"))
         {
@@ -133,7 +138,7 @@ namespace Framework
     void Sprite::Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch)
     {
         //spSpriteBatch->Draw(m_pSRV, XMFLOAT2(0, 0));
-        spSpriteBatch->Draw(
+            spSpriteBatch->Draw(
             m_pSRV,
             m_pTransform->m_Position,
             //m_Position,
@@ -145,7 +150,7 @@ namespace Framework
             m_pTransform->m_Scale,
             //m_Scale,
             SpriteEffects::SpriteEffects_None,
-            0.0f
+            m_Layer
             );
     }
 

@@ -1,6 +1,6 @@
 <DefaultSpriteArchetype
     Name="DefaultSpriteArchetype"
-    TextureName="Default"
+    TextureName="asteroid"
     PositionX="50.0"
     PositionY="50.0"
 />
