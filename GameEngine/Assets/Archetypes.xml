@@ -1,11 +1,36 @@
 <DefaultSpriteArchetype
     Name="DefaultSpriteArchetype"
-    TextureName="asteroid"
-    PositionX="50.0"
-    PositionY="50.0"
+    TextureName="Default"
+    PositionX="0.0"
+    PositionY="0.0"
+    Height="256.0"
+    Width="256.0"
 />
 <SmallDefaultSpriteArchetype
     Archetype="DefaultSpriteArchetype"
+    Name="SmallDefaultSpriteArchetype"
     ScaleX="0.5"
     ScaleY="0.5"
+/>
+
+<GoldenGrahamArchetype
+    Archetype="DefaultSpriteArchetype"
+    Name="GoldenGrahamArchetype"
+    TextureName="GoldenGraham"
+    ScaleX="0.25"
+    ScaleY="0.25"
+/>
+<CheerioArchetype
+    Archetype="DefaultSpriteArchetype"
+    Name="CheerioArchetype"
+    TextureName="Cheerio"
+    ScaleX="0.25"
+    ScaleY="0.25"
+/>
+<CocoPuffArchetype
+    Archetype="DefaultSpriteArchetype"
+    Name="CocoPuffArchetype"
+    TextureName="CocoPuff"
+    Height="64.0"
+    Width="64.0"
 />

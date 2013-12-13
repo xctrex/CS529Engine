@@ -1,85 +1,65 @@
 <?xml version="1.0" ?>
 <Textures>
     <Texture
-        Name="Metal" 
-        Path="Assets\Metal.png"
-    />
-    <Texture
-        Name="Wood"
-        Path="Assets\Wood.png"
-    />
-    <Texture
-        Name="Earth" 
-        Path="Assets\Earth.png"
-    />
-    <Texture
-        Name="Water"
-        Path="Assets\Water.png"
-    />
-    <Texture
-        Name="Fire" 
-        Path="Assets\Fire.png"
-    />
-    <Texture
-        Name="MetalPhoenix" 
-        Path="Assets\MetalPhoenix.png"
-    />
-    <Texture
-        Name="WoodPhoenix"
-        Path="Assets\WoodPhoenix.png"
-    />
-    <Texture
-        Name="EarthPhoenix" 
-        Path="Assets\EarthPhoenix.png"
-    />
-    <Texture
-        Name="WaterPhoenix"
-        Path="Assets\WaterPhoenix.png"
-    />
-    <Texture
-        Name="FirePhoenix" 
-        Path="Assets\FirePhoenix.png"
-    />
-    <Texture
         Name="Default"
         Path="Assets\Default.png"
     />
     <Texture
-        Name="asteroid-sprite"
-        Path="Assets\asteroid-sprite.gif"
+        Name="CocoPuff"
+        Path="Assets\cocopuff.png"
     />
     <Texture
-        Name="asteroid"
-        Path="Assets\asteroid.png"
+        Name="GoldenGraham"
+        Path="Assets\goldengraham.png"
+    />
+    <Texture
+        Name="Cheerio"
+        Path="Assets\cheerio.png"
     />
     <Texture
         Name="GingerbreadMan"
         Path="Assets\gingerbread.png"
     />
     <Texture
-        Name="ShipTexture"
-        Path="Assets\P38_lvl_0_d0.png"
+        Name="Spoon"
+        Path="Assets\bluespoon.png"
     />
 </Textures>
 
 <GameObject Name="StaticSpriteObject">
     <Sprite
-        Archetype="DefaultSpriteArchetype"
-        Name="StaticDefaultSprite"
+        Archetype="GoldenGrahamArchetype"
+        Name="StaticGoldenGrahamSprite"
         PositionX="450.0"
         PositionY="100.0"
     />
 </GameObject>
-
+<GameObject Name="StaticSpriteObject">
+    <Sprite
+        Archetype="CheerioArchetype"
+        Name="StaticCheerioSprite"
+        PositionX="450.0"
+        PositionY="400.0"
+    />
+</GameObject>
 <GameObject Name="StaticArchetypeSpriteObject">
     <Sprite
-        Archetype="SmallDefaultSpriteArchetype"
-        Name="ArcheTypeSprite"
+        Archetype="CocoPuffArchetype"
+        Name="CocoPuffArcheTypeSprite"
+        TextureName="CocoPuff"
         PositionX="450.0"
         PositionY="-100.0"
     />
 </GameObject>
-
+<GameObject Name="StaticArchetypeSpriteObject">
+    <Sprite
+        Archetype="SmallDefaultSpriteArchetype"
+        Name="SpoonSprite"
+        TextureName="Spoon"
+        PositionX="650.0"
+        PositionY="-100.0"
+    />
+</GameObject>
 <GameObject Name="StaticTextObject">
     <Text
         Name="StaticText"

@@ -140,7 +140,7 @@ namespace Framework
         srcRect.top = 0.0f;
         srcRect.right = m_Origin.x * 2;
         srcRect.bottom = m_Origin.y * 2;
-        //m_Color = Colors::Black;
+
         spSpriteBatch->Draw(
             m_pSRV,
             g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position),

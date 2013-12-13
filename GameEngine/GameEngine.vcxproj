@@ -125,6 +125,7 @@
   <ItemGroup>
     <Image Include="Assets\Default.png" />
     <Image Include="Assets\Default2.png" />
+    <Image Include="Assets\golden_graham.png" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Assets\Level0.xml" />

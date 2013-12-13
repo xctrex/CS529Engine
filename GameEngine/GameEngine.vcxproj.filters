@@ -199,6 +199,9 @@
     <Image Include="Assets\Default2.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\golden_graham.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Assets\Level0.xml">
