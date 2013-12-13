@@ -42,6 +42,10 @@ namespace Framework
         {
             m_DeccelerationSpeed = txmlElement->FloatAttribute("DeccelerationSpeed");
         }
+        if (txmlElement->Attribute("RotationSpeed"))
+        {
+            m_RotationSpeed = txmlElement->FloatAttribute("RotationSpeed");
+        }
         g_LOGIC->m_InputHandler = this;
     }
 

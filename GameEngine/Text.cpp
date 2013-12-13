@@ -99,20 +99,7 @@ namespace Framework
             m_Font = txmlElement->Attribute("Font");
         }
         //TODO: add initialization for origin and scale
-        if (txmlElement->Attribute("Parent"))
-        {
-            /* At this point, I have a handle to the parent, but no way to give the sprite or
-            component class a handle to their parents.
-
-            GameObjectHandle c;
-            c.Initialize(
-            GetGameObjectHandleIndexFromUniqueID(txmlElement->UnsignedAttribute("Parent")),
-            txmlElement->UnsignedAttribute("Parent")
-            );
-
-            SetParent(c);
-            */
-        }
+        
 
         if (m_RecursionLevel == 0)
         {

@@ -52,6 +52,14 @@
         Name="asteroid"
         Path="Assets\asteroid.png"
     />
+    <Texture
+        Name="GingerbreadMan"
+        Path="Assets\gingerbread.png"
+    />
+    <Texture
+        Name="ShipTexture"
+        Path="Assets\P38_lvl_0_d0.png"
+    />
 </Textures>
 
 <GameObject Name="StaticSpriteObject">
@@ -93,18 +101,21 @@
         Name="ShipTransform"
         PositionX="0.0"
         PositionY="0.0"
+        Rotation="90.0"
     />
     <RigidBody
         Name="ShipRigidBody"
     />
     <InputHandler
-        AccelerationSpeed="500.0"
+        AccelerationSpeed="1000.0"
         DeccelerationSpeed="-100.0"
-        RotationSpeed="6.0"
+        RotationSpeed="120.0"
     />
     <Sprite
         Name="ShipSprite"
-        TextureName="FirePhoenix"
+        TextureName="GingerbreadMan"
+        SpriteHeight="256.0"
+        SpriteWidth="256.0"
         SpriteRotation="-90.0"
         Layer="1.0"
     />

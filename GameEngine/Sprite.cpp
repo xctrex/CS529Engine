@@ -93,6 +93,14 @@ namespace Framework
         {
             m_SpriteRotation = txmlElement->FloatAttribute("SpriteRotation");
         }
+        if (txmlElement->Attribute("SpriteHeight"))
+        {
+            m_Origin.x = txmlElement->FloatAttribute("SpriteHeight") / 2.0f;
+        }
+        if (txmlElement->Attribute("SpriteWidth"))
+        {
+            m_Origin.y = txmlElement->FloatAttribute("SpriteWidth") / 2.0f;
+        }
 
         if (txmlElement->Attribute("Rotation"))
         {
@@ -106,6 +114,7 @@ namespace Framework
         {
             m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
         }
+        
         if (txmlElement->Attribute("Layer"))
         {
             m_Layer = txmlElement->FloatAttribute("Layer");
@@ -115,7 +124,7 @@ namespace Framework
         {
             m_pSRV = g_GRAPHICS->GetTexture(m_TextureName);
             ThrowErrorIf(!m_pSRV, "Failed to get texture from GRAPHICS");
-            g_GRAPHICS->m_SpriteList.push_back(*this);
+            g_GRAPHICS->m_SpriteList.push_back(this);
         }
         else
         {
@@ -126,6 +135,12 @@ namespace Framework
     void Sprite::Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch)
     {
         //spSpriteBatch->Draw(m_pSRV, XMFLOAT2(0, 0));
+        RECT srcRect;
+        srcRect.left = 0.0f;
+        srcRect.top = 0.0f;
+        srcRect.right = m_Origin.x * 2;
+        srcRect.bottom = m_Origin.y * 2;
+        //m_Color = Colors::Black;
         spSpriteBatch->Draw(
             m_pSRV,
             g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position),

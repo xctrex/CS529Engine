@@ -59,7 +59,7 @@ namespace Framework
 
         Vector2D WorldCoordsToWindowCoords(Vector2D &WorldCoords);
 
-        std::list<Sprite> m_SpriteList;//TODO: investigate if we should use Sprite* here, allowing the sprites to be modified by something other than the graphics compononent
+        std::list<Sprite*> m_SpriteList;//TODO: investigate if we should use Sprite* here, allowing the sprites to be modified by something other than the graphics compononent
         std::list<Text> m_TextList;//TODO: investigate if we should use Text* here, 
     private:
 

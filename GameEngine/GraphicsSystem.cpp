@@ -389,9 +389,9 @@ namespace Framework
         m_spSpriteBatch->Begin();
 
         //Iterate through the link list of sprites
-        std::list<Sprite>::iterator it = m_SpriteList.begin();
+        std::list<Sprite*>::iterator it = m_SpriteList.begin();
         for (; it != m_SpriteList.end(); ++it)
-            it->Draw(m_spSpriteBatch);
+            (*it)->Draw(m_spSpriteBatch);
 
         m_spSpriteBatch->End();
         
