@@ -1,7 +1,9 @@
 #pragma once
 
+#include "Component.h"
+#include "Transform.h"
+
 #include <SpriteBatch.h>
-#include "GameObject.h"
 
 using namespace DirectX;
 
@@ -28,13 +30,10 @@ namespace Framework
         ID3D11ShaderResourceView *m_pSRV;
         std::string m_TextureName;
         Transform* m_pTransform;
-        XMFLOAT2 m_Position;
-        float m_Rotation;
-        XMFLOAT2 m_Scale;
+        float m_SpriteRotation;
 
         XMVECTOR m_Color;
-        XMFLOAT2 m_Origin;
+        Vector2D m_Origin;
         float m_Layer;
-        int m_RecursionLevel;
     };
 }

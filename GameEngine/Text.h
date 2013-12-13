@@ -1,6 +1,8 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Component.h"
+#include "Transform.h"
+
 #include <d2d1_2.h>
 #include <dwrite_2.h>
 
@@ -11,7 +13,7 @@ namespace Framework
     // Forward declaration of Transform class
     class Transform;
 
-    // Sprite class has a texture, size and transform
+    // Text class has a destination rect, font, content, and transform
     class Text : public Component
     {
     public:
@@ -31,6 +33,5 @@ namespace Framework
         Transform* m_pTransform;
 
         D2D1_RECT_F m_Rect;
-        int m_RecursionLevel;
     };
 }

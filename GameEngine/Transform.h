@@ -1,6 +1,8 @@
 #pragma once
-
-#include "GameObject.h"
+#include "Component.h"
+#include <DirectXMath.h>
+#include "Vector2D.h"
+#include "Math2D.h"
 
 namespace Framework
 {
@@ -18,8 +20,8 @@ namespace Framework
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc) {};
         virtual void OnEvent(Event* e){};
 
-        DirectX::XMFLOAT2 m_Position;
+        Vector2D m_Position;
         float m_Rotation;
-        DirectX::XMFLOAT2 m_Scale;
+        Vector2D m_Scale;
     };
 }

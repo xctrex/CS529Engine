@@ -7,7 +7,6 @@ namespace Framework
     Text::Text() :
         m_TextContent("DefaultText"),
         m_pTransform(NULL),
-        m_RecursionLevel(0),
         m_Rect({0.0f, 0.0f, 512.0f, 512.0f}),
         m_Font("Gabriola")
     {
@@ -60,6 +59,10 @@ namespace Framework
                 }
                 txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
             }
+        }
+        if (txmlElement->Attribute("Name"))
+        {
+            m_Name = txmlElement->Attribute("Name");
         }
         if (txmlElement->Attribute("TextContent"))
         {
@@ -126,10 +129,10 @@ namespace Framework
         sp_DeviceContext->BeginDraw();
         wchar_t content[512];
         swprintf(content, m_TextContent.length(), L"%hs", m_TextContent.c_str());
+        Vector2D WindowCoords = g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position);
 
-
-        m_Rect.left = m_pTransform->m_Position.x;
-        m_Rect.top = m_pTransform->m_Position.y;
+        m_Rect.left = WindowCoords.x;
+        m_Rect.top = WindowCoords.y;
 
         ComPtr<IDWriteTextFormat> sp_DWriteTextFormat;
         if (strcmp(m_Font.c_str(), "Gabriola") == 0)
@@ -147,6 +150,7 @@ namespace Framework
         }
         else
         {
+            // TODO: actually dynamically choose a font
             sp_DWriteFactory->CreateTextFormat(
                 L"Brush Script Std",
                 NULL,

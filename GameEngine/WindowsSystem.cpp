@@ -37,32 +37,32 @@ namespace Framework
         }
         case WM_LBUTTONDOWN:
         {
-            MouseButtonEvent m(MouseButtonEvent::LeftMouse, true, XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+            MouseButtonEvent m(MouseButtonEvent::LeftMouse, true, Vector2D(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
             g_CORE->BroadcastEvent(&m);
             break;
         }
         case WM_RBUTTONDOWN:
         {
-                               MouseButtonEvent m(MouseButtonEvent::RightMouse, true, XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+                               MouseButtonEvent m(MouseButtonEvent::RightMouse, true, Vector2D(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
             g_CORE->BroadcastEvent(&m);
             break;
         }
         case WM_LBUTTONUP:
         {
-                             MouseButtonEvent m(MouseButtonEvent::LeftMouse, false, XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+                             MouseButtonEvent m(MouseButtonEvent::LeftMouse, false, Vector2D(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
             g_CORE->BroadcastEvent(&m);
             break;
         }
         case WM_RBUTTONUP:
         {
-                             MouseButtonEvent m(MouseButtonEvent::RightMouse, false, XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+                             MouseButtonEvent m(MouseButtonEvent::RightMouse, false, Vector2D(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
             g_CORE->BroadcastEvent(&m);
             break;
         }
         case WM_MOUSEMOVE:
         {
             g_WINDOWSSYSTEM->m_MousePosition = MAKEPOINTS(lParam);
-            MouseMovedEvent m(XMFLOAT2(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
+            MouseMovedEvent m(Vector2D(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
             g_CORE->BroadcastEvent(&m);
             break;
         }

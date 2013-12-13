@@ -14,6 +14,7 @@ Creation date: 10/1/2013
 #include "WindowsSystem.h"
 #include "GraphicsSystem.h"
 #include "GameLogicSystem.h"
+#include "PhysicsSystem.h"
 
 using namespace Framework;
 
@@ -75,11 +76,14 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GraphicsSystem* graphics = new GraphicsSystem(windows->hWnd, ClientWidth, ClientHeight);
     // Create the logic system
     GameLogicSystem* logic = new GameLogicSystem();
+    // Create the physics system
+    PhysicsSystem* physics = new PhysicsSystem();
 
     // Add the systems
     engine->AddSystem(windows);
 	engine->AddSystem(graphics);
     engine->AddSystem(logic);
+    engine->AddSystem(physics);
 
     // Initialize the engine and it's systems
     engine->InitializeSystems();

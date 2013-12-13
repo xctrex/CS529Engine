@@ -448,4 +448,16 @@ namespace Framework
         m_spD3DDeviceContext->DiscardView(m_spD3DDepthStencilView.Get());
         
     }
+
+    // Convert WorldCoords (from -ScreenSize/2 to +ScreenSize/2, with ScreenHeight/2 at the top and -ScreenHeight/2 at the bottom)
+    // to WindowCoords (from 0 to ScreenSize, with 0 at the top and ScreenHeight at the bottom)
+    Vector2D GraphicsSystem::WorldCoordsToWindowCoords(Vector2D &WorldCoords)
+    {
+        Vector2D WindowCoords = { 0.0f, 0.0f };
+
+        WindowCoords.x = m_ScreenWidth / 2.0f + WorldCoords.x;
+        WindowCoords.y = m_ScreenHeight / 2.0f - WorldCoords.y;
+
+        return WindowCoords;
+    }
 }

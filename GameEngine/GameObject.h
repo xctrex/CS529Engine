@@ -3,10 +3,18 @@
 #include "Precomp.h"
 #include "Event.h"
 #include "Component.h"
-#include "Sprite.h"
-#include "Transform.h"
+
+// Game Logic Components
 #include "InputHandler.h"
+
+// Graphics Components
+#include "Sprite.h"
 #include "Text.h"
+#include "Transform.h"
+
+// Physics Components
+#include "RigidBody.h"
+
 
 typedef unsigned int GameObjectID;
 

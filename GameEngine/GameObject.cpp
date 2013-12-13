@@ -36,6 +36,13 @@ namespace Framework
             pText->Initialize(txmlElement);
             c.Initialize(pText->GetHandleIndex(), pText->GetUniqueID());
         }
+        else if (strcmp(txmlElement->Name(), "RigidBody") == 0)
+        {
+            RigidBody* pRigidBody = new RigidBody();
+            pRigidBody->m_Parent = this;
+            pRigidBody->Initialize(txmlElement);
+            c.Initialize(pRigidBody->GetHandleIndex(), pRigidBody->GetUniqueID());
+        }
         else
         {
             ThrowErrorIf(true, "Component Type not recognized");

@@ -53,7 +53,7 @@ namespace Framework
             RightMouse
         };
 
-        MouseButtonEvent(MouseButtonIndexID button, bool state, XMFLOAT2 position) :
+        MouseButtonEvent(MouseButtonIndexID button, bool state, Vector2D position) :
             Event(EVENT_TYPE_MOUSE_BUTTON),
             m_MouseButtonIndex(button),
             m_IsPressed(state),
@@ -62,19 +62,19 @@ namespace Framework
 
         MouseButtonIndexID m_MouseButtonIndex;
         bool m_IsPressed;
-        XMFLOAT2 m_MousePosition;
+        Vector2D m_MousePosition;
     };
 
     // Event signaling that the mouse has moved
     class MouseMovedEvent : public Event
     {
     public:
-        MouseMovedEvent(XMFLOAT2 position) :
+        MouseMovedEvent(Vector2D position) :
             Event(EVENT_TYPE_MOUSE_MOVE),
             m_MousePosition(position)
         {};
 
-        XMFLOAT2 m_MousePosition;
+        Vector2D m_MousePosition;
     };
 
 

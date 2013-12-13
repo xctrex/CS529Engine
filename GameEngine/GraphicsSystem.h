@@ -48,7 +48,7 @@ namespace Framework
         // ISystem class virtual functions
         //virtual void SendMessage(Message* message) {};
         virtual void Initialize();
-        virtual void Update(float timeslice);
+        virtual void Update(float dt);
         virtual std::string GetName() {return "Graphics";}
 
         void LoadTextures(tinyxml2::XMLElement* txmlElement);
@@ -56,6 +56,8 @@ namespace Framework
         ID3D11ShaderResourceView *GetTexture(std::string TextureName);
         void DrawSprites();
         void DrawText();
+
+        Vector2D WorldCoordsToWindowCoords(Vector2D &WorldCoords);
 
         std::list<Sprite> m_SpriteList;//TODO: investigate if we should use Sprite* here, allowing the sprites to be modified by something other than the graphics compononent
         std::list<Text> m_TextList;//TODO: investigate if we should use Text* here, 

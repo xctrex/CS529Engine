@@ -67,8 +67,8 @@
     <Sprite
         Archetype="SmallDefaultSpriteArchetype"
         Name="ArcheTypeSprite"
-        PositionX="950.0"
-        PositionY="100.0"
+        PositionX="450.0"
+        PositionY="-100.0"
     />
 </GameObject>
 
@@ -91,15 +91,21 @@
 <GameObject Name="Ship"> 
     <Transform
         Name="ShipTransform"
-        PositionX="50.0"
-        PositionY="100.0"
+        PositionX="0.0"
+        PositionY="0.0"
+    />
+    <RigidBody
+        Name="ShipRigidBody"
     />
     <InputHandler
-        Speed="200.0"
+        AccelerationSpeed="500.0"
+        DeccelerationSpeed="-100.0"
+        RotationSpeed="6.0"
     />
     <Sprite
         Name="ShipSprite"
         TextureName="FirePhoenix"
+        SpriteRotation="-90.0"
         Layer="1.0"
     />
 </GameObject>

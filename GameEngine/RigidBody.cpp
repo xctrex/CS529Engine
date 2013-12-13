@@ -1,32 +1,21 @@
-#include "Sprite.h"
+#include "Text.h"
 #include "Transform.h"
-#include "GraphicsSystem.h"
+#include "PhysicsSystem.h"
 
 namespace Framework
 {
-    Sprite::Sprite() :
-        m_spSRV(NULL),
-        m_pSRV(NULL),
-        m_TextureName("Default"),
-        m_Color(Colors::White),
-        m_Origin({128.0f, 128.0f}),
+    RigidBody::RigidBody() :
         m_pTransform(NULL),
-        m_Layer(0.0f),
-        m_SpriteRotation(0.0f)
+        m_Velocity({0.0f, 0.0f})
     {
-        m_Type = COMPONENT_TYPE_SPRITE;
-        
+        m_Type = COMPONENT_TYPE_RIGID_BODY;
 
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
     };
-    Sprite::~Sprite() 
-    {
-        if (m_pSRV) // TODO: what if more than one sprite has the same SRV?
-        {
-            m_pSRV->Release();
-        }
 
-        // Only free the transform if it does not belong to the parent of the sprite
+    RigidBody::~RigidBody()
+    {
+        // Only free the transform if it does not belong to the parent of the text
         Transform* pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
         if (pTransform == NULL)
         {
@@ -37,7 +26,7 @@ namespace Framework
         }
     };
 
-    void Sprite::Initialize(tinyxml2::XMLElement *txmlElement)
+    void RigidBody::Initialize(tinyxml2::XMLElement *txmlElement)
     {
         if (!m_pTransform)
         {
@@ -49,9 +38,6 @@ namespace Framework
 
         if (txmlElement->Attribute("Archetype"))
         {
-            //TODO: add code for parsing Archetype XML
-            // Should use a recursive function, something like InitializeArchetype,
-            // That can recursively keep looking for more archetypes
             tinyxml2::XMLDocument txmlDoc;
             ThrowErrorIf(
                 tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Archetypes.xml"),
@@ -66,17 +52,14 @@ namespace Framework
                     ++m_RecursionLevel;
                     this->Initialize(txmlRecursiveElement);
                     break;
-                }                
+                }
                 txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
             }
         }
+        
         if (txmlElement->Attribute("Name"))
         {
             m_Name = txmlElement->Attribute("Name");
-        }
-        if (txmlElement->Attribute("TextureName"))
-        {
-            m_TextureName = txmlElement->Attribute("TextureName");
         }
         if (txmlElement->Attribute("PositionX"))
         {
@@ -88,15 +71,10 @@ namespace Framework
             m_pTransform->m_Position.y = txmlElement->FloatAttribute("PositionY");
             //m_Position.y = txmlElement->FloatAttribute("PositionY");
         }
-        //TODO: add initialization for m_Color
-        if (txmlElement->Attribute("SpriteRotation"))
-        {
-            m_SpriteRotation = txmlElement->FloatAttribute("SpriteRotation");
-        }
-
         if (txmlElement->Attribute("Rotation"))
         {
             m_pTransform->m_Rotation = txmlElement->FloatAttribute("Rotation");
+            //m_Rotation = txmlElement->FloatAttribute("Rotation");
         }
         if (txmlElement->Attribute("ScaleX"))
         {
@@ -106,16 +84,10 @@ namespace Framework
         {
             m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
         }
-        if (txmlElement->Attribute("Layer"))
-        {
-            m_Layer = txmlElement->FloatAttribute("Layer");
-        }
         
         if (m_RecursionLevel == 0)
         {
-            m_pSRV = g_GRAPHICS->GetTexture(m_TextureName);
-            ThrowErrorIf(!m_pSRV, "Failed to get texture from GRAPHICS");
-            g_GRAPHICS->m_SpriteList.push_back(*this);
+            g_PHYSICS->m_RigidBodyList.push_back(this);
         }
         else
         {
@@ -123,28 +95,20 @@ namespace Framework
         }
     }
 
-    void Sprite::Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch)
+    void RigidBody::Accelerate(float accel, float dt)
     {
-        //spSpriteBatch->Draw(m_pSRV, XMFLOAT2(0, 0));
-        spSpriteBatch->Draw(
-            m_pSRV,
-            g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position),
-            NULL,
-            m_Color,
-            -1.0f * DegreesToRadians(m_pTransform->m_Rotation + m_SpriteRotation),
-            m_Origin,
-            m_pTransform->m_Scale,
-            SpriteEffects::SpriteEffects_None,
-            m_Layer
-            );
+        Vector2D directionVec = { 0.0f, 0.0f };
+        
+        // newVel = a * dt + currentVel
+        Vector2DFromAngleDeg(&directionVec, m_pTransform->m_Rotation);
+        Vector2DScaleAdd(&m_Velocity, &directionVec, &m_Velocity, accel * dt);
+        // newVel *= 0.99
+        Vector2DScale(&m_Velocity, &m_Velocity, 0.99f);
     }
 
-
-    void Sprite::SetPosition(float x, float y)
+    void RigidBody::UpdatePosition(float dt)
     {
-        m_pTransform->m_Position.x = x;
-        //m_Position.x = x;
-        m_pTransform->m_Position.y = y;
-        //m_Position.y = y;
+        // newPosition = velocity * dt + currentPosition
+        Vector2DScaleAdd(&(m_pTransform->m_Position), &m_Velocity, &(m_pTransform->m_Position), dt);
     }
 }

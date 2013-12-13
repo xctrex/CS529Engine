@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Engine.h"
+#include "Component.h"
+#include "Transform.h"
+#include "RigidBody.h"
 
 namespace Framework
 {
@@ -14,8 +16,11 @@ namespace Framework
         virtual void OnEvent(Event* e){};
 
         void Update(float dt);
-
-        float m_Speed;
+    private:
+        float m_AccelerationSpeed;
+        float m_DeccelerationSpeed;
+        float m_RotationSpeed;
         Transform* m_pTransform;
+        RigidBody* m_pRigidBody;
     };
 }

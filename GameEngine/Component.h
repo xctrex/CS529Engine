@@ -12,7 +12,8 @@ enum COMPONENT_TYPE
     COMPONENT_TYPE_SPRITE,
     COMPONENT_TYPE_TEXT,
     COMPONENT_TYPE_TRANSFORM,
-    COMPONENT_TYPE_INPUT_HANDLER
+    COMPONENT_TYPE_INPUT_HANDLER,
+    COMPONENT_TYPE_RIGID_BODY
 };
 
 //TODO: having handles for components and handles for game objects duplicates a lot of code
@@ -41,11 +42,12 @@ namespace Framework
 //        GameObjectHandle GetParent(){ return m_Parent; }
 
         COMPONENT_TYPE m_Type;
+        std::string m_Name;
         GameObject* m_Parent;
+        int m_RecursionLevel;
     private:
         ComponentID m_UniqueID;
         unsigned int m_HandleIndex;
-        std::string m_Name;
 //TODO: Enable Component class to have a handle to its parent
 //        GameObjectHandle m_Parent;
         // Give the handle class access to GUID and index
