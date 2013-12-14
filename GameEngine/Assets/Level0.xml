@@ -71,15 +71,21 @@
     />
 </GameObject>
 <GameObject Name="StaticArchetypeSpriteObject">
+    <Transform
+        PositionX="650.0"
+        PositionY="-100.0"
+    />
     <Sprite
         Archetype="SmallDefaultSpriteArchetype"
         Name="SpoonSprite"
         TextureName="Spoon"
-        PositionX="650.0"
-        PositionY="-100.0"
     />
 </GameObject>
 <GameObject Name="StaticTextObject">
+    <Transform
+        PositionX="-400.0"
+        PositionY="400.0"
+    />
     <Text
         Name="StaticText"
         TextContent="I can write anything I want here."
@@ -87,10 +93,13 @@
 </GameObject>
 
 <GameObject Name="StaticJapaneseTextObject">
+    <Transform
+        PositionX="-400.0"
+        PositionY="0.0"
+    />
     <Text
         Name="StaticJapaneseText"
         TextContent="I can even use different fonts."
         Font="Brush Script Std"
-        PositionY="300"
     />
 </GameObject>

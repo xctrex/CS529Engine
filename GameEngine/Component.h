@@ -32,12 +32,14 @@ namespace Framework
     {
     public:
         Component();
-        virtual void Initialize(tinyxml2::XMLElement *txmlElement) = 0;
-        virtual void Serialize(tinyxml2::XMLDocument *txmlDoc) = 0;
+        virtual void Initialize(tinyxml2::XMLElement* txmlElement) = 0;
+        virtual void Serialize(tinyxml2::XMLDocument* txmlDoc) = 0;
         virtual void OnEvent(Event* e) = 0;
         ComponentID GetUniqueID(){ return m_UniqueID; }
         unsigned int GetHandleIndex(){ return m_HandleIndex; }
 
+        // Initialization that is common to all component types
+        void CommonComponentInitialization(tinyxml2::XMLElement* txmlElement);
  //       void SetParent(GameObjectHandle handle){ m_Parent = handle; }
 //        GameObjectHandle GetParent(){ return m_Parent; }
 

@@ -39,54 +39,15 @@ namespace Framework
 
     void Sprite::Initialize(tinyxml2::XMLElement *txmlElement)
     {
-        if (!m_pTransform)
-        {
-            // Get the transform from the parent, otherwise create a new one
-            m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
-            if (!m_pTransform)
-                m_pTransform = new Transform();
-        }
 
-        if (txmlElement->Attribute("Archetype"))
-        {
-            //TODO: add code for parsing Archetype XML
-            // Should use a recursive function, something like InitializeArchetype,
-            // That can recursively keep looking for more archetypes
-            tinyxml2::XMLDocument txmlDoc;
-            ThrowErrorIf(
-                tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Archetypes.xml"),
-                "Failed to load Assets\\Archetypes.xml"
-                );
+        CommonComponentInitialization(txmlElement);
 
-            tinyxml2::XMLElement* txmlRecursiveElement = txmlDoc.FirstChildElement();
-            while (txmlRecursiveElement)
-            {
-                if (strcmp(txmlElement->Attribute("Archetype"), txmlRecursiveElement->Name()) == 0)
-                {
-                    ++m_RecursionLevel;
-                    this->Initialize(txmlRecursiveElement);
-                    break;
-                }                
-                txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
-            }
-        }
-        if (txmlElement->Attribute("Name"))
-        {
-            m_Name = txmlElement->Attribute("Name");
-        }
+        //================================================================
+        // Sprite specific initialization
+        //================================================================
         if (txmlElement->Attribute("TextureName"))
         {
             m_TextureName = txmlElement->Attribute("TextureName");
-        }
-        if (txmlElement->Attribute("PositionX"))
-        {
-            m_pTransform->m_Position.x = txmlElement->FloatAttribute("PositionX");
-            //m_Position.x = txmlElement->FloatAttribute("PositionX");
-        }
-        if (txmlElement->Attribute("PositionY"))
-        {
-            m_pTransform->m_Position.y = txmlElement->FloatAttribute("PositionY");
-            //m_Position.y = txmlElement->FloatAttribute("PositionY");
         }
         //TODO: add initialization for m_Color
         if (txmlElement->Attribute("SpriteRotation"))
@@ -101,10 +62,23 @@ namespace Framework
         {
             m_Origin.y = txmlElement->FloatAttribute("SpriteWidth") / 2.0f;
         }
-
-        if (txmlElement->Attribute("Rotation"))
+        if (txmlElement->Attribute("Layer"))
         {
-            m_pTransform->m_Rotation = txmlElement->FloatAttribute("Rotation");
+            m_Layer = txmlElement->FloatAttribute("Layer");
+        }
+
+        //================================================================
+        // Transform attributes
+        //================================================================
+        // Can override values from the parent's transform here.
+        // TODO: Not sure if this is desireable
+        if (!m_pTransform)
+        {
+            // Get the transform from the parent, otherwise throw
+            m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
+
+            // TODO: Would be better to enforce this in the .xml rather than the code, but this will do for now
+            ThrowErrorIf(!m_pTransform, "Parent of a sprite component must have a transform");
         }
         if (txmlElement->Attribute("ScaleX"))
         {
@@ -114,12 +88,8 @@ namespace Framework
         {
             m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
         }
-        
-        if (txmlElement->Attribute("Layer"))
-        {
-            m_Layer = txmlElement->FloatAttribute("Layer");
-        }
-        
+
+               
         if (m_RecursionLevel == 0)
         {
             m_pSRV = g_GRAPHICS->GetTexture(m_TextureName);

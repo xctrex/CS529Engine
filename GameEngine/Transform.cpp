@@ -4,10 +4,11 @@ namespace Framework
 {
     void Transform::Initialize(tinyxml2::XMLElement* txmlElement)
     {
-        if (txmlElement->Attribute("Name"))
-        {
-            m_Name = txmlElement->Attribute("Name");
-        }
+        CommonComponentInitialization(txmlElement);
+
+        //================================================================
+        // Transform specific initialization
+        //================================================================
         if (txmlElement->Attribute("PositionX"))
         {
             m_Position.x = txmlElement->FloatAttribute("PositionX");

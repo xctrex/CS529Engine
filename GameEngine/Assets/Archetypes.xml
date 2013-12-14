@@ -17,8 +17,8 @@
     <Sprite
         Name="ShipSprite"
         TextureName="GingerbreadMan"
-        Height="256.0"
-        Width="256.0"
+        SpriteHeight="256.0"
+        SpriteWidth="256.0"
         SpriteRotation="-90.0"
         Layer="1.0"
         ScaleX="0.25"
@@ -29,8 +29,8 @@
 <DefaultSpriteArchetype
     Name="DefaultSpriteArchetype"
     TextureName="Default"
-    Height="256.0"
-    Width="256.0"
+    SpriteHeight="256.0"
+    SpriteWidth="256.0"
 />
 <SmallDefaultSpriteArchetype
     Archetype="DefaultSpriteArchetype"

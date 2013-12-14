@@ -33,6 +33,36 @@ namespace Framework
         g_ComponentHandleTable[m_HandleIndex] = this;
     }
 
+    // Initialization that is relevant to all component types
+    void Component::CommonComponentInitialization(tinyxml2::XMLElement* txmlElement)
+    {
+        if (txmlElement->Attribute("Archetype"))
+        {
+            tinyxml2::XMLDocument txmlDoc;
+            ThrowErrorIf(
+                tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Archetypes.xml"),
+                "Failed to load Assets\\Archetypes.xml"
+                );
+
+            tinyxml2::XMLElement* txmlRecursiveElement = txmlDoc.FirstChildElement();
+            while (txmlRecursiveElement)
+            {
+                if (strcmp(txmlElement->Attribute("Archetype"), txmlRecursiveElement->Name()) == 0)
+                {
+                    ++m_RecursionLevel;
+                    this->Initialize(txmlRecursiveElement);
+                    break;
+                }
+                txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
+            }
+        }
+
+        if (txmlElement->Attribute("Name"))
+        {
+            m_Name = txmlElement->Attribute("Name");
+        }
+    }
+
     //================================================================
     // ComponentHandle
     //================================================================

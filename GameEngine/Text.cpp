@@ -29,77 +29,34 @@ namespace Framework
 
     void Text::Initialize(tinyxml2::XMLElement *txmlElement)
     {
-        if (!m_pTransform)
-        {
-            // Get the transform from the parent, otherwise create a new one
-            m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
-            if (!m_pTransform)
-                m_pTransform = new Transform();
-        }
 
-        if (txmlElement->Attribute("Archetype"))
-        {
-            //TODO: add code for parsing Archetype XML
-            // Should use a recursive function, something like InitializeArchetype,
-            // That can recursively keep looking for more archetypes
-            tinyxml2::XMLDocument txmlDoc;
-            ThrowErrorIf(
-                tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Archetypes.xml"),
-                "Failed to load Assets\\Archetypes.xml"
-                );
-
-            tinyxml2::XMLElement* txmlRecursiveElement = txmlDoc.FirstChildElement();
-            while (txmlRecursiveElement)
-            {
-                if (strcmp(txmlElement->Attribute("Archetype"), txmlRecursiveElement->Name()) == 0)
-                {
-                    ++m_RecursionLevel;
-                    this->Initialize(txmlRecursiveElement);
-                    break;
-                }
-                txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
-            }
-        }
-        if (txmlElement->Attribute("Name"))
-        {
-            m_Name = txmlElement->Attribute("Name");
-        }
+        CommonComponentInitialization(txmlElement);
+        
+        //================================================================
+        // Text specific initialization
+        //================================================================
         if (txmlElement->Attribute("TextContent"))
         {
             m_TextContent = txmlElement->Attribute("TextContent");
-        }
-        if (txmlElement->Attribute("PositionX"))
-        {
-            m_pTransform->m_Position.x = txmlElement->FloatAttribute("PositionX");
-            //m_Position.x = txmlElement->FloatAttribute("PositionX");
-        }
-        if (txmlElement->Attribute("PositionY"))
-        {
-            m_pTransform->m_Position.y = txmlElement->FloatAttribute("PositionY");
-            //m_Position.y = txmlElement->FloatAttribute("PositionY");
-        }
-        //TODO: add initialization for m_Color
-        if (txmlElement->Attribute("Rotation"))
-        {
-            m_pTransform->m_Rotation = txmlElement->FloatAttribute("Rotation");
-            //m_Rotation = txmlElement->FloatAttribute("Rotation");
-        }
-        if (txmlElement->Attribute("ScaleX"))
-        {
-            m_pTransform->m_Scale.x = txmlElement->FloatAttribute("ScaleX");
-            //m_Scale.x = txmlElement->FloatAttribute("ScaleX");
-        }
-        if (txmlElement->Attribute("ScaleY"))
-        {
-            m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
-            //m_Scale.y = txmlElement->FloatAttribute("ScaleY");
         }
         if (txmlElement->Attribute("Font"))
         {
             m_Font = txmlElement->Attribute("Font");
         }
-        //TODO: add initialization for origin and scale
         
+        //================================================================
+        // Transform attributes
+        //================================================================
+        // Can override values from the parent's transform here.
+        // TODO: Not sure if this is desireable
+        if (!m_pTransform)
+        {
+            // Get the transform from the parent, otherwise throw
+            m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
+
+            // TODO: Would be better to enforce this in the .xml rather than the code, but this will do for now
+            ThrowErrorIf(!m_pTransform, "Parent of a text component must have a transform");
+        }        
 
         if (m_RecursionLevel == 0)
         {

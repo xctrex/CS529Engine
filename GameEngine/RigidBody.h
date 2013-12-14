@@ -36,7 +36,7 @@ namespace Framework
         Vector2D m_Velocity;
         SHAPE m_Shape;
         float m_Radius;
-        
+        float m_Weight;
     };
 
 

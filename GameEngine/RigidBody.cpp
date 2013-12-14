@@ -8,7 +8,8 @@ namespace Framework
         m_pTransform(NULL),
         m_Velocity({0.0f, 0.0f}),
         m_Shape(SHAPE_CIRCLE),
-        m_Radius(0.0f)
+        m_Radius(0.0f),
+        m_Weight(0.0f)
     {
         m_Type = COMPONENT_TYPE_RIGID_BODY;
 
@@ -30,62 +31,11 @@ namespace Framework
 
     void RigidBody::Initialize(tinyxml2::XMLElement *txmlElement)
     {
-        if (!m_pTransform)
-        {
-            // Get the transform from the parent, otherwise create a new one
-            m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
-            if (!m_pTransform)
-                m_pTransform = new Transform();
-        }
-
-        if (txmlElement->Attribute("Archetype"))
-        {
-            tinyxml2::XMLDocument txmlDoc;
-            ThrowErrorIf(
-                tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Archetypes.xml"),
-                "Failed to load Assets\\Archetypes.xml"
-                );
-
-            tinyxml2::XMLElement* txmlRecursiveElement = txmlDoc.FirstChildElement();
-            while (txmlRecursiveElement)
-            {
-                if (strcmp(txmlElement->Attribute("Archetype"), txmlRecursiveElement->Name()) == 0)
-                {
-                    ++m_RecursionLevel;
-                    this->Initialize(txmlRecursiveElement);
-                    break;
-                }
-                txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
-            }
-        }
+        CommonComponentInitialization(txmlElement);
         
-        if (txmlElement->Attribute("Name"))
-        {
-            m_Name = txmlElement->Attribute("Name");
-        }
-        if (txmlElement->Attribute("PositionX"))
-        {
-            m_pTransform->m_Position.x = txmlElement->FloatAttribute("PositionX");
-            //m_Position.x = txmlElement->FloatAttribute("PositionX");
-        }
-        if (txmlElement->Attribute("PositionY"))
-        {
-            m_pTransform->m_Position.y = txmlElement->FloatAttribute("PositionY");
-            //m_Position.y = txmlElement->FloatAttribute("PositionY");
-        }
-        if (txmlElement->Attribute("Rotation"))
-        {
-            m_pTransform->m_Rotation = txmlElement->FloatAttribute("Rotation");
-            //m_Rotation = txmlElement->FloatAttribute("Rotation");
-        }
-        if (txmlElement->Attribute("ScaleX"))
-        {
-            m_pTransform->m_Scale.x = txmlElement->FloatAttribute("ScaleX");
-        }
-        if (txmlElement->Attribute("ScaleY"))
-        {
-            m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
-        }
+        //================================================================
+        // RigidBody specific initialization
+        //================================================================
         if (txmlElement->Attribute("Shape"))
         {
             if (strcmp(txmlElement->Attribute("Shape"), "Circle") == 0)
@@ -105,6 +55,20 @@ namespace Framework
         {
             m_Radius = txmlElement->FloatAttribute("Radius");
         }
+
+        //================================================================
+        // Transform attributes
+        //================================================================
+        // Can override values from the parent's transform here.
+        // TODO: Not sure if this is desireable
+        if (!m_pTransform)
+        {
+            // Get the transform from the parent, otherwise throw
+            m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
+
+            // TODO: Would be better to enforce this in the .xml rather than the code, but this will do for now
+            ThrowErrorIf(!m_pTransform, "Parent of a rigid body component must have a transform");
+        }        
 
         if (m_RecursionLevel == 0)
         {

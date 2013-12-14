@@ -16,24 +16,30 @@ namespace Framework
 
     void InputHandler::Initialize(tinyxml2::XMLElement* txmlElement)
     {
+        CommonComponentInitialization(txmlElement);
+
         if (!m_pTransform)
         {
+            // Get the transform from the parent, otherwise throw
             m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
-            if (!m_pTransform)
-                m_pTransform = new Transform();
+
+            // TODO: Would be better to enforce this in the .xml rather than the code, but this will do for now
+            ThrowErrorIf(!m_pTransform, "Parent of an input handler component must have a transform");
         }
 
         if (!m_pRigidBody)
         {
+            // Get the transform from the parent, otherwise throw
             m_pRigidBody = static_cast<RigidBody*>(m_Parent->GetComponent(COMPONENT_TYPE_RIGID_BODY));
-            if (!m_pRigidBody)
-                m_pRigidBody = new RigidBody();
+
+            // TODO: Would be better to enforce this in the .xml rather than the code, but this will do for now
+            ThrowErrorIf(!m_pRigidBody, "Parent of an input handler component must have a rigid body");
         }
 
-        if (txmlElement->Attribute("Name"))
-        {
-            m_Name = txmlElement->Attribute("Name");
-        }
+
+        //================================================================
+        // InputHandler specific initialization
+        //================================================================
         if (txmlElement->Attribute("AccelerationSpeed"))
         {
             m_AccelerationSpeed = txmlElement->FloatAttribute("AccelerationSpeed");
@@ -46,7 +52,15 @@ namespace Framework
         {
             m_RotationSpeed = txmlElement->FloatAttribute("RotationSpeed");
         }
-        g_LOGIC->m_InputHandler = this;
+
+        if (m_RecursionLevel == 0)
+        {
+            g_LOGIC->m_InputHandler = this;
+        }
+        else
+        {
+            --m_RecursionLevel;
+        }
     }
 
     void InputHandler::Update(float dt)
