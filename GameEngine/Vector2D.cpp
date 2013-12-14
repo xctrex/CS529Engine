@@ -23,135 +23,126 @@ float DegreesToRadians(float degrees) { return degrees * PI / 180.0f; }
 float RadiansToDegrees(float radians) { return radians * 180.0f / PI; }
 // ---------------------------------------------------------------------------
 
-void Vector2DZero(Vector2D *pResult)
+void Vector2DZero(Vector2D &Result)
 {
-    pResult->x = 0;
-    pResult->y = 0;
+    Result.x = 0;
+    Result.y = 0;
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DSet(Vector2D *pResult, float x, float y)
+void Vector2DSet(Vector2D &Result, float x, float y)
 {
-    pResult->x = x;
-    pResult->y = y;
+    Result.x = x;
+    Result.y = y;
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DNeg(Vector2D *pResult, Vector2D *pVec0)
+void Vector2DNeg(Vector2D &Result, const Vector2D &Vec0)
 {
-    pResult->x = pVec0->x * -1;
-    pResult->y = pVec0->y * -1;
+    Result.x = Vec0.x * -1;
+    Result.y = Vec0.y * -1;
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DAdd(Vector2D *pResult, Vector2D *pVec0, Vector2D *pVec1)
+void Vector2DAdd(Vector2D &Result, const Vector2D &Vec0, const Vector2D &Vec1)
 {
-    pResult->x = pVec0->x + pVec1->x;
-    pResult->y = pVec0->y + pVec1->y;
+    Result.x = Vec0.x + Vec1.x;
+    Result.y = Vec0.y + Vec1.y;
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DSub(Vector2D *pResult, Vector2D *pVec0, Vector2D *pVec1)
+void Vector2DSub(Vector2D &Result, const Vector2D &Vec0, const Vector2D &Vec1)
 {
-    pResult->x = pVec0->x - pVec1->x;
-    pResult->y = pVec0->y - pVec1->y;
+    Result.x = Vec0.x - Vec1.x;
+    Result.y = Vec0.y - Vec1.y;
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DNormalize(Vector2D *pResult, Vector2D *pVec0)
+void Vector2DNormalize(Vector2D &Result, const Vector2D &Vec0)
 {
-    // Only create the temporary variable "length" if pResult == pVec0
-    if(pResult == pVec0)
-    {
-        float length = Vector2DLength(pVec0);
-        pResult->x = pVec0->x / length;
-        pResult->y = pVec0->y / length;
-    }
-    else
-    {
-        pResult->x = pVec0->x / Vector2DLength(pVec0);
-        pResult->y = pVec0->y / Vector2DLength(pVec0);
-    }
+    float length = Vector2DLength(Vec0);
+    Result.x = Vec0.x / length;
+    Result.y = Vec0.y / length;
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DScale(Vector2D *pResult, Vector2D *pVec0, float c)
+void Vector2DScale(Vector2D &Result, const Vector2D &Vec0, float c)
 {
-    pResult->x = pVec0->x * c;
-    pResult->y = pVec0->y * c;
+    Result.x = Vec0.x * c;
+    Result.y = Vec0.y * c;
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DScaleAdd(Vector2D *pResult, Vector2D *pVec0, Vector2D *pVec1, float c)
+void Vector2DScaleAdd(Vector2D &Result, const Vector2D &Vec0, const Vector2D &Vec1, float c)
 {
     Vector2D tempScale;
-    Vector2DScale(&tempScale, pVec0, c);
-    Vector2DAdd(pResult, &tempScale, pVec1);
+    Vector2DScale(tempScale, Vec0, c);
+    Vector2DAdd(Result, tempScale, Vec1);
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DScaleSub(Vector2D *pResult, Vector2D *pVec0, Vector2D *pVec1, float c)
+void Vector2DScaleSub(Vector2D &Result, const Vector2D &Vec0, const Vector2D &Vec1, float c)
 {
-    Vector2DScale(pResult, pVec0, c);
-    Vector2DSub(pResult, pResult, pVec1);
+    Vector2DScale(Result, Vec0, c);
+    Vector2DSub(Result, Result, Vec1);
 }
 
 // ---------------------------------------------------------------------------
 
-float Vector2DLength(Vector2D *pVec0)
+float Vector2DLength(const Vector2D &Vec0)
 {
-    return sqrt(pVec0->x * pVec0->x + pVec0->y * pVec0->y);
+    return sqrt(Vec0.x * Vec0.x + Vec0.y * Vec0.y);
 }
 
 // ---------------------------------------------------------------------------
 
-float Vector2DSquareLength(Vector2D *pVec0)
+float Vector2DSquareLength(const Vector2D &Vec0)
 {
-	return pVec0->x * pVec0->x + pVec0->y * pVec0->y;
+	return Vec0.x * Vec0.x + Vec0.y * Vec0.y;
 }
 
 // ---------------------------------------------------------------------------
 
-float Vector2DDistance(Vector2D *pVec0, Vector2D *pVec1)
+float Vector2DDistance(const Vector2D &Vec0, const Vector2D &Vec1)
 {
-    return sqrt((pVec0->x - pVec1->x) * (pVec0->x - pVec1->x) + (pVec0->y - pVec1->y) * (pVec0->y - pVec1->y));
+    return sqrt((Vec0.x - Vec1.x) * (Vec0.x - Vec1.x) + (Vec0.y - Vec1.y) * (Vec0.y - Vec1.y));
 }
 
 // ---------------------------------------------------------------------------
 
-float Vector2DSquareDistance(Vector2D &pVec0, Vector2D &pVec1)
+float Vector2DSquareDistance(const Vector2D &Vec0, const Vector2D &Vec1)
 {
-	return (pVec0.x - pVec1.x) * (pVec0.x - pVec1.x) + (pVec0.y - pVec1.y) * (pVec0.y - pVec1.y);
+	return (Vec0.x - Vec1.x) * (Vec0.x - Vec1.x) + (Vec0.y - Vec1.y) * (Vec0.y - Vec1.y);
 }
 
 // ---------------------------------------------------------------------------
 
-float Vector2DDotProduct(Vector2D *pVec0, Vector2D *pVec1)
+float Vector2DDotProduct(const Vector2D &Vec0, const Vector2D &Vec1)
 {
-    return pVec0->x * pVec1->x + pVec0->y * pVec1->y;
+    return Vec0.x * Vec1.x + Vec0.y * Vec1.y;
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DFromAngleDeg(Vector2D *pResult, float angle)
+void Vector2DFromAngleDeg(Vector2D &Result, float angle)
 {
-    Vector2DFromAngleRad(pResult, angle * PI / 180.0f);
+    Vector2DFromAngleRad(Result, angle * PI / 180.0f);
 }
 
 // ---------------------------------------------------------------------------
 
-void Vector2DFromAngleRad(Vector2D *pResult, float angle)
+void Vector2DFromAngleRad(Vector2D &Result, float angle)
 {
-    pResult->x = cos(angle);
-    pResult->y = sin(angle);
+    Result.x = cos(angle);
+    Result.y = sin(angle);
 }
 
 // ---------------------------------------------------------------------------

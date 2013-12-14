@@ -23,28 +23,28 @@ Creation date: 9/16/2013
 This function checks if the point P is colliding with the circle whose
 center is "Center" and radius is "Radius"
 */
-int StaticPointToStaticCircle(Vector2D *pP, Vector2D *pCenter, float Radius);
+int StaticPointToStaticCircle(const Vector2D &P, const Vector2D &Center, float Radius);
 
 
 /*
 This function checks if the point Pos is colliding with the rectangle
 whose center is Rect, width is "Width" and height is Height
 */
-int StaticPointToStaticRect(Vector2D *pPos, Vector2D *pRect, float Width, float Height);
+int StaticPointToStaticRect(const Vector2D &Pos, const Vector2D &Rect, float Width, float Height);
 
 /*
 This function checks for collision between 2 circles.
 Circle0: Center is Center0, radius is "Radius0"
 Circle1: Center is Center1, radius is "Radius1"
 */
-int StaticCircleToStaticCircle(Vector2D &pCenter0, float Radius0, Vector2D &pCenter1, float Radius1);
+int StaticCircleToStaticCircle(const Vector2D &pCenter0, float Radius0, const Vector2D &pCenter1, float Radius1);
 
 /*
 This functions checks if 2 rectangles are colliding
 Rectangle0: Center is pRect0, width is "Width0" and height is "Height0"
 Rectangle1: Center is pRect1, width is "Width1" and height is "Height1"
 */
-int StaticRectToStaticRect(Vector2D *pRect0, float Width0, float Height0, Vector2D *pRect1, float Width1, float Height1);
+int StaticRectToStaticRect(const Vector2D &Rect0, float Width0, float Height0, const Vector2D &Rect1, float Width1, float Height1);
 
 
 //////////////////////
@@ -64,7 +64,7 @@ This function determines the distance separating a point from a line
 	- Positive if the point is in the line's outside half plane
 	- Zero if the point is on the line
 */
-float StaticPointToStaticLineSegment(Vector2D *P, LineSegment2D *LS);
+float StaticPointToStaticLineSegment(const Vector2D &P, LineSegment2D &LS);
 
 
 /*
@@ -80,7 +80,7 @@ This function checks whether an animated point is colliding with a line segment
 	- -1.0f:				If there's no intersection
 	- Intersection time:	If there's an intersection
 */
-float AnimatedPointToStaticLineSegment(Vector2D *Ps, Vector2D *Pe, LineSegment2D *LS, Vector2D *Pi);
+float AnimatedPointToStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, LineSegment2D &LS, Vector2D &Pi);
 
 
 /*
@@ -97,7 +97,7 @@ This function checks whether an animated circle is colliding with a line segment
 	- -1.0f:				If there's no intersection
 	- Intersection time:	If there's an intersection
 */
-float AnimatedCircleToStaticLineSegment(Vector2D *Ps, Vector2D *Pe, float Radius, LineSegment2D *LS, Vector2D *Pi);
+float AnimatedCircleToStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, float Radius, LineSegment2D &LS, Vector2D &Pi);
 
 
 /*
@@ -115,7 +115,7 @@ It should first make sure that the animated point is intersecting with the line
 	- -1.0f:				If there's no intersection
 	- Intersection time:	If there's an intersection
 */
-float ReflectAnimatedPointOnStaticLineSegment(Vector2D *Ps, Vector2D *Pe, LineSegment2D *LS, Vector2D *Pi, Vector2D *R);
+float ReflectAnimatedPointOnStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, LineSegment2D &LS, Vector2D &Pi, Vector2D &R);
 
 
 /*
@@ -134,7 +134,7 @@ It should first make sure that the animated point is intersecting with the line
 	- -1.0f:				If there's no intersection
 	- Intersection time:	If there's an intersection
 */
-float ReflectAnimatedCircleOnStaticLineSegment(Vector2D *Ps, Vector2D *Pe, float Radius, LineSegment2D *LS, Vector2D *Pi, Vector2D *R);
+float ReflectAnimatedCircleOnStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, float Radius, LineSegment2D &LS, Vector2D &Pi, Vector2D &R);
 
 
 /*
@@ -151,7 +151,7 @@ This function checks whether an animated point is colliding with a static circle
 	- -1.0f:		If there's no intersection
 	- Intersection time:	If there's an intersection
 */
-float AnimatedPointToStaticCircle(Vector2D *Ps, Vector2D *Pe, Vector2D *Center, float Radius, Vector2D *Pi);
+float AnimatedPointToStaticCircle(const Vector2D &Ps, const Vector2D &Pe, const Vector2D &Center, float Radius, Vector2D &Pi);
 
 
 
@@ -171,7 +171,7 @@ It should first make sure that the animated point is intersecting with the circl
 	- -1.0f:		If there's no intersection
 	- Intersection time:	If there's an intersection
 */
-float ReflectAnimatedPointOnStaticCircle(Vector2D *Ps, Vector2D *Pe, Vector2D *Center, float Radius, Vector2D *Pi, Vector2D *R);
+float ReflectAnimatedPointOnStaticCircle(const Vector2D &Ps, const Vector2D &Pe, const Vector2D &Center, float Radius, Vector2D &Pi, Vector2D &R);
 
 
 /*
@@ -189,7 +189,7 @@ This function checks whether an animated circle is colliding with a static circl
 	- -1.0f:		If there's no intersection
 	- Intersection time:	If there's an intersection
 */
-float AnimatedCircleToStaticCircle(Vector2D *Center0s, Vector2D *Center0e, float Radius0, Vector2D *Center1, float Radius1, Vector2D *Pi);
+float AnimatedCircleToStaticCircle(const Vector2D &Center0s, const Vector2D &Center0e, float Radius0, const Vector2D &Center1, float Radius1, Vector2D &Pi);
 
 
 /*
@@ -209,6 +209,33 @@ It should first make sure that the animated circle is intersecting with the stat
 	- -1.0f:		If there's no intersection
 	- Intersection time:	If there's an intersection
 */
-float ReflectAnimatedCircleOnStaticCircle(Vector2D *Center0s, Vector2D *Center0e, float Radius0, Vector2D *Center1, float Radius1, Vector2D *Pi, Vector2D *R);
+float ReflectAnimatedCircleOnStaticCircle(const Vector2D &Center0s, const Vector2D &Center0e, float Radius0, const Vector2D &Center1, float Radius1, Vector2D &Pi, Vector2D &R);
 
+/*
+This function reflects an animated circle on an animated circle.
+It should first make sure that the circles are intersecting
 
+- Parameters
+- Center0s:		The starting position of the reflecting circle's center
+- Center0e:		The ending position of the reflecting circle's center
+- Radius0:		The reflecting circle's radius
+- Center1s:		The starting position of the colliding circle's center
+- Center1e:     The ending position of the colliding circle's center
+- Radius1:		The colliding circle's radius
+- Pi:			This will be used to store the intersection point's coordinates (In case there's an intersection)
+- R:			Reflected vector R
+
+- Returned value: Intersection time t
+- -1.0f:		If there's no intersection
+- Intersection time:	If there's an intersection
+*/
+float ReflectAnimatedCircleOnAnimatedCircle(
+    const Vector2D &Center0s,
+    const Vector2D &Center0e,
+    float Radius0,
+    const Vector2D &Center1s,
+    const Vector2D &Center1e,
+    float Radius1,
+    Vector2D &Pi,
+    Vector2D &R
+    );

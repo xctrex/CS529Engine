@@ -25,7 +25,7 @@ This function builds a 2D line segment's data using 2 points
 
  - Returns 1 if the line equation was built successfully 
 */
-int BuildLineSegment2D(LineSegment2D *LS, Vector2D *Point0, Vector2D *Point1);
+int BuildLineSegment2D(LineSegment2D &LS, const Vector2D &Point0, const Vector2D &Point1);
 
 
 

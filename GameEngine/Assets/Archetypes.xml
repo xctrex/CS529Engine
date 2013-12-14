@@ -8,6 +8,7 @@
     <RigidBody
         Name="ShipRigidBody"
         Radius="32.0"
+        Weight="1.0"
     />
     <InputHandler
         AccelerationSpeed="1000.0"
@@ -47,6 +48,7 @@
 <CircleAsteroidBodyArchetype
         Name="CircleAsteroidBody"
         Radius="32.0"
+        Weight="10.0"
 />
 
 <GoldenGrahamArchetype

@@ -9,7 +9,9 @@ namespace Framework
         m_Velocity({0.0f, 0.0f}),
         m_Shape(SHAPE_CIRCLE),
         m_Radius(0.0f),
-        m_Weight(0.0f)
+        m_Weight(FLT_MAX),
+        m_PreviousPosition(0.0f, 0.0f),
+        m_PreviousVelocity({0.0f, 0.0f})
     {
         m_Type = COMPONENT_TYPE_RIGID_BODY;
 
@@ -55,6 +57,10 @@ namespace Framework
         {
             m_Radius = txmlElement->FloatAttribute("Radius");
         }
+        if (txmlElement->Attribute("Weight"))
+        {
+            m_Radius = txmlElement->FloatAttribute("Weight");
+        }
 
         //================================================================
         // Transform attributes
@@ -84,12 +90,26 @@ namespace Framework
     {
         if (e->m_Type == EVENT_TYPE_COLLISION)
         {
-            CollisionEvent* collisionevent = static_cast<CollisionEvent*>(e);
+            RigidBody* collider = static_cast<CollisionEvent*>(e)->m_pCollidedWith;
             // Whichever object is "lighter" will bounce, and the heavier object will be unaffected by the collision
             // This is not physically accurate, but allows us to establish a hierarchy of which objects bounce
             // and which ones don't (e.g., ship bounces off of both asteroids and walls, asteroids only bounce off walls,
-            // and walls are unimpacted by collisions)
-            //collisionevent->m_pCollidedWith
+            // and walls are unimpacted by collisions) If objects are equally weighted, both will bounce
+            if (this->m_Weight <= collider->m_Weight)
+            {
+                Vector2D Pi;
+                Vector2D R;
+                ReflectAnimatedCircleOnAnimatedCircle(
+                    this->m_PreviousPosition,
+                    this->m_pTransform->m_Position,
+                    this->m_Radius,
+                    collider->m_PreviousPosition,
+                    collider->m_pTransform->m_Position,
+                    collider->m_Radius,
+                    Pi,
+                    R
+                    );
+            }
         }
     }
 
@@ -98,16 +118,20 @@ namespace Framework
         Vector2D directionVec = { 0.0f, 0.0f };
         
         // newVel = a * dt + currentVel
-        Vector2DFromAngleDeg(&directionVec, m_pTransform->m_Rotation);
-        Vector2DScaleAdd(&m_Velocity, &directionVec, &m_Velocity, accel * dt);
+        Vector2DFromAngleDeg(directionVec, m_pTransform->m_Rotation);
+        Vector2DScaleAdd(m_Velocity, directionVec, m_Velocity, accel * dt);
         // newVel *= 0.99
-        Vector2DScale(&m_Velocity, &m_Velocity, 0.99f);
+        Vector2DScale(m_Velocity, m_Velocity, 0.99f);
     }
 
     void RigidBody::UpdatePosition(float dt)
     {
+        // Keep track of old position and velocity in case of collision
+        m_PreviousPosition = m_pTransform->m_Position;
+        m_PreviousVelocity = m_Velocity;
+
         // newPosition = velocity * dt + currentPosition
-        Vector2DScaleAdd(&(m_pTransform->m_Position), &m_Velocity, &(m_pTransform->m_Position), dt);
+        Vector2DScaleAdd(m_pTransform->m_Position, m_Velocity, m_pTransform->m_Position, dt);
     }
 
     int RigidBody::CollidesWith(RigidBody* body2)

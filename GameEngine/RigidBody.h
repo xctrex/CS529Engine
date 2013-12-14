@@ -37,6 +37,8 @@ namespace Framework
         SHAPE m_Shape;
         float m_Radius;
         float m_Weight;
+        Vector2D m_PreviousPosition;
+        Vector2D m_PreviousVelocity;
     };
 
 
