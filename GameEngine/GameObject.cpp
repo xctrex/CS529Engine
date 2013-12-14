@@ -4,48 +4,72 @@ namespace Framework
 {
     GameObject* g_GameObjectHandleTable[MAX_GAME_OBJECTS];
 
+    COMPONENT_TYPE GetComponentTypeFromName(const char* name)
+    {
+        if (strcmp(name, "Sprite") == 0)
+            return COMPONENT_TYPE_SPRITE;
+        else if (strcmp(name, "Transform") == 0)
+            return COMPONENT_TYPE_TRANSFORM;
+        else if (strcmp(name, "InputHandler") == 0)
+            return COMPONENT_TYPE_INPUT_HANDLER;
+        else if (strcmp(name, "Text") == 0)
+            return COMPONENT_TYPE_TEXT;
+        else if (strcmp(name, "RigidBody") == 0)
+            return COMPONENT_TYPE_RIGID_BODY;
+        else
+            return COMPONENT_TYPE_NONE;
+    }
+
     // TODO: This could be replaced by a component factory class
     ComponentHandle GameObject::CreateComponent(tinyxml2::XMLElement* txmlElement)
     {
         ComponentHandle c;
-        if (strcmp(txmlElement->Name(), "Sprite") == 0)
+        COMPONENT_TYPE type = GetComponentTypeFromName(txmlElement->Name());
+        switch (type)
+        {
+        case COMPONENT_TYPE_SPRITE:
         {
             Sprite* pSprite = new Sprite();
             pSprite->m_Parent = this;
             pSprite->Initialize(txmlElement);
             c.Initialize(pSprite->GetHandleIndex(), pSprite->GetUniqueID());
+            break;
         }
-        else if (strcmp(txmlElement->Name(), "Transform") == 0)
+        case COMPONENT_TYPE_TRANSFORM:
         {
             Transform* pTransform = new Transform();
             pTransform->m_Parent = this;
             pTransform->Initialize(txmlElement);
             c.Initialize(pTransform->GetHandleIndex(), pTransform->GetUniqueID());
+            break;
         }
-        else if (strcmp(txmlElement->Name(), "InputHandler") == 0)
+        case COMPONENT_TYPE_INPUT_HANDLER:
         {
             InputHandler* pInput = new InputHandler();
             pInput->m_Parent = this;
             pInput->Initialize(txmlElement);
             c.Initialize(pInput->GetHandleIndex(), pInput->GetUniqueID());
+            break;
         }
-        else if (strcmp(txmlElement->Name(), "Text") == 0)
+        case COMPONENT_TYPE_TEXT:
         {
             Text* pText = new Text();
             pText->m_Parent = this;
             pText->Initialize(txmlElement);
             c.Initialize(pText->GetHandleIndex(), pText->GetUniqueID());
+            break;
         }
-        else if (strcmp(txmlElement->Name(), "RigidBody") == 0)
+        case COMPONENT_TYPE_RIGID_BODY:
         {
             RigidBody* pRigidBody = new RigidBody();
             pRigidBody->m_Parent = this;
             pRigidBody->Initialize(txmlElement);
             c.Initialize(pRigidBody->GetHandleIndex(), pRigidBody->GetUniqueID());
+            break;
         }
-        else
-        {
+        default :
             ThrowErrorIf(true, "Component Type not recognized");
+            break;
         }
         return c;
     }
@@ -73,7 +97,8 @@ namespace Framework
     }
 
     GameObject::GameObject() :
-        m_Name("DefaultGameObjectName")
+        m_Name("DefaultGameObjectName"),
+        m_RecursionLevel(0)
     {
         m_ComponentVector.clear();
         m_UniqueID = GetUniqueIDFromString(m_Name); //TODO: All game objects that are not given a unique name will not have unique IDs
@@ -88,6 +113,28 @@ namespace Framework
 
     void GameObject::Initialize(tinyxml2::XMLElement* txmlElement)
     {
+        //TODO: this code is repeated in a lot of places. See if it can be turned into a function
+        if (txmlElement->Attribute("Archetype"))
+        {
+            tinyxml2::XMLDocument txmlDoc;
+            ThrowErrorIf(
+                tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Archetypes.xml"),
+                "Failed to load Assets\\Archetypes.xml"
+                );
+
+            tinyxml2::XMLElement* txmlRecursiveElement = txmlDoc.FirstChildElement();
+            while (txmlRecursiveElement)
+            {
+                if (strcmp(txmlElement->Attribute("Archetype"), txmlRecursiveElement->Name()) == 0)
+                {
+                    ++m_RecursionLevel;
+                    this->Initialize(txmlRecursiveElement);
+                    break;
+                }
+                txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
+            }
+        }
+
         tinyxml2::XMLElement* txmlGameObjectElement = txmlElement;
         // Get the attributes and override values (UniqueID, Name, etc.)
         if (txmlGameObjectElement->Attribute("Name"))
@@ -96,11 +143,25 @@ namespace Framework
             m_UniqueID = GetUniqueIDFromString(m_Name);
         }
 
+
+        // TODO: override component attributes instead of adding new components in the case that the component already exists
         // For each child, create a component and add it to the object
         txmlGameObjectElement = txmlGameObjectElement->FirstChildElement();
         while (txmlGameObjectElement != NULL)
         {
-            m_ComponentVector.push_back(CreateComponent(txmlGameObjectElement));
+            COMPONENT_TYPE type = GetComponentTypeFromName(txmlGameObjectElement->Name());
+            Component* component = this->GetComponent(type);
+            // If ComponentVector already has a component of that type, override that components attributes
+            if (component)
+            {
+                //TODO: see if this calls the correct initialize function, or if I need to cast to the derived type
+                component->Initialize(txmlGameObjectElement);
+            }
+            // Otherwise, add a new component
+            else
+            {
+                m_ComponentVector.push_back(CreateComponent(txmlGameObjectElement));
+            }
             txmlGameObjectElement = txmlGameObjectElement->NextSiblingElement();
         }
     }

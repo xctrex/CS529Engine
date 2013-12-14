@@ -101,7 +101,7 @@ float Vector2DDistance(Vector2D *pVec0, Vector2D *pVec1);
 In this function, pVec0 and pVec1 are considered as 2D points.
 The squared distance between these 2 2D points is returned. Avoid the square root
 */
-float Vector2DSquareDistance(Vector2D *pVec0, Vector2D *pVec1);
+float Vector2DSquareDistance(Vector2D &pVec0, Vector2D &pVec1);
 
 /*
 This function returns the dot product between pVec0 and pVec1

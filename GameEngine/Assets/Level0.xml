@@ -26,27 +26,46 @@
     />
 </Textures>
 
-<GameObject Name="StaticSpriteObject">
-    <Sprite
-        Archetype="GoldenGrahamArchetype"
-        Name="StaticGoldenGrahamSprite"
+
+<GameObject Name="StaticGoldenGraham ">
+    <Transform    
         PositionX="450.0"
         PositionY="100.0"
     />
-</GameObject>
-<GameObject Name="StaticSpriteObject">
     <Sprite
-        Archetype="CheerioArchetype"
-        Name="StaticCheerioSprite"
+        Archetype="GoldenGrahamArchetype"
+        Name="StaticGoldenGrahamSprite"
+    />
+    <RigidBody
+        Name="StaticGrahamRigidBody"
+        Shape="Square"
+    />
+</GameObject>
+
+
+
+<GameObject Name="StaticCheerio">
+    <Transform
         PositionX="450.0"
         PositionY="400.0"
     />
-</GameObject>
-<GameObject Name="StaticArchetypeSpriteObject">
     <Sprite
-        Archetype="CocoPuffArchetype"
-        Name="CocoPuffArcheTypeSprite"
-        TextureName="CocoPuff"
+        Archetype="CheerioArchetype"
+        Name="StaticCheerioSprite"
+    />
+    <RigidBody
+        Name="StaticCheerioRigidBody"
+    />
+</GameObject>
+
+<GameObject 
+    Archetype="ShipArchetype"
+    Name="Ship"
+/>
+
+
+<GameObject Archetype="CocoPuffAsteroidArchetype" Name="StaticCocoPuff">
+    <Transform    
         PositionX="450.0"
         PositionY="-100.0"
     />
@@ -73,30 +92,5 @@
         TextContent="I can even use different fonts."
         Font="Brush Script Std"
         PositionY="300"
-    />
-</GameObject>
-
-<GameObject Name="Ship"> 
-    <Transform
-        Name="ShipTransform"
-        PositionX="0.0"
-        PositionY="0.0"
-        Rotation="90.0"
-    />
-    <RigidBody
-        Name="ShipRigidBody"
-    />
-    <InputHandler
-        AccelerationSpeed="1000.0"
-        DeccelerationSpeed="-100.0"
-        RotationSpeed="120.0"
-    />
-    <Sprite
-        Name="ShipSprite"
-        TextureName="GingerbreadMan"
-        SpriteHeight="256.0"
-        SpriteWidth="256.0"
-        SpriteRotation="-90.0"
-        Layer="1.0"
     />
 </GameObject>

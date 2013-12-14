@@ -6,7 +6,9 @@ namespace Framework
 {
     RigidBody::RigidBody() :
         m_pTransform(NULL),
-        m_Velocity({0.0f, 0.0f})
+        m_Velocity({0.0f, 0.0f}),
+        m_Shape(SHAPE_CIRCLE),
+        m_Radius(0.0f)
     {
         m_Type = COMPONENT_TYPE_RIGID_BODY;
 
@@ -84,7 +86,26 @@ namespace Framework
         {
             m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
         }
-        
+        if (txmlElement->Attribute("Shape"))
+        {
+            if (strcmp(txmlElement->Attribute("Shape"), "Circle") == 0)
+            {
+                m_Shape = SHAPE_CIRCLE;
+            }
+            else if (strcmp(txmlElement->Attribute("Shape"), "Square") == 0)
+            {
+                m_Shape = SHAPE_SQUARE;
+            }
+            else
+            {
+                ThrowErrorIf(true, "Shape not recognized");
+            }
+        }
+        if (txmlElement->Attribute("Radius"))
+        {
+            m_Radius = txmlElement->FloatAttribute("Radius");
+        }
+
         if (m_RecursionLevel == 0)
         {
             g_PHYSICS->m_RigidBodyList.push_back(this);
@@ -92,6 +113,19 @@ namespace Framework
         else
         {
             --m_RecursionLevel;
+        }
+    }
+
+    void RigidBody::OnEvent(Event* e)
+    {
+        if (e->m_Type == EVENT_TYPE_COLLISION)
+        {
+            CollisionEvent* collisionevent = static_cast<CollisionEvent*>(e);
+            // Whichever object is "lighter" will bounce, and the heavier object will be unaffected by the collision
+            // This is not physically accurate, but allows us to establish a hierarchy of which objects bounce
+            // and which ones don't (e.g., ship bounces off of both asteroids and walls, asteroids only bounce off walls,
+            // and walls are unimpacted by collisions)
+            //collisionevent->m_pCollidedWith
         }
     }
 
@@ -110,5 +144,25 @@ namespace Framework
     {
         // newPosition = velocity * dt + currentPosition
         Vector2DScaleAdd(&(m_pTransform->m_Position), &m_Velocity, &(m_pTransform->m_Position), dt);
+    }
+
+    int RigidBody::CollidesWith(RigidBody* body2)
+    {
+        if (m_Shape == SHAPE_CIRCLE)
+        {
+            if (body2->m_Shape == SHAPE_CIRCLE)
+            {
+                return StaticCircleToStaticCircle(m_pTransform->m_Position, m_Radius, body2->m_pTransform->m_Position, body2->m_Radius);
+            }
+            else if (body2->m_Shape == SHAPE_SQUARE)
+            {
+                // TODO: Don't ignore circle to square collision
+            }
+        }
+        else if (m_Shape == SHAPE_SQUARE)
+        {
+            // TODO: don't ignore square to x collision
+        }
+        return 0;
     }
 }

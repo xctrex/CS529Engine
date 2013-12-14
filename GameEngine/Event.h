@@ -18,7 +18,8 @@ namespace Framework
         EVENT_TYPE_QUIT,
         EVENT_TYPE_CHARACTER_KEY,
         EVENT_TYPE_MOUSE_BUTTON,
-        EVENT_TYPE_MOUSE_MOVE
+        EVENT_TYPE_MOUSE_MOVE,
+        EVENT_TYPE_COLLISION
     };
 
     // Base event class

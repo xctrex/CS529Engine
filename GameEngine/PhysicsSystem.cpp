@@ -28,15 +28,34 @@ namespace Framework
 
     void PhysicsSystem::HandleCollisions(float dt)
     {
-        std::list<RigidBody*>::iterator it1 = m_RigidBodyList.begin();
-        for (; it1 != m_RigidBodyList.end(); ++it1)
+        bool CollisionsResolved = false;
+        
+        while (!CollisionsResolved)
         {
-            std::list<RigidBody*>::iterator it2 = it1;
-            ++it2;
-            for (; it2 != m_RigidBodyList.end(); ++it2)
+            CollisionsResolved = true;
+            std::list<RigidBody*>::iterator it1 = m_RigidBodyList.begin();
+            for (; it1 != m_RigidBodyList.end(); ++it1)
             {
-                // Detect a collision between it1 and it2
-                // TODO: If there is a collision
+                std::list<RigidBody*>::iterator it2 = it1;
+                ++it2;
+                for (; it2 != m_RigidBodyList.end(); ++it2)
+                {
+                    // Detect a collision between it1 and it2
+                    if ((*it1)->CollidesWith(*it2))
+                    {
+                        // Set collisions resolved to false, leading to (at least) one more round of collision detection
+                        CollisionsResolved = false;
+
+                        // If there is a collision, create collision events and send them to the parents
+                        CollisionEvent CollidedWithIt2(*it2);
+                        CollisionEvent CollidedWithIt1(*it1);
+
+                        // it1 collided with it2
+                        (*it1)->m_Parent->OnEvent(&CollidedWithIt2);
+                        // it2 collided with it1
+                        (*it2)->m_Parent->OnEvent(&CollidedWithIt1);                    
+                    }
+                }
             }
         }
     }

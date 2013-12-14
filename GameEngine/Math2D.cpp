@@ -45,7 +45,7 @@ This function checks for collision between 2 circles.
 Circle0: Center is Center0, radius is "Radius0"
 Circle1: Center is Center1, radius is "Radius1"
 */
-int StaticCircleToStaticCircle(Vector2D *pCenter0, float Radius0, Vector2D *pCenter1, float Radius1)
+int StaticCircleToStaticCircle(Vector2D &pCenter0, float Radius0, Vector2D &pCenter1, float Radius1)
 {
     if(Vector2DSquareDistance(pCenter0, pCenter1) <= (Radius0 + Radius1) * (Radius0 + Radius1))
     {

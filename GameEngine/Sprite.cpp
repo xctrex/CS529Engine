@@ -136,10 +136,10 @@ namespace Framework
     {
         //spSpriteBatch->Draw(m_pSRV, XMFLOAT2(0, 0));
         RECT srcRect;
-        srcRect.left = 0.0f;
-        srcRect.top = 0.0f;
-        srcRect.right = m_Origin.x * 2;
-        srcRect.bottom = m_Origin.y * 2;
+        srcRect.left = 0;
+        srcRect.top = 0;
+        srcRect.right = (LONG)m_Origin.x * 2;
+        srcRect.bottom = (LONG)m_Origin.y * 2;
 
         spSpriteBatch->Draw(
             m_pSRV,

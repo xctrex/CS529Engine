@@ -127,9 +127,9 @@ float Vector2DDistance(Vector2D *pVec0, Vector2D *pVec1)
 
 // ---------------------------------------------------------------------------
 
-float Vector2DSquareDistance(Vector2D *pVec0, Vector2D *pVec1)
+float Vector2DSquareDistance(Vector2D &pVec0, Vector2D &pVec1)
 {
-	return (pVec0->x - pVec1->x) * (pVec0->x - pVec1->x) + (pVec0->y - pVec1->y) * (pVec0->y - pVec1->y);
+	return (pVec0.x - pVec1.x) * (pVec0.x - pVec1.x) + (pVec0.y - pVec1.y) * (pVec0.y - pVec1.y);
 }
 
 // ---------------------------------------------------------------------------

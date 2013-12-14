@@ -1,8 +1,34 @@
+<ShipArchetype Name="ShipArchetype"> 
+    <Transform
+        Name="ShipTransform"
+        PositionX="0.0"
+        PositionY="0.0"
+        Rotation="90.0"
+    />
+    <RigidBody
+        Name="ShipRigidBody"
+        Radius="32.0"
+    />
+    <InputHandler
+        AccelerationSpeed="1000.0"
+        DeccelerationSpeed="-100.0"
+        RotationSpeed="120.0"
+    />
+    <Sprite
+        Name="ShipSprite"
+        TextureName="GingerbreadMan"
+        Height="256.0"
+        Width="256.0"
+        SpriteRotation="-90.0"
+        Layer="1.0"
+        ScaleX="0.25"
+        ScaleY="0.25"
+    />
+</ShipArchetype>
+
 <DefaultSpriteArchetype
     Name="DefaultSpriteArchetype"
     TextureName="Default"
-    PositionX="0.0"
-    PositionY="0.0"
     Height="256.0"
     Width="256.0"
 />
@@ -11,6 +37,16 @@
     Name="SmallDefaultSpriteArchetype"
     ScaleX="0.5"
     ScaleY="0.5"
+/>
+<CocoPuffSpriteArchetype
+    Name="CocoPuffSpriteArchetype"
+    TextureName="CocoPuff"
+    SpriteHeight="64.0"
+    SpriteWidth="64.0"
+/>
+<CircleAsteroidBodyArchetype
+        Name="CircleAsteroidBody"
+        Radius="32.0"
 />
 
 <GoldenGrahamArchetype
@@ -27,10 +63,19 @@
     ScaleX="0.25"
     ScaleY="0.25"
 />
-<CocoPuffArchetype
-    Archetype="DefaultSpriteArchetype"
-    Name="CocoPuffArchetype"
-    TextureName="CocoPuff"
-    Height="64.0"
-    Width="64.0"
-/>
+<CocoPuffAsteroidArchetype Name="CocoPuffAsteroidArchetype">
+    <Transform    
+        PositionX="0.0"
+        PositionY="0.0"
+    />
+    <Sprite
+        Name="CocoPuffSpriteArcheType"
+        TextureName="CocoPuff"
+        SpriteHeight="64.0"
+        SpriteWidth="64.0"
+    />
+    <RigidBody
+        Archetype="CircleAsteroidBodyArchetype"
+        Name="CocoPuffRigidBody"
+    />
+</CocoPuffAsteroidArchetype>

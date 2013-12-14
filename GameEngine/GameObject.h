@@ -23,6 +23,9 @@ namespace Framework
     // Define the maximum number of game objects allowed
     static const unsigned int MAX_GAME_OBJECTS = 1024;
 
+    // Function for getting a component type from a c_str
+    COMPONENT_TYPE GetComponentTypeFromName(const char* name);
+
     // Function for creating components //TODO: could be replaced by a component factory class
     ComponentHandle CreateComponent(tinyxml2::XMLElement* txmlElement);
 
@@ -52,6 +55,7 @@ namespace Framework
         GameObjectID m_UniqueID;
         unsigned int m_HandleIndex;
         std::string m_Name;
+        int m_RecursionLevel;
 
         std::vector<ComponentHandle> m_ComponentVector;
         // Give the handle class access to GUID and index
