@@ -59,7 +59,7 @@ namespace Framework
         }
         if (txmlElement->Attribute("Weight"))
         {
-            m_Radius = txmlElement->FloatAttribute("Weight");
+            m_Weight = txmlElement->FloatAttribute("Weight");
         }
 
         //================================================================
@@ -95,10 +95,11 @@ namespace Framework
             // This is not physically accurate, but allows us to establish a hierarchy of which objects bounce
             // and which ones don't (e.g., ship bounces off of both asteroids and walls, asteroids only bounce off walls,
             // and walls are unimpacted by collisions) If objects are equally weighted, both will bounce
-            if (this->m_Weight <= collider->m_Weight)
+
+            Vector2D Pi;
+            Vector2D R;
+            if (this->m_Weight < collider->m_Weight)
             {
-                Vector2D Pi;
-                Vector2D R;
                 ReflectAnimatedCircleOnAnimatedCircle(
                     this->m_PreviousPosition,
                     this->m_pTransform->m_Position,
@@ -109,7 +110,39 @@ namespace Framework
                     Pi,
                     R
                     );
+
+                // Update the position of this
+                Vector2DAdd(this->m_pTransform->m_Position, Pi, R);
+                Vector2DNormalize(R, R);
+                Vector2DScale(this->m_Velocity, R, Vector2DLength(this->m_Velocity));
             }
+            else if (this->m_Weight == collider->m_Weight)
+            {
+                // Need to calculate the original updated position from previous velocity because
+                // the current position might have already been modified by this collision
+                Vector2D thisNewPosition;
+                thisNewPosition.x = this->m_PreviousPosition.x + this->m_PreviousVelocity.x;
+                thisNewPosition.y = this->m_PreviousPosition.y + this->m_PreviousVelocity.y;
+                Vector2D colliderNewPosition;
+                colliderNewPosition.x = collider->m_PreviousPosition.x + collider->m_PreviousVelocity.x;
+                colliderNewPosition.y = collider->m_PreviousPosition.y + collider->m_PreviousVelocity.y;
+
+                ReflectAnimatedCircleOnAnimatedCircle(
+                    this->m_PreviousPosition,
+                    thisNewPosition,
+                    this->m_Radius,
+                    collider->m_PreviousPosition,
+                    colliderNewPosition,
+                    collider->m_Radius,
+                    Pi,
+                    R
+                    );
+
+                // Update the position of this
+                Vector2DAdd(this->m_pTransform->m_Position, Pi, R);
+                Vector2DNormalize(R, R);
+                Vector2DScale(this->m_Velocity, R, Vector2DLength(this->m_Velocity));
+            }     
         }
     }
 

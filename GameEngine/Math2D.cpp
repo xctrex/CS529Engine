@@ -556,17 +556,44 @@ It should first make sure that the animated circle is intersecting with the stat
 */
 float ReflectAnimatedCircleOnAnimatedCircle(const Vector2D &Center0s, const Vector2D &Center0e, float Radius0, const Vector2D &Center1s, const Vector2D &Center1e, float Radius1, Vector2D &Pi, Vector2D &R)
 {
+    //
     // First get the position of the colliding circle at the point of impact
-    Vector2D CollidingCircleCenter;
+    //
 
-    // Now do a collision between the animated reflecting circle and static colliding circle
-    return ReflectAnimatedCircleOnStaticCircle(
+    // Subtract the velocity of Circle1 from Circle0 to result in an animated circle to static circle collision
+    Vector2D CollidingCircleVelocity;
+    Vector2DSub(CollidingCircleVelocity, Center1e, Center1s);
+    Vector2D tempCenterEnd;
+    Vector2DSub(tempCenterEnd, Center0e, CollidingCircleVelocity);
+
+    // Now do a collision between the animated reflecting circle and static colliding circle to get a time of impact
+    float ti = ReflectAnimatedCircleOnStaticCircle(
         Center0s,
-        Center0e,
+        tempCenterEnd,
         Radius0, 
-        CollidingCircleCenter,
+        Center1s,
         Radius1,
         Pi,
         R
         );
+
+    // Calculate the position of the colliding circle at the point of impact
+    Vector2D CollidingCircleCenterAtImpact = Center1s;
+    CollidingCircleCenterAtImpact.x += (Center1s.x - Center1e.x) / ti;
+    CollidingCircleCenterAtImpact.y += (Center1s.y - Center1e.y) / ti;
+
+    //
+    // Now do a animated circle to static circle reflection
+    //
+    ReflectAnimatedCircleOnStaticCircle(
+        Center0s,
+        Center0e,
+        Radius0,
+        CollidingCircleCenterAtImpact,
+        Radius1,
+        Pi,
+        R
+        );
+
+    return ti;
 }
