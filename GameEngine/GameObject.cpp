@@ -16,6 +16,10 @@ namespace Framework
             return COMPONENT_TYPE_TEXT;
         else if (strcmp(name, "RigidBody") == 0)
             return COMPONENT_TYPE_RIGID_BODY;
+        else if (strcmp(name, "Life") == 0)
+            return COMPONENT_TYPE_LIFE;
+        else if (strcmp(name, "GameStateManager") == 0)
+            return COMPONENT_TYPE_GAME_STATE_MANAGER;
         else
             return COMPONENT_TYPE_NONE;
     }
@@ -65,6 +69,22 @@ namespace Framework
             pRigidBody->m_Parent = this;
             pRigidBody->Initialize(txmlElement);
             c.Initialize(pRigidBody->GetHandleIndex(), pRigidBody->GetUniqueID());
+            break;
+        }
+        case COMPONENT_TYPE_LIFE:
+        {
+            Life* pLife = new Life();
+            pLife->m_Parent = this;
+            pLife->Initialize(txmlElement);
+            c.Initialize(pLife->GetHandleIndex(), pLife->GetUniqueID());
+            break;
+        }
+        case COMPONENT_TYPE_GAME_STATE_MANAGER:
+        {
+            GameStateManager* pGSM = new GameStateManager();
+            pGSM->m_Parent = this;
+            pGSM->Initialize(txmlElement);
+            c.Initialize(pGSM->GetHandleIndex(), pGSM->GetUniqueID());
             break;
         }
         default :
@@ -181,6 +201,28 @@ namespace Framework
     
     void GameObject::OnEvent(Event* e)
     {
+        if (e->m_EventType == EVENT_TYPE_OBJECT_CLEANUP)
+        {
+            // If object isn' already slated for cleanup
+            if (!this->m_Cleanup)
+            {
+                // Add to cleanup list
+                this->m_Cleanup = true;
+                g_CORE->AddToCleanupList(this);
+            }
+            return;
+        }
+        else if (e->m_EventType == EVENT_TYPE_DAMAGE)
+        {
+            // If this object has a life component
+            Life* pLife = static_cast<Life*>(this->GetComponent(COMPONENT_TYPE_LIFE));
+            if (pLife)
+            {
+                // Take damage
+                DamageEvent* de = static_cast<DamageEvent*>(e);
+                pLife->TakeDamage(de->m_Damage);
+            }
+        }
         // Send the event to each component
         for (size_t i = 0; i < m_ComponentVector.size(); ++i)
         {

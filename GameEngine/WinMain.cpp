@@ -35,6 +35,38 @@ void LoadLevel(tinyxml2::XMLDocument* txmlDoc)
         {
             g_GRAPHICS->LoadTextures(txmlElement);
         }
+        if (strcmp(txmlElement->Name(), "Screens") == 0)
+        {
+            // Create and initialize the sprite object
+            g_GRAPHICS->m_pWinSprite = new GameObject();
+            g_GRAPHICS->m_pWinSprite->Initialize(txmlElement->FirstChildElement("WinScreenSprite"));
+            // Remove the sprite from the typical rendering list
+            g_GRAPHICS->m_SpriteList.remove(
+                static_cast<Sprite*>(
+                    g_GRAPHICS->m_pWinSprite->GetComponent(COMPONENT_TYPE_SPRITE)
+                    )
+                );
+
+            // Create and initialize the sprite object
+            g_GRAPHICS->m_pLoseSprite = new GameObject();
+            g_GRAPHICS->m_pLoseSprite->Initialize(txmlElement->FirstChildElement("LoseScreenSprite"));
+            // Remove the sprite from the typical rendering list
+            g_GRAPHICS->m_SpriteList.remove(
+                static_cast<Sprite*>(
+                g_GRAPHICS->m_pLoseSprite->GetComponent(COMPONENT_TYPE_SPRITE)
+                )
+                );
+
+            // Create and initialize the sprite object
+            g_GRAPHICS->m_pControlsSprite = new GameObject();
+            g_GRAPHICS->m_pControlsSprite->Initialize(txmlElement->FirstChildElement("ControlsScreenSprite"));
+            // Remove the sprite from the typical rendering list
+            g_GRAPHICS->m_SpriteList.remove(
+                static_cast<Sprite*>(
+                g_GRAPHICS->m_pControlsSprite->GetComponent(COMPONENT_TYPE_SPRITE)
+                )
+                );
+        }
         else if (strcmp(txmlElement->Name(), "GameObject") == 0)
         {
             GameObject* pObj = new GameObject();
@@ -101,8 +133,17 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     engine->GameLoop();
 
     // Delete all the game objects
+    for (size_t i = 0; i < MAX_GAME_OBJECTS; ++i)
+    {
+        if (g_GameObjectHandleTable[i])
+        {
+            g_GameObjectHandleTable[i]->Destroy();
+            delete g_GameObjectHandleTable[i];
+        }
+    }
 
     // Delete all the systems
+    engine->DestroySystems();
 
     // Delete the engine itself
     delete engine;

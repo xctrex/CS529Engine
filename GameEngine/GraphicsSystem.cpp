@@ -24,7 +24,14 @@ namespace Framework
 		m_ScreenWidth(w),
 		m_ScreenHeight(h),
         m_DPIX(96.0f),
-        m_DPIY(96.0f)
+        m_DPIY(96.0f),
+        m_DrawDebug(false),
+        m_ShowControls(false),
+        m_ShowWin(false),
+        m_ShowLose(false),
+        m_pControlsSprite(NULL),
+        m_pLoseSprite(NULL),
+        m_pWinSprite(NULL)
     {
         CoInitialize(NULL);
         m_TextureMap.clear();
@@ -37,6 +44,11 @@ namespace Framework
     GraphicsSystem::~GraphicsSystem()
     {
         CoUninitialize();
+    }
+
+    void GraphicsSystem::Destroy()
+    {
+        m_TextureMap.clear();
     }
 
     void GraphicsSystem::CreateDeviceIndependentResources()
@@ -390,10 +402,32 @@ namespace Framework
     {
         m_spSpriteBatch->Begin();
 
-        //Iterate through the link list of sprites
-        std::list<Sprite*>::iterator it = m_SpriteList.begin();
-        for (; it != m_SpriteList.end(); ++it)
-            (*it)->Draw(m_spSpriteBatch);
+        if (m_ShowControls)
+        {
+            Sprite* pSprite = static_cast<Sprite*>(m_pControlsSprite->GetComponent(COMPONENT_TYPE_SPRITE));
+            if (pSprite)
+                pSprite->Draw(m_spSpriteBatch);
+        }
+        else if (m_ShowWin)
+        {
+            Sprite* pSprite = static_cast<Sprite*>(m_pWinSprite->GetComponent(COMPONENT_TYPE_SPRITE));
+            if (pSprite)
+                pSprite->Draw(m_spSpriteBatch);
+
+        }
+        else if (m_ShowLose)
+        {
+            Sprite* pSprite = static_cast<Sprite*>(m_pLoseSprite->GetComponent(COMPONENT_TYPE_SPRITE));
+            if (pSprite)
+                pSprite->Draw(m_spSpriteBatch);
+        }
+        else
+        {
+            //Iterate through the link list of sprites
+            std::list<Sprite*>::iterator it = m_SpriteList.begin();
+            for (; it != m_SpriteList.end(); ++it)
+                (*it)->Draw(m_spSpriteBatch);
+        }
 
         m_spSpriteBatch->End();
         
@@ -401,7 +435,6 @@ namespace Framework
 
     void GraphicsSystem::DrawText()
     {
-        ComPtr<ID2D1SolidColorBrush> sp_BlackBrush;
         D2D1_COLOR_F color;
         color.a = 1.0f;
         color.r = 1.0f;
@@ -410,7 +443,7 @@ namespace Framework
 
         m_spD2DDeviceContext->CreateSolidColorBrush(
             color,
-            sp_BlackBrush.GetAddressOf()
+            m_spBlackBrush.GetAddressOf()
             );
 
         //m_spD2DDeviceContext->BeginDraw();
@@ -418,7 +451,7 @@ namespace Framework
         //Iterate through the linked list of sprites
         std::list<Text>::iterator it = m_TextList.begin();
         for (; it != m_TextList.end(); ++it)
-            it->Draw(m_spD2DDeviceContext, sp_BlackBrush, m_spDWriteFactory);
+            it->Draw(m_spD2DDeviceContext, m_spBlackBrush, m_spDWriteFactory);
 
         //m_spD2DDeviceContext->EndDraw();
         //     );
@@ -449,6 +482,20 @@ namespace Framework
         // Discard the contents of the depth stencil.
         m_spD3DDeviceContext->DiscardView(m_spD3DDepthStencilView.Get());
         
+    }
+
+    void GraphicsSystem::OnEvent(Event* e)
+    {
+        if (e->m_EventType == EVENT_TYPE_MOUSE_BUTTON)
+        {
+            MouseButtonEvent* mbe = static_cast<MouseButtonEvent*>(e);
+            if (!mbe->m_IsPressed)
+            {
+                m_DrawDebug = !m_DrawDebug;
+                //m_ShowWin = !m_ShowWin;
+                m_ShowLose = !m_ShowLose;
+            }
+        }
     }
 
     // Convert WorldCoords (from -ScreenSize/2 to +ScreenSize/2, with ScreenHeight/2 at the top and -ScreenHeight/2 at the bottom)

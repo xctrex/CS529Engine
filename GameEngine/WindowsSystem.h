@@ -35,54 +35,12 @@ namespace Framework
         std::string m_WindowsClassName;
     };
 
-    // Event signaling that a key is pressed
-    class CharacterKeyEvent : public Event
-    {
-    public:
-        CharacterKeyEvent() : Event(EVENT_TYPE_CHARACTER_KEY) {};
-        int m_Character;
-    };
-
-    // Event signaling that a mouse button state has changed
-    class MouseButtonEvent : public Event
-    {
-    public:
-        enum MouseButtonIndexID
-        {
-            LeftMouse,
-            RightMouse
-        };
-
-        MouseButtonEvent(MouseButtonIndexID button, bool state, Vector2D position) :
-            Event(EVENT_TYPE_MOUSE_BUTTON),
-            m_MouseButtonIndex(button),
-            m_IsPressed(state),
-            m_MousePosition(position)
-        {};
-
-        MouseButtonIndexID m_MouseButtonIndex;
-        bool m_IsPressed;
-        Vector2D m_MousePosition;
-    };
-
-    // Event signaling that the mouse has moved
-    class MouseMovedEvent : public Event
-    {
-    public:
-        MouseMovedEvent(Vector2D position) :
-            Event(EVENT_TYPE_MOUSE_MOVE),
-            m_MousePosition(position)
-        {};
-
-        Vector2D m_MousePosition;
-    };
-
-
     bool IsUpHeld();
     bool IsDownHeld();
     bool IsLeftHeld();
     bool IsRightHeld();
     bool IsSpaceHeld();
+    bool IsControlHeld();
 
     extern WindowsSystem* g_WINDOWSSYSTEM;
 }

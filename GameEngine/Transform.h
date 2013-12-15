@@ -15,6 +15,7 @@ namespace Framework
             m_Scale({ 1.0f, 1.0f })
         {
             m_Type = COMPONENT_TYPE_TRANSFORM;
+            g_ComponentHandleTable[this->GetHandleIndex()] = this;
         };
         virtual void Initialize(tinyxml2::XMLElement* txmlElement);
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc) {};

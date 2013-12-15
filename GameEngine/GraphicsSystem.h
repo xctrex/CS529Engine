@@ -44,11 +44,13 @@ namespace Framework
     public:
         GraphicsSystem(HWND hw, int w, int h);
         ~GraphicsSystem();
+        void Destroy();
 
         // ISystem class virtual functions
         //virtual void SendMessage(Message* message) {};
         virtual void Initialize();
         virtual void Update(float dt);
+        virtual void OnEvent(Event* e);
         virtual std::string GetName() {return "Graphics";}
 
         void LoadTextures(tinyxml2::XMLElement* txmlElement);
@@ -60,7 +62,15 @@ namespace Framework
         Vector2D WorldCoordsToWindowCoords(Vector2D &WorldCoords);
 
         std::list<Sprite*> m_SpriteList;//TODO: investigate if we should use Sprite* here, allowing the sprites to be modified by something other than the graphics compononent
+        GameObject* m_pControlsSprite;
+        GameObject* m_pWinSprite;
+        GameObject* m_pLoseSprite;
+        
         std::list<Text> m_TextList;//TODO: investigate if we should use Text* here, 
+        bool m_DrawDebug;
+        bool m_ShowWin;
+        bool m_ShowLose;
+        bool m_ShowControls;
     private:
 
     void CreateDeviceIndependentResources();
@@ -83,6 +93,7 @@ namespace Framework
     ComPtr<ID2D1DeviceContext1> m_spD2DDeviceContext;
     ComPtr<ID2D1RenderTarget> m_spD2DRenderTarget;
     ComPtr<ID2D1Bitmap1> m_spD2DTargetBitmap;
+    ComPtr<ID2D1SolidColorBrush> m_spBlackBrush;
 
     // DWrite Resources
     ComPtr<IDWriteFactory2> m_spDWriteFactory;

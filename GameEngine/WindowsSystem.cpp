@@ -180,4 +180,5 @@ namespace Framework
     bool IsLeftHeld(){ return GetKeyState(VK_LEFT) < 0; }
     bool IsRightHeld(){ return GetKeyState(VK_RIGHT) < 0; }
     bool IsSpaceHeld(){ return GetKeyState(VK_SPACE) < 0; }
+    bool IsControlHeld(){ return GetKeyState(VK_CONTROL) < 0; }
 }

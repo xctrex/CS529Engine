@@ -16,12 +16,16 @@
         AccelerationSpeed="1000.0"
         DeccelerationSpeed="-100.0"
         RotationSpeed="120.0"
-        BulletSpeed="100.0"
+        BulletSpeed="1000.0"
     />
     <Sprite
         Archetype="GingerbreadSpriteArchetype"
         Name="ShipSprite"
         Layer="1.0"
+    />
+    <Life
+        Name="ShipLife"
+        HP="100"
     />
 </ShipArchetype>
 <BulletArchetype Name="BulletArchetype"> 
@@ -62,6 +66,10 @@
         Archetype="CircleAsteroidBodyArchetype"
         Name="CheerioRigidBody"
     />
+    <Life
+        Name="AsteroidLife"
+        HP="100"
+    />
 </CheerioAsteroidArchetype>
 
 <GoldenGrahamAsteroidArchetype Name="GoldenGrahamAsteroidArchetype">
@@ -78,6 +86,10 @@
         Archetype="CircleAsteroidBodyArchetype"
         Name="GoldenGrahamRigidBody"
     />
+    <Life
+        Name="AsteroidLife"
+        HP="100"
+    />
 </GoldenGrahamAsteroidArchetype>
 
 <CocoPuffAsteroidArchetype Name="CocoPuffAsteroidArchetype">
@@ -93,6 +105,10 @@
     <RigidBody
         Archetype="CircleAsteroidBodyArchetype"
         Name="CocoPuffRigidBody"
+    />
+    <Life
+        Name="AsteroidLife"
+        HP="100"
     />
 </CocoPuffAsteroidArchetype>
 

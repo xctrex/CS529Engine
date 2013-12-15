@@ -39,6 +39,8 @@ namespace Framework
         void SetVelocity(float x, float y) { m_Velocity.x = x; m_Velocity.y = y; }
         void SetPreviousPosition(float x, float y) { m_PreviousPosition.x = x; m_PreviousPosition.y = y; }
         void SetPreviousVelocity(float x, float y) { m_PreviousVelocity.x = x; m_PreviousVelocity.y = y; }
+        float GetRadius(){ return m_Radius; }
+        SHAPE GetShape(){ return m_Shape; }
     private:
 
         

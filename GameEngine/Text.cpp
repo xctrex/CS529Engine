@@ -16,15 +16,7 @@ namespace Framework
     };
     Text::~Text()
     {
-        // Only free the transform if it does not belong to the parent of the text
-        Transform* pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
-        if (pTransform == NULL)
-        {
-            if (m_pTransform)
-            {
-                free(m_pTransform);
-            }
-        }
+
     };
 
     void Text::Initialize(tinyxml2::XMLElement *txmlElement)

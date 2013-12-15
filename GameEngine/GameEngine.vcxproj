@@ -79,8 +79,10 @@
     <ClCompile Include="DebugDiagnostic.cpp" />
     <ClCompile Include="GameLogicSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="Life.cpp" />
     <ClCompile Include="LineSegment2D.cpp" />
     <ClCompile Include="Math2D.cpp" />
     <ClCompile Include="Matrix2D.cpp" />
@@ -97,6 +99,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
+    <ClInclude Include="GameStateManager.h" />
+    <ClInclude Include="Life.h" />
     <ClInclude Include="GameLogicSystem.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Containers.h" />

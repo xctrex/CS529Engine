@@ -39,6 +39,13 @@ namespace Framework
             m_Systems[i]->Initialize();
     }
 
+    // Destroy all of the core's systems
+    void CoreEngine::DestroySystems()
+    {
+        for (size_t i = 0; i < m_Systems.size(); ++i)
+            m_Systems[i]->Destroy();
+    }
+
     // Update all the systems until the game is no longer active
     void CoreEngine::GameLoop()
     {
@@ -63,7 +70,7 @@ namespace Framework
     void CoreEngine::BroadcastEvent(Event* e)
     {
         // Handle the quit event
-        if (e->m_Type == EVENT_TYPE_QUIT)
+        if (e->m_EventType == EVENT_TYPE_QUIT)
             m_GameActive = false;
 
         // Iterate through each system and send the event
@@ -78,6 +85,7 @@ namespace Framework
 
     void CoreEngine::Cleanup()
     {
+        m_CleanupList.unique();
         while (!m_CleanupList.empty())
         {
             m_CleanupList.back()->Destroy();

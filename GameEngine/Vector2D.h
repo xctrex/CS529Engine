@@ -24,9 +24,9 @@ typedef struct Vector2D
 	float x, y;
 }Vector2D;
 */
-
+#ifndef Vector2D
 #define Vector2D DirectX::XMFLOAT2
-
+#endif
 /*
 This function converts degrees to radians
 */

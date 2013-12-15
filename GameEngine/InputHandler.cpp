@@ -13,6 +13,7 @@ namespace Framework
         m_pRigidBody(NULL)
     { 
         m_Type = COMPONENT_TYPE_INPUT_HANDLER;
+        g_ComponentHandleTable[this->GetHandleIndex()] = this;
     };
 
     void InputHandler::Initialize(tinyxml2::XMLElement* txmlElement)
@@ -60,7 +61,7 @@ namespace Framework
 
         if (m_RecursionLevel == 0)
         {
-            g_LOGIC->m_InputHandler = this;
+            g_LOGIC->m_pInputHandler = this;
         }
         else
         {

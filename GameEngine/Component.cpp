@@ -78,8 +78,11 @@ namespace Framework
     
     void ComponentHandle::Destroy()
     {
-        g_ComponentHandleTable[m_HandleIndex]->Destroy();
-        delete g_ComponentHandleTable[m_HandleIndex];
+        if (g_ComponentHandleTable[m_HandleIndex])
+        {
+            g_ComponentHandleTable[m_HandleIndex]->Destroy();
+            delete g_ComponentHandleTable[m_HandleIndex];
+        }
         g_ComponentHandleTable[m_HandleIndex] = NULL;        
     }
 

@@ -114,6 +114,12 @@
     <ClCompile Include="Vector2D.cpp">
       <Filter>Systems\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Life.cpp">
+      <Filter>Systems\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>Systems\GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsSystem.h">
@@ -190,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="LineSegment2D.h">
       <Filter>Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Life.h">
+      <Filter>Systems\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>Systems\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

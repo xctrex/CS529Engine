@@ -6,6 +6,8 @@
 
 // Game Logic Components
 #include "InputHandler.h"
+#include "Life.h"
+#include "GameStateManager.h"
 
 // Graphics Components
 #include "Sprite.h"
@@ -87,8 +89,7 @@ namespace Framework
         unsigned int m_HandleIndex;
         GameObjectID m_UniqueID; // A unique ID avoids stale pointers
     };
-
-
+    
     // Handle Table
     extern GameObject* g_GameObjectHandleTable[MAX_GAME_OBJECTS];
 }

@@ -1,6 +1,10 @@
 #include "Text.h"
 #include "Transform.h"
 #include "PhysicsSystem.h"
+#include "GameLogicSystem.h"
+
+#define BULLET_TO_ASTEROID_DAMAGE 10
+#define ASTEROID_TO_SHIP_DAMAGE 20
 
 namespace Framework
 {
@@ -25,19 +29,23 @@ namespace Framework
 
     RigidBody::~RigidBody()
     {
-        // Only free the transform if it does not belong to the parent of the text
-        Transform* pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
-        if (pTransform == NULL)
-        {
-            if (m_pTransform)
-            {
-                free(m_pTransform);
-            }
-        }
     };
     void RigidBody::Destroy()
     {
         g_PHYSICS->m_RigidBodyList.remove(this);
+        if (m_Shape == SHAPE_SHIP)
+        {
+            // Inform the game that the ship has been destroyed
+            ObjectDeathEvent ode(OBJECT_TYPE_SHIP);
+            g_LOGIC->OnEvent(&ode);
+            
+        }
+        if (m_Shape == SHAPE_CIRCLE)
+        {
+            // Update number of asteroids remaining
+            ObjectDeathEvent ode(OBJECT_TYPE_ASTEROID);
+            g_LOGIC->OnEvent(&ode);
+        }
     };
 
     void RigidBody::Initialize(tinyxml2::XMLElement *txmlElement)
@@ -131,7 +139,7 @@ namespace Framework
 
     void RigidBody::OnEvent(Event* e)
     {
-        if (e->m_Type == EVENT_TYPE_COLLISION)
+        if (e->m_EventType == EVENT_TYPE_COLLISION)
         {
             RigidBody* collider = static_cast<CollisionEvent*>(e)->m_pCollidedWith;
 
@@ -141,8 +149,8 @@ namespace Framework
                 // If a bullet collides with an asteroid or wall, delete the bullet
                 if (collider->m_Shape == SHAPE_LINE || collider->m_Shape == SHAPE_CIRCLE)
                 {
-                    this->m_Parent->m_Cleanup = true;
-                    g_CORE->AddToCleanupList(this->m_Parent);
+                    ObjectCleanupEvent oce;
+                    m_Parent->OnEvent(&oce);
                 }
                 return;
             }
@@ -153,6 +161,8 @@ namespace Framework
                 if (collider->m_Shape == SHAPE_SPOON)
                 {
                     // Damage asteroid
+                    DamageEvent de(BULLET_TO_ASTEROID_DAMAGE);
+                    this->m_Parent->OnEvent(&de);
                 }
             }
             // Handle Ship Collision Logic
@@ -162,6 +172,8 @@ namespace Framework
                 if (collider->m_Shape == SHAPE_CIRCLE)
                 {
                     // Damage ship
+                    DamageEvent de(ASTEROID_TO_SHIP_DAMAGE);
+                    this->m_Parent->OnEvent(&de);
                 }
             }
             // Handle Line collision logic
@@ -237,11 +249,14 @@ namespace Framework
     {
         Vector2D directionVec = { 0.0f, 0.0f };
         
-        // newVel = a * dt + currentVel
-        Vector2DFromAngleDeg(directionVec, m_pTransform->m_Rotation);
-        Vector2DScaleAdd(m_Velocity, directionVec, m_Velocity, accel * dt);
-        // newVel *= 0.99
-        Vector2DScale(m_Velocity, m_Velocity, 0.99f);
+        if (m_pTransform)
+        {
+            // newVel = a * dt + currentVel
+            Vector2DFromAngleDeg(directionVec, m_pTransform->m_Rotation);
+            Vector2DScaleAdd(m_Velocity, directionVec, m_Velocity, accel * dt);
+            // newVel *= 0.99
+            Vector2DScale(m_Velocity, m_Velocity, 0.99f);
+        }
     }
 
     void RigidBody::UpdatePosition(float dt)
@@ -252,6 +267,16 @@ namespace Framework
 
         // newPosition = velocity * dt + currentPosition
         Vector2DScaleAdd(m_pTransform->m_Position, m_Velocity, m_pTransform->m_Position, dt);
+
+        // Get rid of objects that exscaped past the walls
+        if (m_pTransform->m_Position.x < -1000
+            || m_pTransform->m_Position.x > 1000
+            || m_pTransform->m_Position.y < -800
+            || m_pTransform->m_Position.y > 800)
+        {
+            ObjectCleanupEvent oce;
+            m_Parent->OnEvent(&oce);
+        }
     }
 
     int RigidBody::CollidesWith(RigidBody* body2)

@@ -1,0 +1,14 @@
+<Levels>
+    <Level
+        Name="Level1"
+        Path="Assets\Level1.xml"
+    />
+    <Level
+        Name="Level2"
+        Path="Assets\Level2.xml"
+    />
+    <Level
+        Name="Level3"
+        Path="Assets\Level3.xml"
+    />
+</Levels>

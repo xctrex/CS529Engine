@@ -27,60 +27,7 @@
         Name="Spoon"
         Path="Assets\bluespoon.png"
     />
-    <Texture
-        Name="Win"
-        Path="Assets\win.png"
-    />
-    <Texture
-        Name="Lose"
-        Path="Assets\lose.png"
-    />
-    <Texture
-        Name="Controls"
-        Path="Assets\controls.png"
-    />
 </Textures>
-<Screens>
-    <WinScreenSprite>
-        <Transform
-            Name="WinScreenSpriteTransform"
-            PositionX="0.0"
-            PositionY="0.0"
-        />
-        <Sprite
-            Name="WinScreenSpriteArchetype"
-            TextureName="Win"
-            SpriteHeight="720.0"
-            SpriteWidth="1280.0"        
-        />
-    </WinScreenSprite>
-    <LoseScreenSprite>
-        <Transform
-            Name="LoseScreenSpriteTransform"
-            PositionX="0.0"
-            PositionY="0.0"
-        />
-        <Sprite
-            Name="LoseScreenSpriteArchetype"
-            TextureName="Lose"
-            SpriteHeight="720.0"
-            SpriteWidth="1280.0"        
-        />
-    </LoseScreenSprite>
-    <ControlsScreenSprite>
-        <Transform
-            Name="ControlsScreenSpriteTransform"
-            PositionX="0.0"
-            PositionY="0.0"
-        />
-        <Sprite
-            Name="ControlsScreenSpriteArchetype"
-            TextureName="Controls"
-            SpriteHeight="720.0"
-            SpriteWidth="1280.0"        
-        />
-    </ControlsScreenSprite>
-</Screens>
 
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="StaticCocoPuff">
     <Transform    

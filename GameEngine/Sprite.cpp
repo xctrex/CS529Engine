@@ -1,6 +1,7 @@
 #include "Sprite.h"
 #include "Transform.h"
 #include "GraphicsSystem.h"
+#include "WindowsSystem.h"
 
 namespace Framework
 {
@@ -14,8 +15,7 @@ namespace Framework
         m_Layer(0.0f),
         m_SpriteRotation(0.0f)
     {
-        m_Type = COMPONENT_TYPE_SPRITE;
-        
+        m_Type = COMPONENT_TYPE_SPRITE;        
 
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
     };
@@ -50,13 +50,13 @@ namespace Framework
         {
             m_SpriteRotation = txmlElement->FloatAttribute("SpriteRotation");
         }
-        if (txmlElement->Attribute("SpriteHeight"))
-        {
-            m_Origin.x = txmlElement->FloatAttribute("SpriteHeight") / 2.0f;
-        }
         if (txmlElement->Attribute("SpriteWidth"))
         {
-            m_Origin.y = txmlElement->FloatAttribute("SpriteWidth") / 2.0f;
+            m_Origin.x = txmlElement->FloatAttribute("SpriteWidth") / 2.0f;
+        }
+        if (txmlElement->Attribute("SpriteHeight"))
+        {
+            m_Origin.y = txmlElement->FloatAttribute("SpriteHeight") / 2.0f;
         }
         if (txmlElement->Attribute("Layer"))
         {
@@ -118,6 +118,32 @@ namespace Framework
             SpriteEffects::SpriteEffects_None,
             m_Layer
             );
+
+        if (IsSpaceHeld())
+        {
+            RigidBody* pBody = static_cast<RigidBody*>(m_Parent->GetComponent(COMPONENT_TYPE_RIGID_BODY));
+            if (pBody && m_pTransform)
+            {
+                if (pBody->GetShape() == SHAPE_CIRCLE || pBody->GetShape() == SHAPE_SHIP || pBody->GetShape() == SHAPE_SPOON)
+                {
+                    ID3D11ShaderResourceView* pSRV = g_GRAPHICS->GetTexture("Circle");
+                    ThrowErrorIf(!pSRV, "Failed to get circle texture from GRAPHICS");
+                    XMFLOAT2 origin = { 128.0f, 128.0f };
+                    float scale = pBody->GetRadius() / 128.0f;
+                    spSpriteBatch->Draw(
+                        pSRV,
+                        g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position),
+                        NULL,
+                        m_Color,
+                        0.0f,
+                        origin,
+                        m_pTransform->m_Scale,
+                        SpriteEffects::SpriteEffects_None,
+                        m_Layer
+                        );
+                }
+            }
+        }
     }
 
 

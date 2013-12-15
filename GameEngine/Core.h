@@ -28,7 +28,9 @@ namespace Framework
         // Add a new system to the core
         void AddSystem(ISystem* system);
         // Initialize all of the core's systems
-        void InitializeSystems(void);
+        void InitializeSystems();
+        // Destroy all of the core's systems
+        void DestroySystems();
         // Update all the systems until the game is no longer active
         void GameLoop();
         // Broadcasts an event to all systems
@@ -49,13 +51,6 @@ namespace Framework
         bool m_GameActive;
         // Timer class
         CoreTime time;
-    };
-
-    // Event telling the game to quit
-    class QuitEvent : public Event
-    {
-    public:
-        QuitEvent() : Event(EVENT_TYPE_QUIT) {};
     };
 
     // Global pointer to the core engine

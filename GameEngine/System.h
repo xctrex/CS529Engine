@@ -22,6 +22,7 @@ namespace Framework
         virtual void Update(float timeslice) = 0;
         virtual std::string GetName() = 0;
         virtual void Initialize(){};
+        virtual void Destroy(){};
         virtual ~ISystem(){};
     };
 }
