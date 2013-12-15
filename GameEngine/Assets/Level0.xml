@@ -27,42 +27,6 @@
 </Textures>
 
 
-<GameObject Name="StaticGoldenGraham ">
-    <Transform    
-        PositionX="450.0"
-        PositionY="100.0"
-    />
-    <Sprite
-        Archetype="GoldenGrahamArchetype"
-        Name="StaticGoldenGrahamSprite"
-    />
-    <RigidBody
-        Name="StaticGrahamRigidBody"
-        Shape="Square"
-    />
-</GameObject>
-
-
-
-<GameObject Name="StaticCheerio">
-    <Transform
-        PositionX="450.0"
-        PositionY="400.0"
-    />
-    <Sprite
-        Archetype="CheerioArchetype"
-        Name="StaticCheerioSprite"
-    />
-    <RigidBody
-        Name="StaticCheerioRigidBody"
-    />
-</GameObject>
-
-<GameObject 
-    Archetype="ShipArchetype"
-    Name="Ship"
-/>
-
 
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="StaticCocoPuff">
     <Transform    
@@ -70,13 +34,34 @@
         PositionY="-100.0"
     />
 </GameObject>
+
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="StaticGoldenGraham">
+    <Transform    
+        PositionX="450.0"
+        PositionY="100.0"
+    />
+</GameObject>
+
+<GameObject Archetype="CheerioAsteroidArchetype" Name="StaticCheerio">
+    <Transform    
+        PositionX="450.0"
+        PositionY="-100.0"
+    />
+</GameObject>
+
+<GameObject 
+    Archetype="ShipArchetype"
+/>
+
+
+
 <GameObject Name="StaticArchetypeSpriteObject">
     <Transform
         PositionX="650.0"
         PositionY="-100.0"
     />
     <Sprite
-        Archetype="SmallDefaultSpriteArchetype"
+        Archetype="DefaultSpriteArchetype"
         Name="SpoonSprite"
         TextureName="Spoon"
     />

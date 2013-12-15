@@ -45,16 +45,19 @@ namespace Framework
                 );
 
             tinyxml2::XMLElement* txmlRecursiveElement = txmlDoc.FirstChildElement();
+            bool foundArchetype = false;
             while (txmlRecursiveElement)
             {
                 if (strcmp(txmlElement->Attribute("Archetype"), txmlRecursiveElement->Name()) == 0)
                 {
                     ++m_RecursionLevel;
                     this->Initialize(txmlRecursiveElement);
+                    foundArchetype = true;
                     break;
                 }
                 txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
             }
+            ThrowErrorIf(!foundArchetype, "Failed to find a component archetype by that name.");
         }
 
         if (txmlElement->Attribute("Name"))

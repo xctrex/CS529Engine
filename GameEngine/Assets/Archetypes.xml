@@ -1,3 +1,4 @@
+<!-- Object Archetypes -->
 <ShipArchetype Name="ShipArchetype"> 
     <Transform
         Name="ShipTransform"
@@ -16,16 +17,66 @@
         RotationSpeed="120.0"
     />
     <Sprite
+        Archetype="GingerbreadSpriteArchetype"
         Name="ShipSprite"
-        TextureName="GingerbreadMan"
-        SpriteHeight="256.0"
-        SpriteWidth="256.0"
-        SpriteRotation="-90.0"
         Layer="1.0"
-        ScaleX="0.25"
-        ScaleY="0.25"
     />
 </ShipArchetype>
+
+<CheerioAsteroidArchetype Name="CheerioAsteroidArchetype">
+    <Transform
+        Name="CheerioTransform"
+        PositionX="0.0"
+        PositionY="0.0"
+    />
+    <Sprite
+        Archetype="CheerioSpriteArchetype"
+        Name="CheerioSprite"
+    />
+    <RigidBody
+        Archetype="CircleAsteroidBodyArchetype"
+        Name="CheerioRigidBody"
+    />
+</CheerioAsteroidArchetype>
+
+<GoldenGrahamAsteroidArchetype Name="GoldenGrahamAsteroidArchetype">
+    <Transform
+        Name="GoldenGrahamTransform"
+        PositionX="0.0"
+        PositionY="0.0"
+    />
+    <Sprite
+        Archetype="GoldenGrahamSpriteArchetype"
+        Name="GoldenGrahamSprite"
+    />
+    <RigidBody
+        Archetype="CircleAsteroidBodyArchetype"
+        Name="GoldenGrahamRigidBody"
+    />
+</GoldenGrahamAsteroidArchetype>
+
+<CocoPuffAsteroidArchetype Name="CocoPuffAsteroidArchetype">
+    <Transform
+        Name="CocoPuffTransform"
+        PositionX="0.0"
+        PositionY="0.0"
+    />
+    <Sprite
+        Archetype="CocoPuffSpriteArchetype"
+        Name="CocoPuffSprite"
+    />
+    <RigidBody
+        Archetype="CircleAsteroidBodyArchetype"
+        Name="CocoPuffRigidBody"
+    />
+</CocoPuffAsteroidArchetype>
+
+<!-- Component Archetypes -->
+<CircleAsteroidBodyArchetype
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+/>
 
 <DefaultSpriteArchetype
     Name="DefaultSpriteArchetype"
@@ -33,51 +84,37 @@
     SpriteHeight="256.0"
     SpriteWidth="256.0"
 />
-<SmallDefaultSpriteArchetype
-    Archetype="DefaultSpriteArchetype"
-    Name="SmallDefaultSpriteArchetype"
-    ScaleX="0.5"
-    ScaleY="0.5"
+<SmallSpriteArchetype
+    Name="SmallSpriteArchetype"
+    TextureName="Default"
+    SpriteHeight="256.0"
+    SpriteWidth="256.0"
+    ScaleX="0.25"
+    ScaleY="0.25"
 />
+
+<GingerbreadSpriteArchetype
+    Archetype="SmallSpriteArchetype"
+    Name="GingerbreadSpriteArchetype"
+    TextureName="GingerbreadMan"
+    SpriteRotation="-90.0"
+/>
+
 <CocoPuffSpriteArchetype
     Name="CocoPuffSpriteArchetype"
     TextureName="CocoPuff"
     SpriteHeight="64.0"
     SpriteWidth="64.0"
 />
-<CircleAsteroidBodyArchetype
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
+
+<GoldenGrahamSpriteArchetype
+    Archetype="SmallSpriteArchetype"
+    Name="GoldenGrahamSpriteArchetype"
+    TextureName="GoldenGraham"
 />
 
-<GoldenGrahamArchetype
-    Archetype="DefaultSpriteArchetype"
-    Name="GoldenGrahamArchetype"
-    TextureName="GoldenGraham"
-    ScaleX="0.25"
-    ScaleY="0.25"
-/>
-<CheerioArchetype
-    Archetype="DefaultSpriteArchetype"
-    Name="CheerioArchetype"
+<CheerioSpriteArchetype
+    Archetype="SmallSpriteArchetype"
+    Name="CheerioSpriteArchetype"
     TextureName="Cheerio"
-    ScaleX="0.25"
-    ScaleY="0.25"
 />
-<CocoPuffAsteroidArchetype Name="CocoPuffAsteroidArchetype">
-    <Transform    
-        PositionX="0.0"
-        PositionY="0.0"
-    />
-    <Sprite
-        Name="CocoPuffSpriteArcheType"
-        TextureName="CocoPuff"
-        SpriteHeight="64.0"
-        SpriteWidth="64.0"
-    />
-    <RigidBody
-        Archetype="CircleAsteroidBodyArchetype"
-        Name="CocoPuffRigidBody"
-    />
-</CocoPuffAsteroidArchetype>
