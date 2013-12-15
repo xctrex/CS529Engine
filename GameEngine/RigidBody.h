@@ -46,8 +46,9 @@ namespace Framework
     class CollisionEvent : public Event
     {
     public:
-        CollisionEvent() : Event(EVENT_TYPE_COLLISION), m_pCollidedWith(NULL) {};
-        CollisionEvent(RigidBody* body) : Event(EVENT_TYPE_COLLISION), m_pCollidedWith(body) {};
+        CollisionEvent() : Event(EVENT_TYPE_COLLISION), m_pCollidedWith(NULL), m_FrameTime(0.0f) {};
+        CollisionEvent(RigidBody* body, float dt) : Event(EVENT_TYPE_COLLISION), m_pCollidedWith(body), m_FrameTime(dt) {};
         RigidBody* m_pCollidedWith;
+        float m_FrameTime;
     };
 }

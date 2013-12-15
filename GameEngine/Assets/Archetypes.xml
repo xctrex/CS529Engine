@@ -48,7 +48,7 @@
 <CircleAsteroidBodyArchetype
         Name="CircleAsteroidBody"
         Radius="32.0"
-        Weight="10.0"
+        Weight="1.0"
 />
 
 <GoldenGrahamArchetype

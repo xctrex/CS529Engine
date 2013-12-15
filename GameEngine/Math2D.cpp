@@ -576,24 +576,48 @@ float ReflectAnimatedCircleOnAnimatedCircle(const Vector2D &Center0s, const Vect
         Pi,
         R
         );
+    // If the reflecting circle has a non-zero velocity
+    if (Center0s.x != Center0e.x || Center0s.y != Center0e.y)
+    {
+        // Calculate the position of the colliding circle at the point of impact
+        Vector2D CollidingCircleCenterAtImpact = Center1s;
+        CollidingCircleCenterAtImpact.x += (Center1s.x - Center1e.x) * ti;
+        CollidingCircleCenterAtImpact.y += (Center1s.y - Center1e.y) * ti;
 
-    // Calculate the position of the colliding circle at the point of impact
-    Vector2D CollidingCircleCenterAtImpact = Center1s;
-    CollidingCircleCenterAtImpact.x += (Center1s.x - Center1e.x) / ti;
-    CollidingCircleCenterAtImpact.y += (Center1s.y - Center1e.y) / ti;
+        //
+        // Now do a animated circle to static circle reflection
+        //
+        ReflectAnimatedCircleOnStaticCircle(
+            Center0s,
+            Center0e,
+            Radius0,
+            CollidingCircleCenterAtImpact,
+            Radius1,
+            Pi,
+            R
+            );
+    }
+    else
+    {
 
-    //
-    // Now do a animated circle to static circle reflection
-    //
-    ReflectAnimatedCircleOnStaticCircle(
-        Center0s,
-        Center0e,
-        Radius0,
-        CollidingCircleCenterAtImpact,
-        Radius1,
-        Pi,
-        R
-        );
+        //
+        // Now that the time of impact and reflection vector have been calculated, calculate the proper point of impact
+        //
+
+        // Calculate the position of the colliding circle at the point of impact
+        Vector2D Center0i = Center0s;
+        Center0i.x += (Center0s.x - Center0e.x) * ti;
+        Center0i.y += (Center0s.y - Center0e.y) * ti;
+        // Calculate the position of the colliding circle at the point of impact
+        Vector2D Center1i = Center1s;
+        Center1i.x += (Center1s.x - Center1e.x) * ti;
+        Center1i.y += (Center1s.y - Center1e.y) * ti;
+
+        // Halfway between the two center points at the time of impact
+        Pi.x = (Center0i.x + Center1i.x) * 0.5f;
+        Pi.y = (Center0i.y + Center1i.y) * 0.5f;
+    }
+    
 
     return ti;
 }

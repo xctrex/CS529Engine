@@ -91,6 +91,7 @@ namespace Framework
         if (e->m_Type == EVENT_TYPE_COLLISION)
         {
             RigidBody* collider = static_cast<CollisionEvent*>(e)->m_pCollidedWith;
+            float dt = static_cast<CollisionEvent*>(e)->m_FrameTime;
             // Whichever object is "lighter" will bounce, and the heavier object will be unaffected by the collision
             // This is not physically accurate, but allows us to establish a hierarchy of which objects bounce
             // and which ones don't (e.g., ship bounces off of both asteroids and walls, asteroids only bounce off walls,
@@ -98,7 +99,7 @@ namespace Framework
 
             Vector2D Pi;
             Vector2D R;
-            if (this->m_Weight < collider->m_Weight)
+            /*if (this->m_Weight < collider->m_Weight)
             {
                 ReflectAnimatedCircleOnAnimatedCircle(
                     this->m_PreviousPosition,
@@ -115,19 +116,19 @@ namespace Framework
                 Vector2DAdd(this->m_pTransform->m_Position, Pi, R);
                 Vector2DNormalize(R, R);
                 Vector2DScale(this->m_Velocity, R, Vector2DLength(this->m_Velocity));
-            }
-            else if (this->m_Weight == collider->m_Weight)
+            }*/
+            if (this->m_Weight <= collider->m_Weight)
             {
                 // Need to calculate the original updated position from previous velocity because
                 // the current position might have already been modified by this collision
                 Vector2D thisNewPosition;
-                thisNewPosition.x = this->m_PreviousPosition.x + this->m_PreviousVelocity.x;
-                thisNewPosition.y = this->m_PreviousPosition.y + this->m_PreviousVelocity.y;
+                thisNewPosition.x = this->m_PreviousPosition.x + this->m_PreviousVelocity.x * dt;
+                thisNewPosition.y = this->m_PreviousPosition.y + this->m_PreviousVelocity.y * dt;
                 Vector2D colliderNewPosition;
-                colliderNewPosition.x = collider->m_PreviousPosition.x + collider->m_PreviousVelocity.x;
-                colliderNewPosition.y = collider->m_PreviousPosition.y + collider->m_PreviousVelocity.y;
+                colliderNewPosition.x = collider->m_PreviousPosition.x + collider->m_PreviousVelocity.x * dt;
+                colliderNewPosition.y = collider->m_PreviousPosition.y + collider->m_PreviousVelocity.y * dt;
 
-                ReflectAnimatedCircleOnAnimatedCircle(
+                float ti = ReflectAnimatedCircleOnAnimatedCircle(
                     this->m_PreviousPosition,
                     thisNewPosition,
                     this->m_Radius,
@@ -138,11 +139,18 @@ namespace Framework
                     R
                     );
 
+                // Get center position at time of impact
+                Vector2D CenterAtImpact = this->m_PreviousPosition;
+                CenterAtImpact.x += (this->m_PreviousPosition.x - thisNewPosition.x) * ti;
+                CenterAtImpact.y += (this->m_PreviousPosition.y - thisNewPosition.y) * ti;
                 // Update the position of this
-                Vector2DAdd(this->m_pTransform->m_Position, Pi, R);
+                Vector2DAdd(this->m_pTransform->m_Position, CenterAtImpact, R);
+
                 Vector2DNormalize(R, R);
-                Vector2DScale(this->m_Velocity, R, Vector2DLength(this->m_Velocity));
-            }     
+                Vector2DScale(this->m_Velocity, R, 
+                    Vector2DLength(this->m_Velocity) + Vector2DLength(collider->m_Velocity) * 0.5f
+                    );
+            }
         }
     }
 
