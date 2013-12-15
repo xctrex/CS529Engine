@@ -129,11 +129,11 @@ namespace Framework
             m_WindowsClassName.c_str(),
             "GameWindow",
             WS_OVERLAPPEDWINDOW,
-            CW_USEDEFAULT,
-            CW_USEDEFAULT,
-            CW_USEDEFAULT,
-            CW_USEDEFAULT,
-            NULL,
+            0,
+            0,
+            ClientWidth,
+            ClientHeight,
+            HWND_DESKTOP,
             NULL,
             hInstance,
             (LPVOID) NULL
@@ -161,8 +161,8 @@ namespace Framework
 			//If we get a quit message, broadcast it to all systems
 			if (msg.message == WM_QUIT)
 			{
-				/*MessageQuit q;
-				CORE->BroadcastMessage(&q);*/
+				QuitEvent q;
+				g_CORE->BroadcastEvent(&q);
 			}
 		}
     }
@@ -170,7 +170,7 @@ namespace Framework
     void WindowsSystem::ActivateWindow()
     {
         // Show the window
-        ShowWindow(hWnd, SW_SHOWMAXIMIZED);
+        ShowWindow(hWnd, SW_SHOW);
         // Send a WM_PAINT message to the window
         UpdateWindow(hWnd);
     }    

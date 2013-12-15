@@ -15,6 +15,11 @@ namespace Framework
     {
         m_Type = COMPONENT_TYPE_RIGID_BODY;
 
+        m_LineSegment.m_N = { 0.0f, 1.0f };
+        m_LineSegment.m_NdotP0 = 1.0f;
+        m_LineSegment.m_P0 = { 0.0f, 0.0f };
+        m_LineSegment.m_P1 = { 0.0f, 0.0f };
+
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
     };
 
@@ -48,6 +53,10 @@ namespace Framework
             {
                 m_Shape = SHAPE_SQUARE;
             }
+            else if (strcmp(txmlElement->Attribute("Shape"), "Line") == 0)
+            {
+                m_Shape = SHAPE_LINE;
+            }
             else
             {
                 ThrowErrorIf(true, "Shape not recognized");
@@ -60,6 +69,28 @@ namespace Framework
         if (txmlElement->Attribute("Weight"))
         {
             m_Weight = txmlElement->FloatAttribute("Weight");
+        }
+
+        // Line Segment initialization
+        tinyxml2::XMLElement* txmlLineSegmentElement = txmlElement->FirstChildElement("LineSegment");
+        if (txmlLineSegmentElement)
+        {
+            ThrowErrorIf(
+                (!txmlLineSegmentElement->Attribute("P0X")
+                || !txmlLineSegmentElement->Attribute("P0Y")
+                || !txmlLineSegmentElement->Attribute("P1X")
+                || !txmlLineSegmentElement->Attribute("P1Y")),
+               // || !txmlLineSegmentElement->Attribute("NX")
+                //|| !txmlLineSegmentElement->Attribute("NY")),
+                "Line Segment not fully defined in the xml."
+                );
+            m_LineSegment.m_P0.x = txmlLineSegmentElement->FloatAttribute("P0X");
+            m_LineSegment.m_P0.y = txmlLineSegmentElement->FloatAttribute("P0Y");
+            m_LineSegment.m_P1.x = txmlLineSegmentElement->FloatAttribute("P1X");
+            m_LineSegment.m_P1.y = txmlLineSegmentElement->FloatAttribute("P1Y");
+            //m_LineSegment.m_N.x = txmlLineSegmentElement->FloatAttribute("NX");
+            //m_LineSegment.m_N.y = txmlLineSegmentElement->FloatAttribute("NY");
+            //m_LineSegment.m_NdotP0 = Vector2DDotProduct(m_LineSegment.m_N, m_LineSegment.m_P0);
         }
 
         //================================================================
@@ -98,25 +129,7 @@ namespace Framework
             // and walls are unimpacted by collisions) If objects are equally weighted, both will bounce
 
             Vector2D Pi;
-            Vector2D R;
-            /*if (this->m_Weight < collider->m_Weight)
-            {
-                ReflectAnimatedCircleOnAnimatedCircle(
-                    this->m_PreviousPosition,
-                    this->m_pTransform->m_Position,
-                    this->m_Radius,
-                    collider->m_PreviousPosition,
-                    collider->m_pTransform->m_Position,
-                    collider->m_Radius,
-                    Pi,
-                    R
-                    );
-
-                // Update the position of this
-                Vector2DAdd(this->m_pTransform->m_Position, Pi, R);
-                Vector2DNormalize(R, R);
-                Vector2DScale(this->m_Velocity, R, Vector2DLength(this->m_Velocity));
-            }*/
+            Vector2D R;            
             if (this->m_Weight <= collider->m_Weight)
             {
                 // Need to calculate the original updated position from previous velocity because
@@ -128,16 +141,36 @@ namespace Framework
                 colliderNewPosition.x = collider->m_PreviousPosition.x + collider->m_PreviousVelocity.x * dt;
                 colliderNewPosition.y = collider->m_PreviousPosition.y + collider->m_PreviousVelocity.y * dt;
 
-                float ti = ReflectAnimatedCircleOnAnimatedCircle(
-                    this->m_PreviousPosition,
-                    thisNewPosition,
-                    this->m_Radius,
-                    collider->m_PreviousPosition,
-                    colliderNewPosition,
-                    collider->m_Radius,
-                    Pi,
-                    R
-                    );
+                float ti = 0.0f;
+                if (this->m_Shape == SHAPE_CIRCLE && collider->m_Shape == SHAPE_CIRCLE)
+                {
+                    ti = ReflectAnimatedCircleOnAnimatedCircle(
+                        this->m_PreviousPosition,
+                        thisNewPosition,
+                        this->m_Radius,
+                        collider->m_PreviousPosition,
+                        colliderNewPosition,
+                        collider->m_Radius,
+                        Pi,
+                        R
+                        );
+                }
+                else if (this->m_Shape == SHAPE_CIRCLE && collider->m_Shape == SHAPE_LINE)
+                {
+                    ti = ReflectAnimatedCircleOnStaticLineSegment(
+                        this->m_PreviousPosition,
+                        thisNewPosition,
+                        this->m_Radius,
+                        collider->m_LineSegment,
+                        Pi,
+                        R
+                        );
+                }
+                else if (this->m_Shape == SHAPE_LINE && collider->m_Shape == SHAPE_CIRCLE)
+                {
+                    // Ignore, only doing static lines for now
+                    return;
+                }
 
                 // Get center position at time of impact
                 Vector2D CenterAtImpact = this->m_PreviousPosition;
@@ -148,7 +181,7 @@ namespace Framework
 
                 Vector2DNormalize(R, R);
                 Vector2DScale(this->m_Velocity, R, 
-                    Vector2DLength(this->m_Velocity) + Vector2DLength(collider->m_Velocity) * 0.5f
+                    (Vector2DLength(this->m_Velocity) + Vector2DLength(collider->m_Velocity)) * 0.5f
                     );
             }
         }
@@ -187,10 +220,21 @@ namespace Framework
             {
                 // TODO: Don't ignore circle to square collision
             }
+            else if (body2->m_Shape == SHAPE_LINE)
+            {
+                return StaticCircleToStaticLineSegment(m_pTransform->m_Position, m_Radius, body2->m_LineSegment);
+            }
         }
         else if (m_Shape == SHAPE_SQUARE)
         {
             // TODO: don't ignore square to x collision
+        }
+        else if (m_Shape == SHAPE_LINE)
+        {
+            if (body2->m_Shape == SHAPE_CIRCLE)
+            {
+                return StaticCircleToStaticLineSegment(body2->m_pTransform->m_Position, body2->m_Radius, m_LineSegment);
+            }
         }
         return 0;
     }

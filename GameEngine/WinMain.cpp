@@ -19,11 +19,12 @@ Creation date: 10/1/2013
 using namespace Framework;
 
 // TODO: get computer's resolution
-const int ClientWidth = 1920;
-const int ClientHeight = 1080;
+const int ClientWidth = 1280;
+const int ClientHeight = 720;
 
 void LoadLevel(tinyxml2::XMLDocument* txmlDoc);
 //void MakeConnections(tinyxml2::XMLElement* txmlElement);
+std::vector<GameObject*> gameobjects;
 
 void LoadLevel(tinyxml2::XMLDocument* txmlDoc)
 {
@@ -39,10 +40,6 @@ void LoadLevel(tinyxml2::XMLDocument* txmlDoc)
             GameObject* pObj = new GameObject();
             pObj->Initialize(txmlElement);
         }
-        /*if (strcmp(txmlElement->Name(), "Textures") == 0)
-        {
-            MakeConnections(txmlElement);
-        }*/
         txmlElement = txmlElement->NextSiblingElement();
     }
 }

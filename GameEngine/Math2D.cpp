@@ -146,11 +146,31 @@ float StaticPointToStaticLineSegment(const Vector2D &P, LineSegment2D &LS)
     Vector2D n;
     Vector2D nHat;
     // Calculate L's edge vector and normal
-    Calculate_e_n_nHat(e, n, nHat, LS.mP0, LS.mP1);
+    Calculate_e_n_nHat(e, n, nHat, LS.m_P0, LS.m_P1);
 
-    return Vector2DDotProduct(nHat, P) - Vector2DDotProduct(nHat, LS.mP0);
+    return Vector2DDotProduct(nHat, P) - Vector2DDotProduct(nHat, LS.m_P0);
 }
 
+/*
+This function determines if a circle intersects with a line segment
+
+- Parameters
+- P:		The center of the circle
+- Radius:   The radius of the circle
+- LS:		The line segment
+
+- Returned value: 1 if they intersect, 0 otherwise
+*/
+int StaticCircleToStaticLineSegment(const Vector2D &CP, float Radius, LineSegment2D &LS)
+{
+    // Determine distance from center of circle to line
+    float d = StaticPointToStaticLineSegment(CP, LS);
+
+    if (-Radius <= d && d <= Radius)
+        return 1;
+    else
+        return 0;
+}
 
 /*
 This function checks whether an animated point is colliding with a line segment
@@ -176,7 +196,7 @@ float AnimatedPointToStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, L
     Vector2D temp;
 
     // Calculate L's edge vector and normal
-    Calculate_e_n_nHat(e, n, nHat, LS.mP0, LS.mP1);
+    Calculate_e_n_nHat(e, n, nHat, LS.m_P0, LS.m_P1);
     // Calculate the point's velocity
     Vector2DSub(v, Pe, Ps);
 
@@ -202,7 +222,7 @@ float AnimatedPointToStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, L
 
     // Calculate Pi
     // ti = ((n.P0 - n.Bs)/n.v)
-    ti = (Vector2DDotProduct(nHat, LS.mP0) - Vector2DDotProduct(nHat, Ps)) / Vector2DDotProduct(nHat, v);
+    ti = (Vector2DDotProduct(nHat, LS.m_P0) - Vector2DDotProduct(nHat, Ps)) / Vector2DDotProduct(nHat, v);
     
     // ti must be between 0 and 1 for a collision
     if(ti < 0 || ti > 1)
@@ -215,7 +235,7 @@ float AnimatedPointToStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, L
     
     // Two more tests for non-collision
     // Temp = Pi - P0
-    Vector2DSub(temp, Pi, LS.mP0);
+    Vector2DSub(temp, Pi, LS.m_P0);
     //(Pi - P0).(P1 - P0) < 0
     if(Vector2DDotProduct(temp, e) < 0)
     {
@@ -223,9 +243,9 @@ float AnimatedPointToStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, L
         return -1.0f;
     }
     // Temp = Pi - P1
-    Vector2DSub(temp, Pi, LS.mP1);
+    Vector2DSub(temp, Pi, LS.m_P1);
     // Flipping the direction of v from P1 - P0 to P0 - P1 (v itself is not needed anymore)
-    Vector2DSub(v, LS.mP0, LS.mP1);
+    Vector2DSub(v, LS.m_P0, LS.m_P1);
     //(Pi - P1).(P0 - P1) < 0
     if(Vector2DDotProduct(temp, v) < 0)
     {
@@ -260,7 +280,7 @@ float AnimatedCircleToStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, 
     Vector2D CPs; // start position of the point on the circle that is closest to LS
     Vector2D CPe; // end position of the point on the circle that is closest to LS
 
-    Calculate_e_n_nHat(e, n, nHat, LS.mP0, LS.mP1);
+    Calculate_e_n_nHat(e, n, nHat, LS.m_P0, LS.m_P1);
     
     // Determine which radius to use
     // D = -r when Ps is inside, r when Ps is outside
@@ -276,7 +296,7 @@ float AnimatedCircleToStaticLineSegment(const Vector2D &Ps, const Vector2D &Pe, 
     
     // Calculate the end position of CPs
     // CPe = CPs + Pe - Ps
-    Vector2DSub(CPe, LS.mP1, LS.mP0);
+    Vector2DSub(CPe, LS.m_P1, LS.m_P0);
     // Call AnimatedPointToStaticLineSegment
     return AnimatedPointToStaticLineSegment(CPs, CPe, LS, Pi);
     
@@ -306,7 +326,7 @@ float ReflectAnimatedPointOnStaticLineSegment(const Vector2D &Ps, const Vector2D
     Vector2D e, n, nHat, i, s, m, r, Pe_;
     float ti;
 
-    Calculate_e_n_nHat(e, n, nHat, LS.mP0, LS.mP1);
+    Calculate_e_n_nHat(e, n, nHat, LS.m_P0, LS.m_P1);
 
     ti = AnimatedPointToStaticLineSegment(Ps, Pe, LS, Pi);
     if (ti == -1.0f) return -1.0f;
@@ -354,7 +374,7 @@ float ReflectAnimatedCircleOnStaticLineSegment(const Vector2D &Ps, const Vector2
     Vector2D CPe; // end position of the point on the circle that is closest to LS
     float ret;
 
-    Calculate_e_n_nHat(e, n, nHat, LS.mP0, LS.mP1);
+    Calculate_e_n_nHat(e, n, nHat, LS.m_P0, LS.m_P1);
     
     // Determine which radius to use
     // D = -r when Ps is inside, r when Ps is outside

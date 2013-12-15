@@ -6,10 +6,10 @@
 
 typedef struct LineSegment2D
 {
-	Vector2D mP0;		// Point on the line
-	Vector2D mP1;		// Point on the line
-	Vector2D mN;		// Line's normal
-	float mNdotP0;		// To avoid computing it every time it's needed
+	Vector2D m_P0;		// Point on the line
+	Vector2D m_P1;		// Point on the line
+	Vector2D m_N;		// Line's normal
+	float m_NdotP0;		// To avoid computing it every time it's needed
 }LineSegment2D;
 
 

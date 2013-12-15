@@ -53,7 +53,70 @@
     Archetype="ShipArchetype"
 />
 
-
+<GameObject Name="LeftWall">
+    <Transform
+        PositionX="-630.0"
+        PositionY="0.0"
+    />
+    <RigidBody
+        Name="LeftWallRigidBody"
+        Shape="Line">
+        <LineSegment
+            P0X="-630.0"
+            P0Y="-360.0"
+            P1X="-630.0"
+            P1Y="360.0"
+        />
+    </RigidBody>
+</GameObject>
+<GameObject Name="RightWall">
+    <Transform
+        PositionX="630.0"
+        PositionY="0.0"
+    />
+    <RigidBody
+        Name="RightWallRigidBody"
+        Shape="Line">
+        <LineSegment
+            P0X="630.0"
+            P0Y="360.0"
+            P1X="630.0"
+            P1Y="-360.0"
+        />
+    </RigidBody>
+</GameObject>
+<GameObject Name="TopWall">
+    <Transform
+        PositionX="0.0"
+        PositionY="350.0"
+    />
+    <RigidBody
+        Name="TopWallRigidBody"
+        Shape="Line">
+        <LineSegment
+            P0X="-640.0"
+            P0Y="350.0"
+            P1X="640.0"
+            P1Y="350.0"
+        />
+    </RigidBody>
+</GameObject>
+<GameObject Name="BottomWall">
+    <Transform
+        PositionX="0.0"
+        PositionY="-300.0"
+    />
+    <RigidBody
+        Name="BottomWallRigidBody"
+        Shape="Line">
+        <LineSegment
+            P0X="640.0"
+            P0Y="-300.0"
+            P1X="-640.0"
+            P1Y="-300.0"
+        />
+    </RigidBody>
+</GameObject>
 
 <GameObject Name="StaticArchetypeSpriteObject">
     <Transform

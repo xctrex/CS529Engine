@@ -6,7 +6,8 @@
 enum SHAPE
 {
     SHAPE_CIRCLE,
-    SHAPE_SQUARE
+    SHAPE_SQUARE,
+    SHAPE_LINE
 };
 
 namespace Framework
@@ -39,6 +40,7 @@ namespace Framework
         float m_Weight;
         Vector2D m_PreviousPosition;
         Vector2D m_PreviousVelocity;
+        LineSegment2D m_LineSegment;
     };
 
 

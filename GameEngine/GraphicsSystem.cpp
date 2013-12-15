@@ -22,7 +22,9 @@ namespace Framework
     GraphicsSystem::GraphicsSystem(HWND hw, int w, int h) : 
 		m_HWnd(hw),
 		m_ScreenWidth(w),
-		m_ScreenHeight(h) 
+		m_ScreenHeight(h),
+        m_DPIX(96.0f),
+        m_DPIY(96.0f)
     {
         CoInitialize(NULL);
         m_TextureMap.clear();

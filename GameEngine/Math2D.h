@@ -66,6 +66,17 @@ This function determines the distance separating a point from a line
 */
 float StaticPointToStaticLineSegment(const Vector2D &P, LineSegment2D &LS);
 
+/*
+This function determines if a circle intersects with a line segment
+
+- Parameters
+- P:		The center of the circle
+- Radius:   The radius of the circle
+- LS:		The line segment
+
+- Returned value: 1 if they intersect, 0 otherwise
+*/
+int StaticCircleToStaticLineSegment(const Vector2D &CP, float Radius, LineSegment2D &LS);
 
 /*
 This function checks whether an animated point is colliding with a line segment
