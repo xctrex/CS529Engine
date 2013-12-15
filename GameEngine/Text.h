@@ -26,6 +26,7 @@ namespace Framework
         // TODO: implement the rest of the pure virtual functions
         virtual void OnEvent(Event* e){};
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc){};
+        virtual void Destroy(){};
     private:
         
         std::string m_TextContent;

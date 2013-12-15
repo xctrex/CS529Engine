@@ -98,7 +98,8 @@ namespace Framework
 
     GameObject::GameObject() :
         m_Name("DefaultGameObjectName"),
-        m_RecursionLevel(0)
+        m_RecursionLevel(0),
+        m_Cleanup(false)
     {
         m_ComponentVector.clear();
         m_UniqueID = GetUniqueIDFromString(m_Name); //TODO: All game objects that are not given a unique name will not have unique IDs
@@ -108,6 +109,15 @@ namespace Framework
 
     GameObject::~GameObject()
     {
+        
+    }
+
+    void GameObject::Destroy()
+    {
+        for (size_t i = 0; i < m_ComponentVector.size(); ++i)
+        {
+            m_ComponentVector[i].Destroy();
+        }
         g_GameObjectHandleTable[m_HandleIndex] = NULL;
     }
 
@@ -139,7 +149,7 @@ namespace Framework
         }
 
         tinyxml2::XMLElement* txmlGameObjectElement = txmlElement;
-        // Get the attributes and override values (UniqueID, Name, etc.)
+        // Get the attributes and override values (Name, etc.)
         if (txmlGameObjectElement->Attribute("Name"))
         {
             m_Name = txmlGameObjectElement->Attribute("Name");
@@ -174,7 +184,7 @@ namespace Framework
         // Send the event to each component
         for (size_t i = 0; i < m_ComponentVector.size(); ++i)
         {
-            m_ComponentVector[i].ToObject()->OnEvent(e);
+            m_ComponentVector[i].ToComponent()->OnEvent(e);
         }
     }
 
@@ -182,8 +192,11 @@ namespace Framework
     {
         for (size_t i = 0; i < m_ComponentVector.size(); ++i)
         {
-            if (m_ComponentVector[i].ToObject()->m_Type == type)
-                return m_ComponentVector[i].ToObject();
+            if (m_ComponentVector[i].ToComponent())
+            {            
+                if (m_ComponentVector[i].ToComponent()->m_Type == type)
+                    return m_ComponentVector[i].ToComponent();
+            }
         }
         return NULL;
     }

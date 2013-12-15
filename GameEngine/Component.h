@@ -35,6 +35,7 @@ namespace Framework
         virtual void Initialize(tinyxml2::XMLElement* txmlElement) = 0;
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc) = 0;
         virtual void OnEvent(Event* e) = 0;
+        virtual void Destroy() = 0;
         ComponentID GetUniqueID(){ return m_UniqueID; }
         unsigned int GetHandleIndex(){ return m_HandleIndex; }
 
@@ -71,9 +72,9 @@ namespace Framework
         {}
 
         void Initialize(unsigned int index, ComponentID id);
-
+        void Destroy();
         // This function dereferences the handle
-        Component* ToObject() const;
+        Component* ToComponent() const;
 
     private:
         unsigned int m_HandleIndex;

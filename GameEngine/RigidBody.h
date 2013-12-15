@@ -7,7 +7,9 @@ enum SHAPE
 {
     SHAPE_CIRCLE,
     SHAPE_SQUARE,
-    SHAPE_LINE
+    SHAPE_LINE,
+    SHAPE_SPOON,
+    SHAPE_SHIP
 };
 
 namespace Framework
@@ -26,10 +28,17 @@ namespace Framework
         
         // TODO: implement the rest of the pure virtual functions
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc){};
+        virtual void Destroy();
 
         void Accelerate(float accel, float dt);
         void UpdatePosition(float dt);
         int CollidesWith(RigidBody* body2);
+
+        void SetPosition(float x, float y) { m_pTransform->m_Position.x = x; m_pTransform->m_Position.y = y; }
+        void SetRotation(float rot) { m_pTransform->m_Rotation = rot; }
+        void SetVelocity(float x, float y) { m_Velocity.x = x; m_Velocity.y = y; }
+        void SetPreviousPosition(float x, float y) { m_PreviousPosition.x = x; m_PreviousPosition.y = y; }
+        void SetPreviousVelocity(float x, float y) { m_PreviousVelocity.x = x; m_PreviousVelocity.y = y; }
     private:
 
         

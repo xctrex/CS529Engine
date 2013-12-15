@@ -82,6 +82,7 @@ namespace Framework
     bool IsDownHeld();
     bool IsLeftHeld();
     bool IsRightHeld();
+    bool IsSpaceHeld();
 
     extern WindowsSystem* g_WINDOWSSYSTEM;
 }

@@ -21,21 +21,17 @@ namespace Framework
     };
     Sprite::~Sprite() 
     {
+        
+    };
+    void Sprite::Destroy()
+    {
+        g_GRAPHICS->m_SpriteList.remove(this);
         if (m_pSRV) // TODO: what if more than one sprite has the same SRV?
         {
             m_pSRV->Release();
+            m_pSRV = NULL;
         }
-
-        // Only free the transform if it does not belong to the parent of the sprite
-        Transform* pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
-        if (pTransform == NULL)
-        {
-            if (m_pTransform)
-            {
-                free(m_pTransform);
-            }
-        }
-    };
+    }
 
     void Sprite::Initialize(tinyxml2::XMLElement *txmlElement)
     {

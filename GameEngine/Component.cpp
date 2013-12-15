@@ -75,8 +75,15 @@ namespace Framework
         m_HandleIndex = index;
         m_UniqueID = id;
     }
+    
+    void ComponentHandle::Destroy()
+    {
+        g_ComponentHandleTable[m_HandleIndex]->Destroy();
+        delete g_ComponentHandleTable[m_HandleIndex];
+        g_ComponentHandleTable[m_HandleIndex] = NULL;        
+    }
 
-    Component* ComponentHandle::ToObject() const
+    Component* ComponentHandle::ToComponent() const
     {
         Component* pObject = g_ComponentHandleTable[m_HandleIndex];
         if (pObject != NULL

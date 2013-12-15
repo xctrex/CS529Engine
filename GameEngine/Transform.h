@@ -19,6 +19,7 @@ namespace Framework
         virtual void Initialize(tinyxml2::XMLElement* txmlElement);
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc) {};
         virtual void OnEvent(Event* e){};
+        virtual void Destroy(){};
 
         Vector2D m_Position;
         float m_Rotation;

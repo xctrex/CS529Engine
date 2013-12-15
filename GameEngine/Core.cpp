@@ -9,6 +9,7 @@ Author: Tommy Walton, t.walton, 130000812
 Creation date: 10/3/2013
 - End Header -----------------------------------------------------*/
 #include "Core.h"
+#include "GameObject.h"
 
 namespace Framework
 {
@@ -53,6 +54,9 @@ namespace Framework
             // Update every system and pass in the frame time
             for (size_t i = 0; i < m_Systems.size(); ++i)
                 m_Systems[i]->Update(dt);
+
+            // Cleanup unwanted objects
+            Cleanup();
         }
     }
 
@@ -65,5 +69,19 @@ namespace Framework
         // Iterate through each system and send the event
         for (unsigned i = 0; i < m_Systems.size(); ++i)
             m_Systems[i]->OnEvent(e);
+    }
+
+    void CoreEngine::AddToCleanupList(GameObject* pObj)
+    {
+        m_CleanupList.push_back(pObj);
+    }
+
+    void CoreEngine::Cleanup()
+    {
+        while (!m_CleanupList.empty())
+        {
+            m_CleanupList.back()->Destroy();
+            m_CleanupList.pop_back();
+        }
     }
 }

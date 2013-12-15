@@ -16,6 +16,9 @@ Creation date: 10/3/2013
 
 namespace Framework
 {
+    // Forward declaration of game object class
+    class GameObject;
+
     class CoreEngine
     {
     public:
@@ -30,10 +33,16 @@ namespace Framework
         void GameLoop();
         // Broadcasts an event to all systems
         void BroadcastEvent(Event* e);
-
+        // Adds an object to the cleanup list
+        void AddToCleanupList(GameObject* pObj);
+        // Deletes objects that should no longer exist
+        void Cleanup();
     private:
         // Tracks all the systems the game uses
         std::vector<ISystem*> m_Systems;
+        // List of objects that should be deleted at the end of the frame
+        std::list<GameObject*> m_CleanupList;
+
         // The last time the game was updated
         unsigned int LastTime;
         // True if the game is running, false otherwise

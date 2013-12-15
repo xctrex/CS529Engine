@@ -10,11 +10,13 @@
         Name="ShipRigidBody"
         Radius="32.0"
         Weight="1.0"
+        Shape="Ship"
     />
     <InputHandler
         AccelerationSpeed="1000.0"
         DeccelerationSpeed="-100.0"
         RotationSpeed="120.0"
+        BulletSpeed="100.0"
     />
     <Sprite
         Archetype="GingerbreadSpriteArchetype"
@@ -22,6 +24,29 @@
         Layer="1.0"
     />
 </ShipArchetype>
+<BulletArchetype Name="BulletArchetype"> 
+    <Transform
+        Name="BulletTransform"
+        PositionX="0.0"
+        PositionY="0.0"
+        Rotation="0.0"
+    />
+    <RigidBody
+        Name="BulletRigidBody"
+        Radius="5.0"
+        Weight="0.1"
+        Shape="Spoon"
+    />
+    <Sprite
+        Name="SpoonSprite"
+        TextureName="Spoon"
+        SpriteHeight="150.0"
+        SpriteWidth="150.0"
+        ScaleX="0.1"
+        ScaleY="0.1"
+        SpriteRotation="-90.0"
+    />
+</BulletArchetype>
 
 <CheerioAsteroidArchetype Name="CheerioAsteroidArchetype">
     <Transform

@@ -42,6 +42,7 @@ namespace Framework
 
         void Initialize(tinyxml2::XMLElement* txmlElement);
         void Serialize(tinyxml2::XMLDocument* txmlDoc);
+        void Destroy();
 
         // Event will be passed to each component in this composition
         void OnEvent(Event* e);
@@ -51,6 +52,7 @@ namespace Framework
         // Get the component if it exists, otherwise return NULL
         Component* GetComponent(COMPONENT_TYPE type);
         ComponentHandle GameObject::CreateComponent(tinyxml2::XMLElement* txmlElement);
+        bool m_Cleanup;
     private:
         GameObjectID m_UniqueID;
         unsigned int m_HandleIndex;

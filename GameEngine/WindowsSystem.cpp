@@ -179,4 +179,5 @@ namespace Framework
     bool IsDownHeld(){ return GetKeyState(VK_DOWN) < 0; }
     bool IsLeftHeld(){ return GetKeyState(VK_LEFT) < 0; }
     bool IsRightHeld(){ return GetKeyState(VK_RIGHT) < 0; }
+    bool IsSpaceHeld(){ return GetKeyState(VK_SPACE) < 0; }
 }

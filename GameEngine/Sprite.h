@@ -25,6 +25,7 @@ namespace Framework
         // TODO: implement the rest of the pure virtual functions
         virtual void OnEvent(Event* e){};
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc){};
+        virtual void Destroy();
     private:
         ComPtr<ID3D11ShaderResourceView> m_spSRV;
         ID3D11ShaderResourceView *m_pSRV;

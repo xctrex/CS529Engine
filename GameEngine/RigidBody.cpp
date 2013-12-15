@@ -35,6 +35,10 @@ namespace Framework
             }
         }
     };
+    void RigidBody::Destroy()
+    {
+        g_PHYSICS->m_RigidBodyList.remove(this);
+    };
 
     void RigidBody::Initialize(tinyxml2::XMLElement *txmlElement)
     {
@@ -56,6 +60,14 @@ namespace Framework
             else if (strcmp(txmlElement->Attribute("Shape"), "Line") == 0)
             {
                 m_Shape = SHAPE_LINE;
+            }
+            else if (strcmp(txmlElement->Attribute("Shape"), "Spoon") == 0)
+            {
+                m_Shape = SHAPE_SPOON;
+            }
+            else if (strcmp(txmlElement->Attribute("Shape"), "Ship") == 0)
+            {
+                m_Shape = SHAPE_SHIP;
             }
             else
             {
@@ -122,12 +134,48 @@ namespace Framework
         if (e->m_Type == EVENT_TYPE_COLLISION)
         {
             RigidBody* collider = static_cast<CollisionEvent*>(e)->m_pCollidedWith;
-            float dt = static_cast<CollisionEvent*>(e)->m_FrameTime;
+
+            // Handle bullet collision logic
+            if (this->m_Shape == SHAPE_SPOON)
+            {
+                // If a bullet collides with an asteroid or wall, delete the bullet
+                if (collider->m_Shape == SHAPE_LINE || collider->m_Shape == SHAPE_CIRCLE)
+                {
+                    this->m_Parent->m_Cleanup = true;
+                    g_CORE->AddToCleanupList(this->m_Parent);
+                }
+                return;
+            }
+            // Handle Asteroid Collision logic
+            else if (this->m_Shape == SHAPE_CIRCLE)
+            {
+                // If this asteroid was hit by a bullet
+                if (collider->m_Shape == SHAPE_SPOON)
+                {
+                    // Damage asteroid
+                }
+            }
+            // Handle Ship Collision Logic
+            else if (this->m_Shape == SHAPE_SHIP)
+            {
+                // If this ship was hit by an asteroid
+                if (collider->m_Shape == SHAPE_CIRCLE)
+                {
+                    // Damage ship
+                }
+            }
+            // Handle Line collision logic
+            else if (this->m_Shape == SHAPE_LINE)
+            {
+                // Lines don't need to do anything
+                return;
+            }
+
             // Whichever object is "lighter" will bounce, and the heavier object will be unaffected by the collision
             // This is not physically accurate, but allows us to establish a hierarchy of which objects bounce
             // and which ones don't (e.g., ship bounces off of both asteroids and walls, asteroids only bounce off walls,
             // and walls are unimpacted by collisions) If objects are equally weighted, both will bounce
-
+            float dt = static_cast<CollisionEvent*>(e)->m_FrameTime;
             Vector2D Pi;
             Vector2D R;            
             if (this->m_Weight <= collider->m_Weight)
@@ -142,7 +190,9 @@ namespace Framework
                 colliderNewPosition.y = collider->m_PreviousPosition.y + collider->m_PreviousVelocity.y * dt;
 
                 float ti = 0.0f;
-                if (this->m_Shape == SHAPE_CIRCLE && collider->m_Shape == SHAPE_CIRCLE)
+                if (this->m_Shape == SHAPE_CIRCLE && collider->m_Shape == SHAPE_CIRCLE
+                    || this->m_Shape == SHAPE_CIRCLE && collider->m_Shape == SHAPE_SHIP
+                    || this->m_Shape == SHAPE_SHIP && collider->m_Shape == SHAPE_CIRCLE)
                 {
                     ti = ReflectAnimatedCircleOnAnimatedCircle(
                         this->m_PreviousPosition,
@@ -155,7 +205,8 @@ namespace Framework
                         R
                         );
                 }
-                else if (this->m_Shape == SHAPE_CIRCLE && collider->m_Shape == SHAPE_LINE)
+                else if (this->m_Shape == SHAPE_CIRCLE && collider->m_Shape == SHAPE_LINE
+                    || this->m_Shape == SHAPE_SHIP && collider->m_Shape == SHAPE_LINE)
                 {
                     ti = ReflectAnimatedCircleOnStaticLineSegment(
                         this->m_PreviousPosition,
@@ -165,11 +216,6 @@ namespace Framework
                         Pi,
                         R
                         );
-                }
-                else if (this->m_Shape == SHAPE_LINE && collider->m_Shape == SHAPE_CIRCLE)
-                {
-                    // Ignore, only doing static lines for now
-                    return;
                 }
 
                 // Get center position at time of impact
@@ -212,28 +258,42 @@ namespace Framework
     {
         if (m_Shape == SHAPE_CIRCLE)
         {
-            if (body2->m_Shape == SHAPE_CIRCLE)
+            if (body2->m_Shape == SHAPE_CIRCLE || body2->m_Shape == SHAPE_SHIP || body2->m_Shape == SHAPE_SPOON)
             {
                 return StaticCircleToStaticCircle(m_pTransform->m_Position, m_Radius, body2->m_pTransform->m_Position, body2->m_Radius);
-            }
-            else if (body2->m_Shape == SHAPE_SQUARE)
-            {
-                // TODO: Don't ignore circle to square collision
             }
             else if (body2->m_Shape == SHAPE_LINE)
             {
                 return StaticCircleToStaticLineSegment(m_pTransform->m_Position, m_Radius, body2->m_LineSegment);
             }
         }
-        else if (m_Shape == SHAPE_SQUARE)
-        {
-            // TODO: don't ignore square to x collision
-        }
         else if (m_Shape == SHAPE_LINE)
+        {
+            if (body2->m_Shape == SHAPE_CIRCLE || body2->m_Shape == SHAPE_SHIP || body2->m_Shape == SHAPE_SPOON)
+            {
+                return StaticCircleToStaticLineSegment(body2->m_pTransform->m_Position, body2->m_Radius, m_LineSegment);
+            }
+        }
+        else if (m_Shape == SHAPE_SPOON)
         {
             if (body2->m_Shape == SHAPE_CIRCLE)
             {
-                return StaticCircleToStaticLineSegment(body2->m_pTransform->m_Position, body2->m_Radius, m_LineSegment);
+                return StaticCircleToStaticCircle(m_pTransform->m_Position, m_Radius, body2->m_pTransform->m_Position, body2->m_Radius);
+            }
+            else if (body2->m_Shape == SHAPE_LINE)
+            {
+                return StaticCircleToStaticLineSegment(m_pTransform->m_Position, m_Radius, body2->m_LineSegment);
+            }
+        }
+        else if (m_Shape == SHAPE_SHIP)
+        {
+            if (body2->m_Shape == SHAPE_CIRCLE)
+            {
+                return StaticCircleToStaticCircle(m_pTransform->m_Position, m_Radius, body2->m_pTransform->m_Position, body2->m_Radius);
+            }
+            else if (body2->m_Shape == SHAPE_LINE)
+            {
+                return StaticCircleToStaticLineSegment(m_pTransform->m_Position, m_Radius, body2->m_LineSegment);
             }
         }
         return 0;
