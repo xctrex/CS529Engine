@@ -31,5 +31,6 @@ namespace Framework
     private:
         int m_CurrentState;
         int m_NumAsteroids;
+        int m_NumClicks;
     };
 }

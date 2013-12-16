@@ -17,7 +17,8 @@ namespace Framework
 {
     GameStateManager::GameStateManager() :
         m_CurrentState(100),
-        m_NumAsteroids(100)
+        m_NumAsteroids(100),
+        m_NumClicks(10)
     {
         m_Type = COMPONENT_TYPE_GAME_STATE_MANAGER;
 
@@ -35,7 +36,10 @@ namespace Framework
         {
             m_NumAsteroids = txmlElement->IntAttribute("NumAsteroids");
         }
-
+        if (txmlElement->Attribute("NumClicks"))
+        {
+            m_NumClicks = txmlElement->IntAttribute("NumClicks");
+        }
         if(m_RecursionLevel == 0)
         {
             g_LOGIC->m_hGameStateManager.Initialize(this->GetHandleIndex(), this->GetUniqueID());
@@ -52,11 +56,25 @@ namespace Framework
                 // GameOver
                 g_CORE->m_GameActive = false;
                 g_GRAPHICS->m_ShowLose = true;
+                m_NumClicks = 1;
             }
             else if (pODE->m_ObjectType == OBJECT_TYPE_ASTEROID)
             {
                 --m_NumAsteroids;
                 if (m_NumAsteroids <= 0)
+                {
+                    // Win level
+                    g_CORE->m_GameActive = false;
+                }
+            }
+        }
+        else if(e->m_EventType == EVENT_TYPE_MOUSE_BUTTON)
+        {
+            MouseButtonEvent* pMBE = static_cast<MouseButtonEvent*>(e);
+            if(!pMBE->m_IsPressed && pMBE->m_MouseButtonIndex == MouseButtonEvent::RightMouse)
+            {
+                --m_NumClicks;
+                if(m_NumClicks <= 0)
                 {
                     // Win level
                     g_CORE->m_GameActive = false;

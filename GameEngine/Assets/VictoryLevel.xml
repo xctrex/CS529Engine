@@ -39,7 +39,12 @@
         Name="Controls"
         Path="Assets\controls.png"
     />
+	<Texture
+		Name="InBetweenLevel"
+		Path="Assets\InBetweenLevel.png"
+	/>
 </Textures>
+
 <Screens>
     <WinScreenSprite>
         <Transform
@@ -48,7 +53,7 @@
             PositionY="0.0"
         />
         <Sprite
-            Name="WinScreenSprite"
+            Name="WinScreenSpriteArchetype"
             TextureName="Win"
             SpriteHeight="720.0"
             SpriteWidth="1280.0"        
@@ -61,7 +66,7 @@
             PositionY="0.0"
         />
         <Sprite
-            Name="LoseScreenSprite"
+            Name="LoseScreenSpriteArchetype"
             TextureName="Lose"
             SpriteHeight="720.0"
             SpriteWidth="1280.0"        
@@ -74,7 +79,7 @@
             PositionY="0.0"
         />
         <Sprite
-            Name="ControlsScreenSprite"
+            Name="ControlsScreenSpriteArchetype"
             TextureName="Controls"
             SpriteHeight="720.0"
             SpriteWidth="1280.0"        
@@ -82,53 +87,27 @@
     </ControlsScreenSprite>
 </Screens>
 
-
 <GameObject Name="Manager">
     <GameStateManager
         Name="GameStateManager"
-		NumAsteroids="3"
+		NumClicks="1"
     />
+</GameObject>
+<GameObject Name="StaticScreenSprite">
+	<Transform
+		Name="StaticScreenSpriteTransform"
+		PositionX="0.0"
+		PositionY="0.0"
+	/>
+	<Sprite
+		Name="VictorySprite"
+		TextureName="Win"
+		SpriteHeight="720.0"
+		SpriteWidth="1280.0"        
+	/>
 </GameObject>
 
-<GameObject Archetype="CheerioAsteroidArchetype" Name="StaticCheerio">
-    <Transform    
-        PositionX="0.0"
-        PositionY="200.0"
-    />
-	<RigidBody
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
-		VelocityX="0.0"
-		VelocityY="0.0"
-	/>
-</GameObject>
-<GameObject Archetype="CocoPuffAsteroidArchetype" Name="StaticCocoPuff">
-    <Transform    
-        PositionX="0.0"
-        PositionY="-200.0"
-    />
-	<RigidBody
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
-		VelocityX="0.0"
-		VelocityY="0.0"
-	/>
-</GameObject>
-<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="StaticGoldenGraham">
-    <Transform    
-        PositionX="200.0"
-        PositionY="0.0"
-    />
-	<RigidBody
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
-		VelocityX="0.0"
-		VelocityY="0.0"
-	/>
-</GameObject>
+
 <GameObject 
     Archetype="ShipArchetype"
 />
@@ -140,7 +119,9 @@
     />
     <RigidBody
         Name="LeftWallRigidBody"
-        Shape="Line">
+        Shape="Line"
+		Weight="100.0"
+		>
         <LineSegment
             P0X="-640.0"
             P0Y="-360.0"
@@ -156,7 +137,9 @@
     />
     <RigidBody
         Name="RightWallRigidBody"
-        Shape="Line">
+        Shape="Line"
+		Weight="100.0"
+		>
         <LineSegment
             P0X="640.0"
             P0Y="360.0"
@@ -172,7 +155,9 @@
     />
     <RigidBody
         Name="TopWallRigidBody"
-        Shape="Line">
+        Shape="Line"
+		Weight="100.0"
+		>
         <LineSegment
             P0X="-640.0"
             P0Y="360.0"
@@ -188,7 +173,9 @@
     />
     <RigidBody
         Name="BottomWallRigidBody"
-        Shape="Line">
+        Shape="Line"
+		Weight="100.0"
+		>
         <LineSegment
             P0X="640.0"
             P0Y="-360.0"
