@@ -23,11 +23,12 @@ namespace Framework
         ~InputHandler() {};
         virtual void Initialize(tinyxml2::XMLElement* txmlElement);
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc){};
-        virtual void OnEvent(Event* e){};
+        virtual void OnEvent(Event* e);
         virtual void Destroy(){};
 
         void Update(float dt);
         void CreateBullet();
+        void CreateBomb(Vector2D &position);
     private:
         float m_AccelerationSpeed;
         float m_DeccelerationSpeed;
@@ -35,5 +36,6 @@ namespace Framework
         float m_BulletSpeed;
         ComponentHandle m_hTransform;
         RigidBody* m_pRigidBody;
+        int m_BombsLeft;
     };
 }

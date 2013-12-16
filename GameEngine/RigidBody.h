@@ -19,7 +19,8 @@ enum SHAPE
     SHAPE_SQUARE,
     SHAPE_LINE,
     SHAPE_SPOON,
-    SHAPE_SHIP
+    SHAPE_SHIP,
+    SHAPE_BOMB
 };
 
 enum ASTEROID_TYPE
@@ -70,6 +71,8 @@ namespace Framework
         Vector2D m_PreviousPosition;
         Vector2D m_PreviousVelocity;
         LineSegment2D m_LineSegment;
+        float m_BombSecondsLeft;
+        int m_BombsLeft;
     };
 
 

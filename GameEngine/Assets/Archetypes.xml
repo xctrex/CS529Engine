@@ -52,6 +52,29 @@
     />
 </BulletArchetype>
 
+<BombArchetype Name="BombArchetype"> 
+    <Transform
+        Name="BombTransform"
+        PositionX="0.0"
+        PositionY="0.0"
+        Rotation="0.0"
+		ScaleX="0.03125"
+		ScaleY="0.03125"
+    />
+    <RigidBody
+        Name="BombRigidBody"
+        Radius="5.0"
+        Weight="20"
+        Shape="Bomb"
+    />
+    <Sprite
+        Name="BombSprite"
+        TextureName="Cookie"
+        SpriteHeight="256.0"
+        SpriteWidth="256.0"
+    />
+</BombArchetype>
+
 <CheerioAsteroidArchetype Name="CheerioAsteroidArchetype">
     <Transform
         Name="CheerioTransform"

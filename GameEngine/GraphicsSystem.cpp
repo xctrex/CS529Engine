@@ -570,4 +570,14 @@ namespace Framework
 
         return WindowCoords;
     }
+
+    Vector2D GraphicsSystem::WindowCoordsToWorldCoords(Vector2D &WindowCoords)
+    {
+        Vector2D WorldCoords(0.0f, 0.0f);
+
+        WorldCoords.x =  WindowCoords.x - m_ScreenWidth / 2.0f;
+        WorldCoords.y = -WindowCoords.y  + m_ScreenHeight / 2.0f;
+
+        return WorldCoords;
+    }
 }

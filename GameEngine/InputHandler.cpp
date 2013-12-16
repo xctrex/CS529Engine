@@ -19,7 +19,8 @@ namespace Framework
         m_DeccelerationSpeed(-1.0f),
         m_RotationSpeed(60.0f),
         m_BulletSpeed(100.0f),
-        m_pRigidBody(NULL)
+        m_pRigidBody(NULL),
+        m_BombsLeft(2)
     { 
         m_Type = COMPONENT_TYPE_INPUT_HANDLER;
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
@@ -96,6 +97,19 @@ namespace Framework
             CreateBullet();
     }
 
+    void InputHandler::OnEvent(Event *e)
+    {
+        if(e->m_EventType == EVENT_TYPE_CHARACTER_KEY)
+        {
+            if(m_BombsLeft > 0)
+            {
+                CharacterKeyEvent* cke = static_cast<CharacterKeyEvent*>(e);
+                CreateBomb(cke->m_Position);
+                --m_BombsLeft;
+            }
+        }
+    }
+
     void InputHandler::CreateBullet()
     {
         // Create a new game object
@@ -134,5 +148,40 @@ namespace Framework
         Vector2DScale(velocity, velocity, m_BulletSpeed);
         pBody->SetVelocity(velocity.x, velocity.y);
         pBody->SetPreviousVelocity(velocity.x, velocity.y);
+    }
+
+    void InputHandler::CreateBomb(Vector2D &position)
+    {
+        // Create a new game object
+        GameObject* pObj = new GameObject();
+
+        // Open the Archetype doc to get the bullet archetype
+        tinyxml2::XMLDocument txmlDoc;
+        ThrowErrorIf(
+            tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Archetypes.xml"),
+            "Failed to load Assets\\Archetypes.xml"
+            );
+
+        tinyxml2::XMLElement* txmlRecursiveElement = txmlDoc.FirstChildElement();
+        bool foundArchetype = false;
+        while (txmlRecursiveElement)
+        {
+            if (strcmp("BombArchetype", txmlRecursiveElement->Name()) == 0)
+            {
+                pObj->Initialize(txmlRecursiveElement);
+                foundArchetype = true;
+                break;
+            }
+            txmlRecursiveElement = txmlRecursiveElement->NextSiblingElement();
+        }
+        ThrowErrorIf(!foundArchetype, "Failed to find the bomb archetype.");
+
+        // Override the bombs position based on the mouse location
+        RigidBody* pBody = static_cast<RigidBody*>(pObj->GetComponent(COMPONENT_TYPE_RIGID_BODY));
+        ThrowErrorIf(!pBody, "BombArchetype missing rigid body component.");
+        pBody->SetPosition(position.x, position.y);
+        pBody->SetPreviousPosition(position.x, position.y);
+        pBody->SetVelocity(0.0f, 0.0f);
+        pBody->SetPreviousVelocity(0.0f, 0.0f);
     }
 }

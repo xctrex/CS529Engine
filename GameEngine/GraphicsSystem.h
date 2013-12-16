@@ -63,6 +63,7 @@ namespace Framework
         void DrawDebug();
 
         Vector2D WorldCoordsToWindowCoords(Vector2D &WorldCoords);
+        Vector2D WindowCoordsToWorldCoords(Vector2D &WindowCoords);
 
         std::list<ComponentHandle> m_SpriteList;
         GameObject* m_pControlsSprite;

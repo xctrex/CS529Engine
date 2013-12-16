@@ -85,8 +85,10 @@ namespace Framework
     class CharacterKeyEvent : public Event
     {
     public:
-        CharacterKeyEvent() : Event(EVENT_TYPE_CHARACTER_KEY) {};
+        CharacterKeyEvent(Vector2D pos) : Event(EVENT_TYPE_CHARACTER_KEY),
+        m_Position(pos){};
         int m_Character;
+        Vector2D m_Position;
     };
 
     // Event signaling that a mouse button state has changed
