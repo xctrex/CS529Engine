@@ -1,3 +1,13 @@
+/* Start Header -------------------------------------------------------
+Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
+File Name: GameObject.cpp
+Purpose: Implementation file for base game object class
+Language: C++
+Platform: Windows
+Project: CS529_twalton_FinalProject
+Author: Tommy Walton, t.walton, 130000812
+Creation date: 12/15/2013
+- End Header -----------------------------------------------------*/
 #include "GameObject.h"
 
 namespace Framework
@@ -176,8 +186,6 @@ namespace Framework
             m_UniqueID = GetUniqueIDFromString(m_Name);
         }
 
-
-        // TODO: override component attributes instead of adding new components in the case that the component already exists
         // For each child, create a component and add it to the object
         txmlGameObjectElement = txmlGameObjectElement->FirstChildElement();
         while (txmlGameObjectElement != NULL)
@@ -187,7 +195,7 @@ namespace Framework
             // If ComponentVector already has a component of that type, override that components attributes
             if (component)
             {
-                //TODO: see if this calls the correct initialize function, or if I need to cast to the derived type
+                // Override attributes with another initialization call
                 component->Initialize(txmlGameObjectElement);
             }
             // Otherwise, add a new component

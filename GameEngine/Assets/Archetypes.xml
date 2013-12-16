@@ -116,8 +116,6 @@
 <SmallSpriteArchetype
     Name="SmallSpriteArchetype"
     TextureName="Default"
-    SpriteHeight="256.0"
-    SpriteWidth="256.0"
     ScaleX="0.25"
     ScaleY="0.25"
 />

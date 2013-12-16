@@ -46,6 +46,9 @@
     <Filter Include="Systems\Physics">
       <UniqueIdentifier>{152ac596-4c68-4db6-ae3a-b0272f3b9d38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Assets">
+      <UniqueIdentifier>{6f20f95c-6df0-40e7-bfc8-6df08c1838f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -205,22 +208,79 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\bluespoon.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Character Boy.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Character Boy3.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\cheerio.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Circle.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\cocopuff.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Controls.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
     <Image Include="Assets\Default.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Assets</Filter>
     </Image>
     <Image Include="Assets\Default2.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\gingerbread.png">
+      <Filter>Resource Files\Assets</Filter>
     </Image>
     <Image Include="Assets\golden_graham.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\goldengraham.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Lose.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Spoon.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\TheExplosion.png">
+      <Filter>Resource Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\Win.png">
+      <Filter>Resource Files\Assets</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="Assets\Archetypes.xml">
+      <Filter>Resource Files\Assets</Filter>
+    </Xml>
     <Xml Include="Assets\Level0.xml">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Assets</Filter>
+    </Xml>
+    <Xml Include="Assets\Level1.xml">
+      <Filter>Resource Files\Assets</Filter>
+    </Xml>
+    <Xml Include="Assets\Level2.xml">
+      <Filter>Resource Files\Assets</Filter>
+    </Xml>
+    <Xml Include="Assets\Level3.xml">
+      <Filter>Resource Files\Assets</Filter>
+    </Xml>
+    <Xml Include="Assets\Level4.xml">
+      <Filter>Resource Files\Assets</Filter>
+    </Xml>
+    <Xml Include="Assets\LevelList.xml">
+      <Filter>Resource Files\Assets</Filter>
     </Xml>
     <Xml Include="Assets\Textures.xml">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Assets</Filter>
     </Xml>
   </ItemGroup>
 </Project>

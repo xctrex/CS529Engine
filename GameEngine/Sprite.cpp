@@ -1,3 +1,13 @@
+/* Start Header -------------------------------------------------------
+Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
+File Name: Sprite.cpp
+Purpose: Implementation file for sprite component
+Language: C++
+Platform: Windows
+Project: CS529_twalton_FinalProject
+Author: Tommy Walton, t.walton, 130000812
+Creation date: 12/15/2013
+- End Header -----------------------------------------------------*/
 #include "Sprite.h"
 #include "Transform.h"
 #include "GraphicsSystem.h"
@@ -25,11 +35,7 @@ namespace Framework
     };
     void Sprite::Destroy()
     {
-        g_GRAPHICS->m_SpriteList.remove(this);
-        if (m_pSRV) // TODO: what if more than one sprite has the same SRV?
-        {
-            m_pSRV = NULL;
-        }
+        g_GRAPHICS->m_SpriteList.remove(ComponentHandle(*this));
     }
 
     void Sprite::Initialize(tinyxml2::XMLElement *txmlElement)
@@ -89,7 +95,7 @@ namespace Framework
         {
             m_pSRV = g_GRAPHICS->GetTexture(m_TextureName);
             ThrowErrorIf(!m_pSRV, "Failed to get texture from GRAPHICS");
-            g_GRAPHICS->m_SpriteList.push_back(this);
+            g_GRAPHICS->m_SpriteList.push_back(ComponentHandle(*this));
         }
         else
         {

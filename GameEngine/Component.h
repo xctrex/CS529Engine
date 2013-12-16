@@ -1,3 +1,13 @@
+/* Start Header -------------------------------------------------------
+Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
+File Name: Component.h
+Purpose: Header file for base component class
+Language: C++
+Platform: Windows
+Project: CS529_twalton_FinalProject
+Author: Tommy Walton, t.walton, 130000812
+Creation date: 12/15/2013
+- End Header -----------------------------------------------------*/
 #pragma once
 #include "Precomp.h"
 #include "tinyXML2\tinyxml2.h"
@@ -75,6 +85,17 @@ namespace Framework
 
         void Initialize(unsigned int index, ComponentID id);
         void Destroy();
+
+        bool ComponentHandle::operator==(const ComponentHandle &rhs) const 
+        {
+            if(this->m_HandleIndex != rhs.m_HandleIndex
+                || this->m_UniqueID != rhs.m_UniqueID)
+            {
+                return false;
+            }
+            return true;
+        }
+
         // This function dereferences the handle
         Component* ToComponent() const;
 

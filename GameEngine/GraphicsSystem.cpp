@@ -1,6 +1,6 @@
 /* Start Header -------------------------------------------------------
 Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
-File Name: DirectX.h
+File Name: GraphicsSystem.cpp
 Purpose: Implementation file for graphics libraries
 Language: C++
 Platform: Windows
@@ -375,13 +375,7 @@ namespace Framework
     }
 
     void GraphicsSystem::LoadTextures(tinyxml2::XMLElement *txmlElement)
-    {
-        /*tinyxml2::XMLDocument txmlDoc;
-        ThrowErrorIf(
-            tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Textures.xml"), 
-            "Failed to load Assets\\Textures.xml"
-            );*/
-                
+    {                
         // Loop through all the textures and load each one
         tinyxml2::XMLElement* textureElement = txmlElement->FirstChildElement("Texture");
         while (textureElement != nullptr)
@@ -433,6 +427,7 @@ namespace Framework
 
     void GraphicsSystem::DrawSprites()
     {
+        // Display a controls screen
         if (m_ShowControls)
         {            
             Sprite* pSprite = static_cast<Sprite*>(m_pControlsSprite->GetComponent(COMPONENT_TYPE_SPRITE));
@@ -443,6 +438,7 @@ namespace Framework
                 m_spSpriteBatch->End();
             }
         }
+        // Display a "You Win" message
         else if (m_ShowWin)
         {            
             Sprite* pSprite = static_cast<Sprite*>(m_pWinSprite->GetComponent(COMPONENT_TYPE_SPRITE));
@@ -453,6 +449,7 @@ namespace Framework
                 m_spSpriteBatch->End();
             }
         }
+        // Display a game over screen
         else if (m_ShowLose)
         {
             Sprite* pSprite = static_cast<Sprite*>(m_pLoseSprite->GetComponent(COMPONENT_TYPE_SPRITE));
@@ -467,9 +464,9 @@ namespace Framework
         {
             m_spSpriteBatch->Begin();
             //Iterate through the link list of sprites
-            std::list<Sprite*>::iterator it = m_SpriteList.begin();
+            std::list<ComponentHandle>::iterator it = m_SpriteList.begin();
             for (; it != m_SpriteList.end(); ++it)
-                (*it)->Draw(m_spSpriteBatch);
+                static_cast<Sprite*>((*it).ToComponent())->Draw(m_spSpriteBatch);
 
             m_spSpriteBatch->End();
         }        
@@ -480,9 +477,9 @@ namespace Framework
         m_spD2DDeviceContext->BeginDraw();
 
         //Iterate through the linked list of sprites
-        std::list<Text>::iterator it = m_TextList.begin();
+        std::list<ComponentHandle>::iterator it = m_TextList.begin();
         for (; it != m_TextList.end(); ++it)
-            it->Draw(m_spD2DDeviceContext, m_spWhiteBrush, m_spDWriteFactory);
+            static_cast<Text*>(it->ToComponent())->Draw(m_spD2DDeviceContext, m_spWhiteBrush, m_spDWriteFactory);
 
         m_spD2DDeviceContext->EndDraw();
     }
@@ -492,9 +489,9 @@ namespace Framework
         m_spD2DDeviceContext->BeginDraw();
 
         // Iterate through the list of sprites and draw the debug info for each one
-        std::list<Sprite*>::iterator it = m_SpriteList.begin();
+        std::list<ComponentHandle>::iterator it = m_SpriteList.begin();
         for (; it != m_SpriteList.end(); ++it)
-            (*it)->DrawDebug(m_spD2DDeviceContext, m_spDebugBrush);
+            static_cast<Sprite*>((*it).ToComponent())->DrawDebug(m_spD2DDeviceContext, m_spDebugBrush);
 
         DXThrowIfFailed(
             m_spD2DDeviceContext->EndDraw()
@@ -505,7 +502,7 @@ namespace Framework
 	{
         m_spD3DDeviceContext->OMSetRenderTargets(1, m_spD3DRenderTargetView.GetAddressOf(), m_spD3DDepthStencilView.Get());
 		HRESULT hr = S_OK;
-        const float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        const float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
         m_spD3DDeviceContext->ClearRenderTargetView(
 			m_spD3DRenderTargetView.Get(),
             clearColor

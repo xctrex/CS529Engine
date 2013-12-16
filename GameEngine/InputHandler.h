@@ -1,3 +1,13 @@
+/* Start Header -------------------------------------------------------
+Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
+File Name: InputHandler.h
+Purpose: Header file for input handler component
+Language: C++
+Platform: Windows
+Project: CS529_twalton_FinalProject
+Author: Tommy Walton, t.walton, 130000812
+Creation date: 12/15/2013
+- End Header -----------------------------------------------------*/
 #pragma once
 
 #include "Component.h"
@@ -23,7 +33,7 @@ namespace Framework
         float m_DeccelerationSpeed;
         float m_RotationSpeed;
         float m_BulletSpeed;
-        Transform* m_pTransform;
+        ComponentHandle m_hTransform;
         RigidBody* m_pRigidBody;
     };
 }

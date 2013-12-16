@@ -43,7 +43,9 @@ namespace Framework
     void CoreEngine::DestroySystems()
     {
         for (size_t i = 0; i < m_Systems.size(); ++i)
+        {
             m_Systems[i]->Destroy();
+        }
     }
 
     // Update all the systems until the game is no longer active

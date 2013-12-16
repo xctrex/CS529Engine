@@ -1,3 +1,13 @@
+/* Start Header -------------------------------------------------------
+Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
+File Name: InputHanlder.cpp
+Purpose: Implementation file for input handler component
+Language: C++
+Platform: Windows
+Project: CS529_twalton_FinalProject
+Author: Tommy Walton, t.walton, 130000812
+Creation date: 12/15/2013
+- End Header -----------------------------------------------------*/
 #include "InputHandler.h"
 #include "WindowsSystem.h"
 #include "GameLogicSystem.h"
@@ -9,7 +19,6 @@ namespace Framework
         m_DeccelerationSpeed(-1.0f),
         m_RotationSpeed(60.0f),
         m_BulletSpeed(100.0f),
-        m_pTransform(NULL),
         m_pRigidBody(NULL)
     { 
         m_Type = COMPONENT_TYPE_INPUT_HANDLER;
@@ -20,13 +29,13 @@ namespace Framework
     {
         CommonComponentInitialization(txmlElement);
 
-        if (!m_pTransform)
+        if (!m_hTransform.ToComponent())
         {
             // Get the transform from the parent, otherwise throw
-            m_pTransform = static_cast<Transform*>(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM));
+            m_hTransform = ComponentHandle(*(m_Parent->GetComponent(COMPONENT_TYPE_TRANSFORM)));
 
             // TODO: Would be better to enforce this in the .xml rather than the code, but this will do for now
-            ThrowErrorIf(!m_pTransform, "Parent of an input handler component must have a transform");
+            ThrowErrorIf(!m_hTransform.ToComponent(), "Parent of an input handler component must have a transform");
         }
 
         if (!m_pRigidBody)
@@ -80,9 +89,9 @@ namespace Framework
             m_pRigidBody->Accelerate(m_DeccelerationSpeed, dt);
         }
         if (IsLeftHeld())
-            m_pTransform->m_Rotation += m_RotationSpeed * dt;
+            static_cast<Transform*>(m_hTransform.ToComponent())->m_Rotation += m_RotationSpeed * dt;
         if (IsRightHeld())
-            m_pTransform->m_Rotation -= m_RotationSpeed * dt;
+            static_cast<Transform*>(m_hTransform.ToComponent())->m_Rotation -= m_RotationSpeed * dt;
         if (IsSpaceHeld())
             CreateBullet();
     }
@@ -116,11 +125,12 @@ namespace Framework
         // Override the bullets position, velocity, and speed based on the current position, and direction of the ship
         RigidBody* pBody = static_cast<RigidBody*>(pObj->GetComponent(COMPONENT_TYPE_RIGID_BODY));
         ThrowErrorIf(!pBody, "BulletArchetype missing rigid body component.");
-        pBody->SetPosition(this->m_pTransform->m_Position.x, this->m_pTransform->m_Position.y);
-        pBody->SetPreviousPosition(this->m_pTransform->m_Position.x, this->m_pTransform->m_Position.y);
-        pBody->SetRotation(this->m_pTransform->m_Rotation);
+        ThrowErrorIf(!m_hTransform.ToComponent(), "BulletArchetype missing transformcomponent");
+        pBody->SetPosition(static_cast<Transform*>(m_hTransform.ToComponent())->m_Position.x, static_cast<Transform*>(m_hTransform.ToComponent())->m_Position.y);
+        pBody->SetPreviousPosition(static_cast<Transform*>(m_hTransform.ToComponent())->m_Position.x, static_cast<Transform*>(m_hTransform.ToComponent())->m_Position.y);
+        pBody->SetRotation(static_cast<Transform*>(m_hTransform.ToComponent())->m_Rotation);
         Vector2D velocity;
-        Vector2DFromAngleDeg(velocity, this->m_pTransform->m_Rotation);
+        Vector2DFromAngleDeg(velocity, static_cast<Transform*>(m_hTransform.ToComponent())->m_Rotation);
         Vector2DScale(velocity, velocity, m_BulletSpeed);
         pBody->SetVelocity(velocity.x, velocity.y);
         pBody->SetPreviousVelocity(velocity.x, velocity.y);

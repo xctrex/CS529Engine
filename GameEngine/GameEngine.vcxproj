@@ -128,12 +128,31 @@
     <ClInclude Include="WindowsSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\bluespoon.png" />
+    <Image Include="Assets\Character Boy.png" />
+    <Image Include="Assets\Character Boy3.png" />
+    <Image Include="Assets\cheerio.png" />
+    <Image Include="Assets\Circle.png" />
+    <Image Include="Assets\cocopuff.png" />
+    <Image Include="Assets\Controls.png" />
     <Image Include="Assets\Default.png" />
     <Image Include="Assets\Default2.png" />
+    <Image Include="Assets\gingerbread.png" />
+    <Image Include="Assets\goldengraham.png" />
     <Image Include="Assets\golden_graham.png" />
+    <Image Include="Assets\Lose.png" />
+    <Image Include="Assets\Spoon.png" />
+    <Image Include="Assets\TheExplosion.png" />
+    <Image Include="Assets\Win.png" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="Assets\Archetypes.xml" />
     <Xml Include="Assets\Level0.xml" />
+    <Xml Include="Assets\Level1.xml" />
+    <Xml Include="Assets\Level2.xml" />
+    <Xml Include="Assets\Level3.xml" />
+    <Xml Include="Assets\Level4.xml" />
+    <Xml Include="Assets\LevelList.xml" />
     <Xml Include="Assets\Textures.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

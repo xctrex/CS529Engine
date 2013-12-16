@@ -60,31 +60,19 @@ void LoadLevel(tinyxml2::XMLDocument* txmlDoc)
             g_GRAPHICS->m_pWinSprite = new GameObject();
             g_GRAPHICS->m_pWinSprite->Initialize(txmlElement->FirstChildElement("WinScreenSprite"));
             // Remove the sprite from the typical rendering list
-            g_GRAPHICS->m_SpriteList.remove(
-                static_cast<Sprite*>(
-                    g_GRAPHICS->m_pWinSprite->GetComponent(COMPONENT_TYPE_SPRITE)
-                    )
-                );
+            g_GRAPHICS->m_SpriteList.pop_back();
 
             // Create and initialize the sprite object
             g_GRAPHICS->m_pLoseSprite = new GameObject();
             g_GRAPHICS->m_pLoseSprite->Initialize(txmlElement->FirstChildElement("LoseScreenSprite"));
             // Remove the sprite from the typical rendering list
-            g_GRAPHICS->m_SpriteList.remove(
-                static_cast<Sprite*>(
-                g_GRAPHICS->m_pLoseSprite->GetComponent(COMPONENT_TYPE_SPRITE)
-                )
-                );
+            g_GRAPHICS->m_SpriteList.pop_back();
 
             // Create and initialize the sprite object
             g_GRAPHICS->m_pControlsSprite = new GameObject();
             g_GRAPHICS->m_pControlsSprite->Initialize(txmlElement->FirstChildElement("ControlsScreenSprite"));
             // Remove the sprite from the typical rendering list
-            g_GRAPHICS->m_SpriteList.remove(
-                static_cast<Sprite*>(
-                g_GRAPHICS->m_pControlsSprite->GetComponent(COMPONENT_TYPE_SPRITE)
-                )
-                );
+            g_GRAPHICS->m_SpriteList.pop_back();
         }
         else if (strcmp(txmlElement->Name(), "GameObject") == 0)
         {
@@ -180,7 +168,10 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //
     // Unload
     //
-
+    delete physics;
+    delete logic;
+    //delete graphics;
+    delete windows;
     // Delete the engine itself
     delete engine;
 

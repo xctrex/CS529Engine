@@ -1,4 +1,14 @@
-﻿#include "Text.h"
+﻿/* Start Header -------------------------------------------------------
+Copyright (C) 2013 DigiPen Institute of Technology. Reproduction or disclosure of this file or its contents without the prior written consent of DigiPen Institute of Technology is prohibited.
+File Name: Text.cpp
+Purpose: Implementation file for text component
+Language: C++
+Platform: Windows
+Project: CS529_twalton_FinalProject
+Author: Tommy Walton, t.walton, 130000812
+Creation date: 12/15/2013
+- End Header -----------------------------------------------------*/
+#include "Text.h"
 #include "Transform.h"
 #include "GraphicsSystem.h"
 #include <strsafe.h>
@@ -53,7 +63,7 @@ namespace Framework
 
         if (m_RecursionLevel == 0)
         {
-            g_GRAPHICS->m_TextList.push_back(*this);
+            g_GRAPHICS->m_TextList.push_back(ComponentHandle(*this));
         }
         else
         {

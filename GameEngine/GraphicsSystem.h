@@ -6,7 +6,7 @@ Language: C++
 Platform: Windows
 Project: CS529_twalton_FinalProject
 Author: Tommy Walton, t.walton, 130000812
-Creation date: 10/20/2013
+Creation date: 12/15/2013
 - End Header -----------------------------------------------------*/
 #pragma once
 
@@ -64,12 +64,13 @@ namespace Framework
 
         Vector2D WorldCoordsToWindowCoords(Vector2D &WorldCoords);
 
-        std::list<Sprite*> m_SpriteList;//TODO: investigate if we should use Sprite* here, allowing the sprites to be modified by something other than the graphics compononent
+        std::list<ComponentHandle> m_SpriteList;
         GameObject* m_pControlsSprite;
         GameObject* m_pWinSprite;
         GameObject* m_pLoseSprite;
+        GameObject* m_pHUDText;
         
-        std::list<Text> m_TextList;//TODO: investigate if we should use Text* here, 
+        std::list<ComponentHandle> m_TextList;
         bool m_DrawDebug;
         bool m_ShowWin;
         bool m_ShowLose;
