@@ -62,10 +62,6 @@
         Archetype="CheerioSpriteArchetype"
         Name="CheerioSprite"
     />
-    <RigidBody
-        Archetype="CircleAsteroidBodyArchetype"
-        Name="CheerioRigidBody"
-    />
     <Life
         Name="AsteroidLife"
         HP="100"
@@ -82,10 +78,6 @@
         Archetype="GoldenGrahamSpriteArchetype"
         Name="GoldenGrahamSprite"
     />
-    <RigidBody
-        Archetype="CircleAsteroidBodyArchetype"
-        Name="GoldenGrahamRigidBody"
-    />
     <Life
         Name="AsteroidLife"
         HP="100"
@@ -101,10 +93,6 @@
     <Sprite
         Archetype="CocoPuffSpriteArchetype"
         Name="CocoPuffSprite"
-    />
-    <RigidBody
-        Archetype="CircleAsteroidBodyArchetype"
-        Name="CocoPuffRigidBody"
     />
     <Life
         Name="AsteroidLife"

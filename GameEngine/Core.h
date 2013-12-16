@@ -39,6 +39,8 @@ namespace Framework
         void AddToCleanupList(GameObject* pObj);
         // Deletes objects that should no longer exist
         void Cleanup();
+        // True if the game is running, false otherwise
+        bool m_GameActive;
     private:
         // Tracks all the systems the game uses
         std::vector<ISystem*> m_Systems;
@@ -47,8 +49,6 @@ namespace Framework
 
         // The last time the game was updated
         unsigned int LastTime;
-        // True if the game is running, false otherwise
-        bool m_GameActive;
         // Timer class
         CoreTime time;
     };

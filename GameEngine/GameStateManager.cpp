@@ -1,5 +1,7 @@
 #include "GameStateManager.h"
+#include "Core.h"
 #include "GameLogicSystem.h"
+#include "GraphicsSystem.h"
 
 namespace Framework
 {
@@ -23,12 +25,11 @@ namespace Framework
         {
             m_NumAsteroids = txmlElement->IntAttribute("NumAsteroids");
         }
-        g_LOGIC->m_pGameStateManager = this;
-    }
 
-    void GameStateManager::Update(float dt)
-    {
-
+        if(m_RecursionLevel == 0)
+        {
+            g_LOGIC->m_hGameStateManager.Initialize(this->GetHandleIndex(), this->GetUniqueID());
+        }
     }
 
     void GameStateManager::OnEvent(Event* e)
@@ -39,6 +40,8 @@ namespace Framework
             if (pODE->m_ObjectType == OBJECT_TYPE_SHIP)
             {
                 // GameOver
+                g_CORE->m_GameActive = false;
+                g_GRAPHICS->m_ShowLose = true;
             }
             else if (pODE->m_ObjectType == OBJECT_TYPE_ASTEROID)
             {
@@ -46,6 +49,7 @@ namespace Framework
                 if (m_NumAsteroids <= 0)
                 {
                     // Win level
+                    g_CORE->m_GameActive = false;
                 }
             }
         }

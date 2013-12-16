@@ -125,7 +125,7 @@ namespace Framework
         hInstance = wcx.hInstance;
 
         // Create the game's window
-        hWnd = CreateWindow(
+        m_hWnd = CreateWindow(
             m_WindowsClassName.c_str(),
             "GameWindow",
             WS_OVERLAPPEDWINDOW,
@@ -170,9 +170,9 @@ namespace Framework
     void WindowsSystem::ActivateWindow()
     {
         // Show the window
-        ShowWindow(hWnd, SW_SHOW);
+        ShowWindow(m_hWnd, SW_SHOW);
         // Send a WM_PAINT message to the window
-        UpdateWindow(hWnd);
+        UpdateWindow(m_hWnd);
     }    
 
     bool IsUpHeld(){ return GetKeyState(VK_UP) < 0; }

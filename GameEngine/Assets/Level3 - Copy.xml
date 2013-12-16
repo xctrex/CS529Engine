@@ -82,26 +82,25 @@
     </ControlsScreenSprite>
 </Screens>
 
+<GameObject Archetype="CocoPuffAsteroidArchetype" Name="StaticCocoPuff">
+    <Transform    
+        PositionX="0.0"
+        PositionY="-100.0"
+    />
+</GameObject>
 
-<GameObject Name="Manager">
-    <GameStateManager
-        Name="GameStateManager"
-		NumAsteroids="1"
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="StaticGoldenGraham">
+    <Transform    
+        PositionX="450.0"
+        PositionY="100.0"
     />
 </GameObject>
 
 <GameObject Archetype="CheerioAsteroidArchetype" Name="StaticCheerio">
     <Transform    
-        PositionX="0.0"
-        PositionY="200.0"
+        PositionX="450.0"
+        PositionY="-100.0"
     />
-	<RigidBody
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
-		VelocityX="0.0"
-		VelocityY="0.0"
-	/>
 </GameObject>
 
 <GameObject 
@@ -171,4 +170,16 @@
             P1Y="-360.0"
         />
     </RigidBody>
+</GameObject>
+
+<GameObject Name="StaticJapaneseTextObject">
+    <Transform
+        PositionX="-400.0"
+        PositionY="0.0"
+    />
+    <Text
+        Name="StaticJapaneseText"
+        TextContent="I can even use different fonts."
+        Font="Segoe Print"
+    />
 </GameObject>

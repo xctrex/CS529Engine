@@ -19,6 +19,7 @@ namespace Framework
 
     void PhysicsSystem::Update(float dt)
     {
+
         std::list<RigidBody*>::iterator it = m_RigidBodyList.begin();
         for (; it != m_RigidBodyList.end(); ++it)
             (*it)->UpdatePosition(dt);

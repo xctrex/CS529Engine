@@ -80,8 +80,12 @@ namespace Framework
     {
         if (g_ComponentHandleTable[m_HandleIndex])
         {
+            // Call destroy on the component
             g_ComponentHandleTable[m_HandleIndex]->Destroy();
+            // Delete the point to the component
             delete g_ComponentHandleTable[m_HandleIndex];
+            // Set the value in the handle table to NULL
+            g_ComponentHandleTable[m_HandleIndex] = NULL;
         }
         g_ComponentHandleTable[m_HandleIndex] = NULL;        
     }

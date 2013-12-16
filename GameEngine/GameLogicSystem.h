@@ -11,6 +11,7 @@ namespace Framework
     public:
         GameLogicSystem();
         ~GameLogicSystem(){};
+        virtual void Destroy();
         virtual void Initialize() {};
         virtual void Update(float dt);
         virtual void OnEvent(Event* e);
@@ -18,7 +19,7 @@ namespace Framework
 
         // TODO: For now, only allow one input handler
         InputHandler* m_pInputHandler;
-        GameStateManager* m_pGameStateManager;
+        ComponentHandle m_hGameStateManager;
     };
 
     //A global pointer to the game logic so that it can be accessed from anywhere.

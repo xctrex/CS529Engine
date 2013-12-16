@@ -1,14 +1,15 @@
 ﻿#include "Text.h"
 #include "Transform.h"
 #include "GraphicsSystem.h"
+#include <strsafe.h>
 
 namespace Framework
 {
     Text::Text() :
         m_TextContent("DefaultText"),
         m_pTransform(NULL),
-        m_Rect({0.0f, 0.0f, 512.0f, 512.0f}),
-        m_Font("Gabriola")
+		m_Rect(D2D1::RectF(0.0f, 0.0f, 640.0f, 360.0f)),
+        m_Font("Segoe UI")
     {
         m_Type = COMPONENT_TYPE_TEXT;
         
@@ -60,21 +61,85 @@ namespace Framework
         }
     }
 
-    void Text::Draw(ComPtr<ID2D1DeviceContext1> sp_DeviceContext, ComPtr<ID2D1SolidColorBrush> sp_Brush, ComPtr<IDWriteFactory2> sp_DWriteFactory)
+    void Text::CreateFontFaceFromFontFile(ComPtr<IDWriteFactory1> &sp_DWriteFactory, ComPtr<IDWriteFontFace> &sp_FontFace)
     {
-        sp_DeviceContext->BeginDraw();
+        // Gets a filename from a application directory
+        UINT curDirLength = GetCurrentDirectory(
+            MAX_PATH,
+            "Assets"
+            );
+
+        ThrowErrorIf(curDirLength == 0, "Font Directory not found");
+        
+        DXThrowIfFailed(
+            StringCchCatW(
+                L"Assets",
+                MAX_PATH,
+                L"\\"
+                )
+            );
+
+        DXThrowIfFailed(
+            StringCchCatW(
+                L"Assets",
+                MAX_PATH,
+                (STRSAFE_LPCWSTR)m_Font.c_str()
+                )
+            );
+
+        ComPtr<IDWriteFontFile> sp_FontFile;
+        DXThrowIfFailed(
+            sp_DWriteFactory->CreateFontFileReference(
+                L"Assets",
+                NULL,
+                &sp_FontFile
+                )
+            );
+    
+        DXThrowIfFailed(
+            sp_DWriteFactory->CreateFontFace(
+                DWRITE_FONT_FACE_TYPE_TRUETYPE,
+                1, // file count
+                &sp_FontFile,
+                0,
+                DWRITE_FONT_SIMULATIONS_NONE,
+                &sp_FontFace
+                )
+            );
+    }
+
+
+    void Text::Draw(ComPtr<ID2D1DeviceContext> sp_DeviceContext, ComPtr<ID2D1SolidColorBrush> sp_Brush, ComPtr<IDWriteFactory1> sp_DWriteFactory)
+    {
         wchar_t content[512];
         swprintf(content, m_TextContent.length(), L"%hs", m_TextContent.c_str());
+        wchar_t font[512];
+        swprintf(font, m_TextContent.length(), L"%hs", m_Font.c_str());
         Vector2D WindowCoords = g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position);
 
         m_Rect.left = WindowCoords.x;
         m_Rect.top = WindowCoords.y;
+        /*
+        ComPtr<IDWriteFontFace> sp_FontFace;
+        CreateFontFaceFromFontFile(sp_DWriteFactory, sp_FontFace);
+        //sp_DWriteFactory->CreateFontFileReference(
+            ComPtr<IDWriteFontFile> ff;
+            ff->GetLoader(
 
+        
+        ComPtr<IDWriteFontCollection> sp_DWriteFontCollection;
+        sp_DWriteFactory->CreateCustomFontCollection(
+            sp_DWriteFontCollectionLoader,
+            key,
+            sizeof(collectionkeysize),
+            &sp_DWriteFontCollection
+            );
+        */
+        
         ComPtr<IDWriteTextFormat> sp_DWriteTextFormat;
-        if (strcmp(m_Font.c_str(), "Gabriola") == 0)
-        {
+        DXThrowIfFailed(
             sp_DWriteFactory->CreateTextFormat(
-                L"Gabriola",
+                font,
                 NULL,
                 DWRITE_FONT_WEIGHT_REGULAR,
                 DWRITE_FONT_STYLE_NORMAL,
@@ -82,25 +147,9 @@ namespace Framework
                 32.0f,
                 L"en-us",
                 &sp_DWriteTextFormat
-                );
-        }
-        else
-        {
-            // TODO: actually dynamically choose a font
-            sp_DWriteFactory->CreateTextFormat(
-                L"Brush Script Std",
-                NULL,
-                DWRITE_FONT_WEIGHT_REGULAR,
-                DWRITE_FONT_STYLE_NORMAL,
-                DWRITE_FONT_STRETCH_NORMAL,
-                32.0f,
-                L"en-us",
-                &sp_DWriteTextFormat
-                );
-           // swprintf(content, m_TextContent.length(), L"%hs", m_TextContent.c_str());
+            )
+        );
 
-            
-        }
         sp_DeviceContext->DrawTextA(
             content,
             m_TextContent.length(),
@@ -108,16 +157,15 @@ namespace Framework
             m_Rect,
             sp_Brush.Get()
             );
-        sp_DeviceContext->EndDraw();
 
+        DXThrowIfFailed(
+            sp_DeviceContext->EndDraw()
+            );
     }
-
 
     void Text::SetPosition(float x, float y)
     {
         m_pTransform->m_Position.x = x;
-        //m_Position.x = x;
         m_pTransform->m_Position.y = y;
-        //m_Position.y = y;
     }
 }

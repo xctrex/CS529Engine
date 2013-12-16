@@ -10,7 +10,7 @@ namespace Framework
         m_pSRV(NULL),
         m_TextureName("Default"),
         m_Color(Colors::White),
-        m_Origin({128.0f, 128.0f}),
+        m_Origin(128.0f, 128.0f),
         m_pTransform(NULL),
         m_Layer(0.0f),
         m_SpriteRotation(0.0f)
@@ -28,7 +28,6 @@ namespace Framework
         g_GRAPHICS->m_SpriteList.remove(this);
         if (m_pSRV) // TODO: what if more than one sprite has the same SRV?
         {
-            m_pSRV->Release();
             m_pSRV = NULL;
         }
     }
@@ -98,7 +97,7 @@ namespace Framework
         }
     }
 
-    void Sprite::Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch)
+	void Sprite::Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch)
     {
         //spSpriteBatch->Draw(m_pSRV, XMFLOAT2(0, 0));
         RECT srcRect;
@@ -117,31 +116,46 @@ namespace Framework
             m_pTransform->m_Scale,
             SpriteEffects::SpriteEffects_None,
             m_Layer
-            );
+            );        
+    }
 
-        if (IsSpaceHeld())
+    void Sprite::DrawDebug(ComPtr<ID2D1DeviceContext> &spD2DDeviceContext, ComPtr<ID2D1SolidColorBrush> &spSolidColorBrush)
+    {
+        RigidBody* pBody = static_cast<RigidBody*>(m_Parent->GetComponent(COMPONENT_TYPE_RIGID_BODY));
+        if (pBody && m_pTransform)
         {
-            RigidBody* pBody = static_cast<RigidBody*>(m_Parent->GetComponent(COMPONENT_TYPE_RIGID_BODY));
-            if (pBody && m_pTransform)
+            if (pBody->GetShape() == SHAPE_CIRCLE || pBody->GetShape() == SHAPE_SHIP || pBody->GetShape() == SHAPE_SPOON)
             {
-                if (pBody->GetShape() == SHAPE_CIRCLE || pBody->GetShape() == SHAPE_SHIP || pBody->GetShape() == SHAPE_SPOON)
-                {
-                    ID3D11ShaderResourceView* pSRV = g_GRAPHICS->GetTexture("Circle");
-                    ThrowErrorIf(!pSRV, "Failed to get circle texture from GRAPHICS");
-                    XMFLOAT2 origin = { 128.0f, 128.0f };
-                    float scale = pBody->GetRadius() / 128.0f;
-                    spSpriteBatch->Draw(
-                        pSRV,
-                        g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position),
-                        NULL,
-                        m_Color,
-                        0.0f,
-                        origin,
-                        m_pTransform->m_Scale,
-                        SpriteEffects::SpriteEffects_None,
-                        m_Layer
-                        );
-                }
+                // Draw a circle around the object
+                spD2DDeviceContext->DrawEllipse(
+                    D2D1::Ellipse(
+                        D2D1::Point2F(
+                            g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position).x,
+                            g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position).y
+                        ),
+                        pBody->GetRadius(),
+                        pBody->GetRadius()
+                    ),
+                    spSolidColorBrush.Get(),
+                    3.0f
+                    );
+
+				/*
+                ID3D11ShaderResourceView* pSRV = g_GRAPHICS->GetTexture("Circle");
+                ThrowErrorIf(!pSRV, "Failed to get circle texture from GRAPHICS");
+                Vector2D origin(128.0f, 128.0f);
+                float scale = pBody->GetRadius() / 128.0f;
+                spSpriteBatch->Draw(
+                    pSRV,
+                    g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position),
+                    NULL,
+                    m_Color,
+                    0.0f,
+                    origin,
+                    m_pTransform->m_Scale,
+                    SpriteEffects::SpriteEffects_None,
+                    m_Layer
+                    );*/
             }
         }
     }

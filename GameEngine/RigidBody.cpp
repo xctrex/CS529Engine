@@ -10,19 +10,19 @@ namespace Framework
 {
     RigidBody::RigidBody() :
         m_pTransform(NULL),
-        m_Velocity({0.0f, 0.0f}),
+        m_Velocity(0.0f, 0.0f),
         m_Shape(SHAPE_CIRCLE),
         m_Radius(0.0f),
         m_Weight(FLT_MAX),
         m_PreviousPosition(0.0f, 0.0f),
-        m_PreviousVelocity({0.0f, 0.0f})
+        m_PreviousVelocity(0.0f, 0.0f)
     {
         m_Type = COMPONENT_TYPE_RIGID_BODY;
 
-        m_LineSegment.m_N = { 0.0f, 1.0f };
+		m_LineSegment.m_N = Vector2D(0.0f, 1.0f);
         m_LineSegment.m_NdotP0 = 1.0f;
-        m_LineSegment.m_P0 = { 0.0f, 0.0f };
-        m_LineSegment.m_P1 = { 0.0f, 0.0f };
+        m_LineSegment.m_P0 = Vector2D(0.0f, 0.0f);
+        m_LineSegment.m_P1 = Vector2D(0.0f, 0.0f);
 
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
     };
@@ -89,6 +89,14 @@ namespace Framework
         if (txmlElement->Attribute("Weight"))
         {
             m_Weight = txmlElement->FloatAttribute("Weight");
+        }
+        if (txmlElement->Attribute("VelocityX"))
+        {
+            m_Velocity.x = txmlElement->FloatAttribute("VelocityX");
+        }
+        if (txmlElement->Attribute("VelocityY"))
+        {
+            m_Velocity.y = txmlElement->FloatAttribute("VelocityY");
         }
 
         // Line Segment initialization
@@ -247,7 +255,7 @@ namespace Framework
 
     void RigidBody::Accelerate(float accel, float dt)
     {
-        Vector2D directionVec = { 0.0f, 0.0f };
+        Vector2D directionVec(0.0f, 0.0f);
         
         if (m_pTransform)
         {

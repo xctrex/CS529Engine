@@ -13,11 +13,12 @@ Creation date: 10/20/2013
 #include "Engine.h"
 #include "WindowsIncludes.h"
 #include "Containers.h"
-#include <d3d11_2.h>
-#include <DirectXMath.h>
-#include <d2d1_2.h>
-#include <dwrite_2.h>
+
+#include <d3d11_1.h>
+#include <d2d1_1.h>
+#include <dwrite_1.h>
 #include <wincodec.h>
+#include <DirectXMath.h>
 
 #include "tinyXML2\tinyxml2.h"
 #include <WICTextureLoader.h>
@@ -53,11 +54,13 @@ namespace Framework
         virtual void OnEvent(Event* e);
         virtual std::string GetName() {return "Graphics";}
 
+        void LoadResources();
         void LoadTextures(tinyxml2::XMLElement* txmlElement);
         void LoadTexture(std::string TextureName, std::string TextureFilePath);
         ID3D11ShaderResourceView *GetTexture(std::string TextureName);
         void DrawSprites();
         void DrawText();
+        void DrawDebug();
 
         Vector2D WorldCoordsToWindowCoords(Vector2D &WorldCoords);
 
@@ -76,27 +79,40 @@ namespace Framework
     void CreateDeviceIndependentResources();
     void CreateDeviceResources();
     void CreateWindowSizeDependentResources();
+    void CreateBrushes();
 	
     // DXGI Resources
     ComPtr<IDXGISwapChain1> m_spSwapChain;
 
     // D3D Resources
-    ComPtr<ID3D11Device2> m_spD3DDevice;
-	ComPtr<ID3D11DeviceContext2> m_spD3DDeviceContext;
+	ComPtr<ID3D11Device1> m_spD3DDevice;
+	ComPtr<ID3D11DeviceContext1> m_spD3DDeviceContext;
 	ComPtr<ID3D11RenderTargetView> m_spD3DRenderTargetView;
     ComPtr<ID3D11DepthStencilView> m_spD3DDepthStencilView;
     D3D_FEATURE_LEVEL m_FeatureLevel;
 
     // D2D Resources
+	
+#ifdef WIN_8
     ComPtr<ID2D1Factory2> m_spD2DFactory;
     ComPtr<ID2D1Device1> m_spD2DDevice;
     ComPtr<ID2D1DeviceContext1> m_spD2DDeviceContext;
+#else
+	ComPtr<ID2D1Factory1> m_spD2DFactory;
+	ComPtr<ID2D1Device> m_spD2DDevice;
+	ComPtr<ID2D1DeviceContext> m_spD2DDeviceContext;
+#endif
     ComPtr<ID2D1RenderTarget> m_spD2DRenderTarget;
     ComPtr<ID2D1Bitmap1> m_spD2DTargetBitmap;
-    ComPtr<ID2D1SolidColorBrush> m_spBlackBrush;
+    ComPtr<ID2D1SolidColorBrush> m_spWhiteBrush;
+    ComPtr<ID2D1SolidColorBrush> m_spDebugBrush;
 
     // DWrite Resources
+#ifdef WIN_8
     ComPtr<IDWriteFactory2> m_spDWriteFactory;
+#else
+	ComPtr<IDWriteFactory1> m_spDWriteFactory;
+#endif
 
     // WIC Resources
     ComPtr<IWICImagingFactory2> m_spWICFactory;

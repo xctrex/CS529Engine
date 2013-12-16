@@ -452,7 +452,7 @@ float AnimatedPointToStaticCircle(const Vector2D &Ps, const Vector2D &Pe, const 
     ti0 = (-b - (float)sqrt(b * b - (4.0f * a * c))) / (2.0f * a);
     ti1 = (-b + (float)sqrt(b * b - (4.0f * a * c))) / (2.0f * a);
 
-    ti = (float)fmin(ti0, ti1);
+    ti = (ti0 < ti1 ? ti0 : ti1);
 
     if (ti > 1.0f)
         return -1.0f;

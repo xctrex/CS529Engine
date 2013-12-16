@@ -22,9 +22,28 @@ using namespace Framework;
 const int ClientWidth = 1280;
 const int ClientHeight = 720;
 
+void GetLevelList(std::vector<std::string> &LevelList);
 void LoadLevel(tinyxml2::XMLDocument* txmlDoc);
-//void MakeConnections(tinyxml2::XMLElement* txmlElement);
-std::vector<GameObject*> gameobjects;
+
+void GetLevelList(std::vector<std::string> &LevelList)
+{
+    // Open up the list of levels
+    tinyxml2::XMLDocument txmlDoc;
+
+    ThrowErrorIf(
+        tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\LevelList.xml"),
+        "Failed to load Assets\\LevelList.xml"
+        );
+    
+    tinyxml2::XMLElement* txmlElement = txmlDoc.FirstChildElement();
+    txmlElement = txmlElement->FirstChildElement("Level");
+    // Add each level to the list
+    while (txmlElement)
+    {
+        LevelList.push_back(txmlElement->Attribute("Path"));
+        txmlElement = txmlElement->NextSiblingElement();
+    }
+}
 
 void LoadLevel(tinyxml2::XMLDocument* txmlDoc)
 {
@@ -75,36 +94,29 @@ void LoadLevel(tinyxml2::XMLDocument* txmlDoc)
         txmlElement = txmlElement->NextSiblingElement();
     }
 }
-/*
-void MakeConnections(tinyxml2::XMLElement* txmlElement)
-{
-    // Loop through all the textures and load each one
-    tinyxml2::XMLElement* connectionElement = txmlElement->FirstChildElement("Connection");
-    while (connectionElement != nullptr)
-    {
-        if (strcmp(connectionElement->Attribute("SignalObject"), "WindowsSystem"))
-        {
-            if (strcmp(connectionElement->Attribute("SignalFunction"), "MoveUp"))
-            {
-
-            }
-        }
-        connectionElement = connectionElement->NextSiblingElement("Connection");
-    }
-}*/
 
 // Application entry point
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+    //
+    // Load (One time only setup goes here)
+    //
+
     // Create the core engine
     CoreEngine* engine = new CoreEngine();
 
     // Create the windows system
     WindowsSystem* windows = new WindowsSystem(ClientWidth, ClientHeight);
+    // Activate the window
+    windows->ActivateWindow();
+
 	// Create the graphics system
-	GraphicsSystem* graphics = new GraphicsSystem(windows->hWnd, ClientWidth, ClientHeight);
+	GraphicsSystem* graphics = new GraphicsSystem(windows->m_hWnd, ClientWidth, ClientHeight);
+    graphics->LoadResources();
+
     // Create the logic system
     GameLogicSystem* logic = new GameLogicSystem();
+
     // Create the physics system
     PhysicsSystem* physics = new PhysicsSystem();
 
@@ -114,36 +126,60 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     engine->AddSystem(logic);
     engine->AddSystem(physics);
 
-    // Initialize the engine and it's systems
-    engine->InitializeSystems();
 
-    tinyxml2::XMLDocument txmlDoc;
+    // Get a list of all the levels
+    std::vector<std::string> LevelList;
+    GetLevelList(LevelList);
+    
+    
 
-    ThrowErrorIf(
-        tinyxml2::XML_SUCCESS != txmlDoc.LoadFile("Assets\\Level0.xml"),
-        "Failed to load Assets\\Level0.xml"
-        );
-
-    LoadLevel(&txmlDoc);
-
-    // Activate the window
-    windows->ActivateWindow();
-
-    // Run the game
-    engine->GameLoop();
-
-    // Delete all the game objects
-    for (size_t i = 0; i < MAX_GAME_OBJECTS; ++i)
+    for(size_t level = 0; level < LevelList.size(); ++level)
     {
-        if (g_GameObjectHandleTable[i])
+        //
+        // Initialize
+        //
+
+        // Initialize the engine and it's systems
+        engine->InitializeSystems();
+
+        tinyxml2::XMLDocument txmlDoc;
+
+        ThrowErrorIf(
+            tinyxml2::XML_SUCCESS != txmlDoc.LoadFile(LevelList[level].c_str()),
+            "Failed to load Level"
+            );
+
+        LoadLevel(&txmlDoc);
+
+
+        //
+        // Update/Draw
+        //
+        engine->m_GameActive = true;
+        // Run the game
+        engine->GameLoop();
+
+        //
+        // Free
+        //
+
+        // Delete all the systems
+        engine->DestroySystems();
+    
+        // Delete remaining game objects
+        for (size_t i = 0; i < MAX_GAME_OBJECTS; ++i)
         {
-            g_GameObjectHandleTable[i]->Destroy();
-            delete g_GameObjectHandleTable[i];
+            if (g_GameObjectHandleTable[i])
+            {
+                g_GameObjectHandleTable[i]->Destroy();
+                delete g_GameObjectHandleTable[i];
+            }
         }
     }
 
-    // Delete all the systems
-    engine->DestroySystems();
+    //
+    // Unload
+    //
 
     // Delete the engine itself
     delete engine;

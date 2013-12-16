@@ -2,7 +2,7 @@
 
 #include "Component.h"
 #include "Transform.h"
-
+#include <d2d1_1.h>
 #include <SpriteBatch.h>
 
 using namespace DirectX;
@@ -19,7 +19,8 @@ namespace Framework
         Sprite();
         ~Sprite();
         virtual void Initialize(tinyxml2::XMLElement *txmlElement);
-        void Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch);
+		void Draw(std::unique_ptr<SpriteBatch> &spSpriteBatch);
+        void DrawDebug(ComPtr<ID2D1DeviceContext> &spDeviceContext, ComPtr<ID2D1SolidColorBrush> &spSolidColorBrush);
         void SetPosition(float x, float y);
 
         // TODO: implement the rest of the pure virtual functions

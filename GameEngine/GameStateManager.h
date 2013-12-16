@@ -18,7 +18,6 @@ namespace Framework
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc){};
         virtual void OnEvent(Event* e);
         virtual void Destroy(){};
-        void Update(float dt);
     private:
         int m_CurrentState;
         int m_NumAsteroids;

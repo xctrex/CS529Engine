@@ -60,20 +60,19 @@ namespace Framework
         // If the project is in a debug build, enable Direct2D debugging via SDK Layers.
         options.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
 #endif
-
         DXThrowIfFailed(
-            D2D1CreateFactory(
-                D2D1_FACTORY_TYPE_SINGLE_THREADED,
-                __uuidof(ID2D1Factory2),
-                &options,
-                &m_spD2DFactory
-                )
-            );
+			D2D1CreateFactory(
+			D2D1_FACTORY_TYPE_SINGLE_THREADED,
+				__uuidof(ID2D1Factory1),
+				&options,
+				&m_spD2DFactory
+				)
+			);
 
         DXThrowIfFailed(
             DWriteCreateFactory(
                 DWRITE_FACTORY_TYPE_SHARED,
-                __uuidof(IDWriteFactory2),
+                __uuidof(IDWriteFactory1),
                 &m_spDWriteFactory
                 )
             );
@@ -120,8 +119,7 @@ namespace Framework
         // Create the Direct3D 11 API device object and a corresponding context.
         ComPtr<ID3D11Device> spDevice;
         ComPtr<ID3D11DeviceContext> spContext;
-        DXThrowIfFailed(
-            D3D11CreateDevice(
+        HRESULT hr = D3D11CreateDevice(
                 nullptr,                    // Specify nullptr to use the default adapter.
                 D3D_DRIVER_TYPE_HARDWARE,
                 0,
@@ -132,8 +130,25 @@ namespace Framework
                 &spDevice,                    // Returns the Direct3D device created.
                 &m_FeatureLevel,            // Returns feature level of device created.
                 &spContext                    // Returns the device immediate context.
-                )
             );
+
+		if(DXGI_ERROR_UNSUPPORTED == hr)
+		{
+			DXThrowIfFailed(
+				D3D11CreateDevice(
+					nullptr,                    // Specify nullptr to use the default adapter.
+					D3D_DRIVER_TYPE_WARP,
+					0,
+					creationFlags,              // Set debug and Direct2D compatibility flags.
+					featureLevels,              // List of feature levels this app can support.
+					ARRAYSIZE(featureLevels),
+					D3D11_SDK_VERSION,          // Always set this to D3D11_SDK_VERSION for Windows Store apps.
+					&spDevice,                    // Returns the Direct3D device created.
+					&m_FeatureLevel,            // Returns feature level of device created.
+					&spContext                    // Returns the device immediate context.
+                )
+			);
+		}
 
         // Get the Direct3D 11.1 API device and context interfaces.
         DXThrowIfFailed(
@@ -145,7 +160,8 @@ namespace Framework
             );
 
         // Get the underlying DXGI device of the Direct3D device.
-        ComPtr<IDXGIDevice3 > dxgiDevice;
+
+		ComPtr<IDXGIDevice2> dxgiDevice;
         DXThrowIfFailed(
             m_spD3DDevice.As(&dxgiDevice)
             );
@@ -205,13 +221,12 @@ namespace Framework
 
             // When you call IDXGIFactory::CreateSwapChain to create a full-screen swap chain, you typically include the front buffer in this value.
             swapChainDesc.BufferCount = 2;                               // Use double-buffering to minimize latency.
-            swapChainDesc.Scaling = DXGI_SCALING_NONE;
+            swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
             swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // All Windows Store apps must use this SwapEffect.
             swapChainDesc.Flags = 0;
-            swapChainDesc.Scaling = DXGI_SCALING_NONE;
             swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
-            ComPtr<IDXGIDevice3> dxgiDevice;
+			ComPtr<IDXGIDevice2> dxgiDevice;
             DXThrowIfFailed(
                 m_spD3DDevice.As(&dxgiDevice)
                 );
@@ -330,13 +345,31 @@ namespace Framework
         // Grayscale text anti-aliasing is recommended for all Windows Store apps.
         m_spD2DDeviceContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
     }
+    
+    // Create Brushes
+    void GraphicsSystem::CreateBrushes()
+    {
+        m_spD2DDeviceContext->CreateSolidColorBrush(
+            D2D1::ColorF(D2D1::ColorF::White),
+            m_spWhiteBrush.GetAddressOf()
+            );
 
-    void GraphicsSystem::Initialize()
+        m_spD2DDeviceContext->CreateSolidColorBrush(
+            D2D1::ColorF(D2D1::ColorF::Red),
+            m_spDebugBrush.GetAddressOf()
+            );
+    }
+
+    void GraphicsSystem::LoadResources()
     {
         CreateDeviceIndependentResources();
         CreateDeviceResources();
         CreateWindowSizeDependentResources();
-        
+        CreateBrushes();
+    }
+
+    void GraphicsSystem::Initialize()
+    {
         // Initialize the sprite batch
         m_spSpriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(m_spD3DDeviceContext.Get()));
     }
@@ -400,61 +433,72 @@ namespace Framework
 
     void GraphicsSystem::DrawSprites()
     {
-        m_spSpriteBatch->Begin();
-
         if (m_ShowControls)
-        {
+        {            
             Sprite* pSprite = static_cast<Sprite*>(m_pControlsSprite->GetComponent(COMPONENT_TYPE_SPRITE));
             if (pSprite)
+            {
+                m_spSpriteBatch->Begin();
                 pSprite->Draw(m_spSpriteBatch);
+                m_spSpriteBatch->End();
+            }
         }
         else if (m_ShowWin)
-        {
+        {            
             Sprite* pSprite = static_cast<Sprite*>(m_pWinSprite->GetComponent(COMPONENT_TYPE_SPRITE));
             if (pSprite)
+            {
+                m_spSpriteBatch->Begin();
                 pSprite->Draw(m_spSpriteBatch);
-
+                m_spSpriteBatch->End();
+            }
         }
         else if (m_ShowLose)
         {
             Sprite* pSprite = static_cast<Sprite*>(m_pLoseSprite->GetComponent(COMPONENT_TYPE_SPRITE));
             if (pSprite)
+            {
+                m_spSpriteBatch->Begin();
                 pSprite->Draw(m_spSpriteBatch);
+                m_spSpriteBatch->End();
+            }
         }
         else
         {
+            m_spSpriteBatch->Begin();
             //Iterate through the link list of sprites
             std::list<Sprite*>::iterator it = m_SpriteList.begin();
             for (; it != m_SpriteList.end(); ++it)
                 (*it)->Draw(m_spSpriteBatch);
-        }
 
-        m_spSpriteBatch->End();
-        
+            m_spSpriteBatch->End();
+        }        
     }
 
     void GraphicsSystem::DrawText()
     {
-        D2D1_COLOR_F color;
-        color.a = 1.0f;
-        color.r = 1.0f;
-        color.g = 1.0f;
-        color.b = 1.0f;
-
-        m_spD2DDeviceContext->CreateSolidColorBrush(
-            color,
-            m_spBlackBrush.GetAddressOf()
-            );
-
-        //m_spD2DDeviceContext->BeginDraw();
+        m_spD2DDeviceContext->BeginDraw();
 
         //Iterate through the linked list of sprites
         std::list<Text>::iterator it = m_TextList.begin();
         for (; it != m_TextList.end(); ++it)
-            it->Draw(m_spD2DDeviceContext, m_spBlackBrush, m_spDWriteFactory);
+            it->Draw(m_spD2DDeviceContext, m_spWhiteBrush, m_spDWriteFactory);
 
-        //m_spD2DDeviceContext->EndDraw();
-        //     );
+        m_spD2DDeviceContext->EndDraw();
+    }
+
+    void GraphicsSystem::DrawDebug()
+    {      
+        m_spD2DDeviceContext->BeginDraw();
+
+        // Iterate through the list of sprites and draw the debug info for each one
+        std::list<Sprite*>::iterator it = m_SpriteList.begin();
+        for (; it != m_SpriteList.end(); ++it)
+            (*it)->DrawDebug(m_spD2DDeviceContext, m_spDebugBrush);
+
+        DXThrowIfFailed(
+            m_spD2DDeviceContext->EndDraw()
+        );
     }
 
     void GraphicsSystem::Update(float timeslice)
@@ -470,6 +514,9 @@ namespace Framework
         DrawSprites();
         
         DrawText();
+
+        if(m_DrawDebug)
+            DrawDebug();
 
         DXThrowIfFailed(
             m_spSwapChain->Present(1, 0)
@@ -489,11 +536,13 @@ namespace Framework
         if (e->m_EventType == EVENT_TYPE_MOUSE_BUTTON)
         {
             MouseButtonEvent* mbe = static_cast<MouseButtonEvent*>(e);
-            if (!mbe->m_IsPressed)
+            if (!mbe->m_IsPressed && mbe->m_MouseButtonIndex == MouseButtonEvent::RightMouse)
             {
                 m_DrawDebug = !m_DrawDebug;
-                //m_ShowWin = !m_ShowWin;
-                m_ShowLose = !m_ShowLose;
+            }
+            else if(!mbe->m_IsPressed && mbe->m_MouseButtonIndex == MouseButtonEvent::LeftMouse)
+            {
+                m_ShowControls = !m_ShowControls;
             }
         }
     }
@@ -502,7 +551,7 @@ namespace Framework
     // to WindowCoords (from 0 to ScreenSize, with 0 at the top and ScreenHeight at the bottom)
     Vector2D GraphicsSystem::WorldCoordsToWindowCoords(Vector2D &WorldCoords)
     {
-        Vector2D WindowCoords = { 0.0f, 0.0f };
+        Vector2D WindowCoords(0.0f, 0.0f);
 
         WindowCoords.x = m_ScreenWidth / 2.0f + WorldCoords.x;
         WindowCoords.y = m_ScreenHeight / 2.0f - WorldCoords.y;

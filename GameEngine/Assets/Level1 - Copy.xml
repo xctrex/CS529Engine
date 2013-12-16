@@ -82,24 +82,18 @@
     </ControlsScreenSprite>
 </Screens>
 
-<GameObject Archetype="CocoPuffAsteroidArchetype" Name="StaticCocoPuff">
-    <Transform    
-        PositionX="0.0"
-        PositionY="-100.0"
-    />
-</GameObject>
 
-<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="StaticGoldenGraham">
-    <Transform    
-        PositionX="450.0"
-        PositionY="100.0"
+<GameObject Name="Manager">
+    <GameStateManager
+        Name="GameStateManager"
+		NumAsteroids="1"
     />
 </GameObject>
 
 <GameObject Archetype="CheerioAsteroidArchetype" Name="StaticCheerio">
     <Transform    
-        PositionX="450.0"
-        PositionY="-100.0"
+        PositionX="0.0"
+        PositionY="200.0"
     />
 </GameObject>
 
@@ -109,32 +103,32 @@
 
 <GameObject Name="LeftWall">
     <Transform
-        PositionX="-630.0"
+        PositionX="-640.0"
         PositionY="0.0"
     />
     <RigidBody
         Name="LeftWallRigidBody"
         Shape="Line">
         <LineSegment
-            P0X="-630.0"
+            P0X="-640.0"
             P0Y="-360.0"
-            P1X="-630.0"
+            P1X="-640.0"
             P1Y="360.0"
         />
     </RigidBody>
 </GameObject>
 <GameObject Name="RightWall">
     <Transform
-        PositionX="630.0"
+        PositionX="640.0"
         PositionY="0.0"
     />
     <RigidBody
         Name="RightWallRigidBody"
         Shape="Line">
         <LineSegment
-            P0X="630.0"
+            P0X="640.0"
             P0Y="360.0"
-            P1X="630.0"
+            P1X="640.0"
             P1Y="-360.0"
         />
     </RigidBody>
@@ -142,66 +136,32 @@
 <GameObject Name="TopWall">
     <Transform
         PositionX="0.0"
-        PositionY="350.0"
+        PositionY="360.0"
     />
     <RigidBody
         Name="TopWallRigidBody"
         Shape="Line">
         <LineSegment
             P0X="-640.0"
-            P0Y="350.0"
+            P0Y="360.0"
             P1X="640.0"
-            P1Y="350.0"
+            P1Y="360.0"
         />
     </RigidBody>
 </GameObject>
 <GameObject Name="BottomWall">
     <Transform
         PositionX="0.0"
-        PositionY="-300.0"
+        PositionY="-360.0"
     />
     <RigidBody
         Name="BottomWallRigidBody"
         Shape="Line">
         <LineSegment
             P0X="640.0"
-            P0Y="-300.0"
+            P0Y="-360.0"
             P1X="-640.0"
-            P1Y="-300.0"
+            P1Y="-360.0"
         />
     </RigidBody>
-</GameObject>
-
-<GameObject Name="StaticArchetypeSpriteObject">
-    <Transform
-        PositionX="650.0"
-        PositionY="-100.0"
-    />
-    <Sprite
-        Archetype="DefaultSpriteArchetype"
-        Name="SpoonSprite"
-        TextureName="Spoon"
-    />
-</GameObject>
-<GameObject Name="StaticTextObject">
-    <Transform
-        PositionX="-400.0"
-        PositionY="400.0"
-    />
-    <Text
-        Name="StaticText"
-        TextContent="I can write anything I want here."
-    />
-</GameObject>
-
-<GameObject Name="StaticJapaneseTextObject">
-    <Transform
-        PositionX="-400.0"
-        PositionY="0.0"
-    />
-    <Text
-        Name="StaticJapaneseText"
-        TextContent="I can even use different fonts."
-        Font="Brush Script Std"
-    />
 </GameObject>

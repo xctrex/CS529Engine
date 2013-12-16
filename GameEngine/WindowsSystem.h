@@ -28,7 +28,7 @@ namespace Framework
         virtual void Update(float dt);
         virtual std::string GetName() {return "Windows";}
 
-        HWND hWnd;
+        HWND m_hWnd;
         HINSTANCE hInstance;
         POINTS m_MousePosition;
     private:

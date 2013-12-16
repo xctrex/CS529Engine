@@ -86,21 +86,38 @@
 <GameObject Name="Manager">
     <GameStateManager
         Name="GameStateManager"
-		NumAsteroids="1"
+		NumAsteroids="20"
     />
 </GameObject>
 
-<GameObject Archetype="CheerioAsteroidArchetype" Name="StaticCheerio">
+<GameObject Archetype="CheerioAsteroidArchetype" Name="Cheerio1">
     <Transform    
-        PositionX="0.0"
-        PositionY="200.0"
+        PositionX="-500.0"
+        PositionY="300.0"
     />
 	<RigidBody
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
-		VelocityX="0.0"
-		VelocityY="0.0"
+		VelocityX="40"
+		VelocityY="70"
+	/>
+</GameObject>
+<GameObject Archetype="CheerioAsteroidArchetype" Name="Cheerio2">
+    <Transform    
+        PositionX="-440.0"
+        PositionY="280.0"
+    />
+	<RigidBody
+		VelocityX="-15"
+		VelocityY="25"
+	/>
+</GameObject>
+<GameObject Archetype="CheerioAsteroidArchetype" Name="Cheerio3">
+    <Transform    
+        PositionX="-440.0"
+        PositionY="-180.0"
+    />
+	<RigidBody
+		VelocityX="75"
+		VelocityY="-100"
 	/>
 </GameObject>
 

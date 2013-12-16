@@ -1,0 +1,432 @@
+<Textures>
+    <Texture
+        Name="Default"
+        Path="Assets\Default.png"
+    />
+    <Texture
+        Name="Circle"
+        Path="Assets\Circle.png"
+    />
+    <Texture
+        Name="CocoPuff"
+        Path="Assets\cocopuff.png"
+    />
+    <Texture
+        Name="GoldenGraham"
+        Path="Assets\goldengraham.png"
+    />
+    <Texture
+        Name="Cheerio"
+        Path="Assets\cheerio.png"
+    />
+    <Texture
+        Name="GingerbreadMan"
+        Path="Assets\gingerbread.png"
+    />
+    <Texture
+        Name="Spoon"
+        Path="Assets\bluespoon.png"
+    />
+    <Texture
+        Name="Win"
+        Path="Assets\win.png"
+    />
+    <Texture
+        Name="Lose"
+        Path="Assets\lose.png"
+    />
+    <Texture
+        Name="Controls"
+        Path="Assets\controls.png"
+    />
+</Textures>
+<Screens>
+    <WinScreenSprite>
+        <Transform
+            Name="WinScreenSpriteTransform"
+            PositionX="0.0"
+            PositionY="0.0"
+        />
+        <Sprite
+            Name="WinScreenSpriteArchetype"
+            TextureName="Win"
+            SpriteHeight="720.0"
+            SpriteWidth="1280.0"        
+        />
+    </WinScreenSprite>
+    <LoseScreenSprite>
+        <Transform
+            Name="LoseScreenSpriteTransform"
+            PositionX="0.0"
+            PositionY="0.0"
+        />
+        <Sprite
+            Name="LoseScreenSpriteArchetype"
+            TextureName="Lose"
+            SpriteHeight="720.0"
+            SpriteWidth="1280.0"        
+        />
+    </LoseScreenSprite>
+    <ControlsScreenSprite>
+        <Transform
+            Name="ControlsScreenSpriteTransform"
+            PositionX="0.0"
+            PositionY="0.0"
+        />
+        <Sprite
+            Name="ControlsScreenSpriteArchetype"
+            TextureName="Controls"
+            SpriteHeight="720.0"
+            SpriteWidth="1280.0"        
+        />
+    </ControlsScreenSprite>
+</Screens>
+
+
+<GameObject Name="Manager">
+    <GameStateManager
+        Name="GameStateManager"
+		NumAsteroids="20"
+    />
+</GameObject>
+
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham1">
+    <Transform    
+        PositionX="-500.0"
+        PositionY="200.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="75.0"
+		VelocityY="25.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham2">
+    <Transform    
+        PositionX="-310.0"
+        PositionY="210.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="-80.0"
+		VelocityY="20.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham3">
+    <Transform    
+        PositionX="75.0"
+        PositionY="220.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="-20.0"
+		VelocityY="80.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham4">
+    <Transform    
+        PositionX="205.0"
+        PositionY="200.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="40.0"
+		VelocityY="60.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham5">
+    <Transform    
+        PositionX="485.0"
+        PositionY="200.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="40.0"
+		VelocityY="-60.0"
+	/>
+</GameObject>
+
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham6">
+    <Transform    
+        PositionX="-500.0"
+        PositionY="100.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="75.0"
+		VelocityY="65.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham7">
+    <Transform    
+        PositionX="-310.0"
+        PositionY="80.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="-80.0"
+		VelocityY="80.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham8">
+    <Transform    
+        PositionX="-75.0"
+        PositionY="75.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="-120.0"
+		VelocityY="20.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham9">
+    <Transform    
+        PositionX="130.0"
+        PositionY="100.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="80.0"
+		VelocityY="70.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham10">
+    <Transform    
+        PositionX="485.0"
+        PositionY="110.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="140.0"
+		VelocityY="-10.0"
+	/>
+</GameObject>
+
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham11">
+    <Transform    
+        PositionX="-500.0"
+        PositionY="-80.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="75.0"
+		VelocityY="25.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham12">
+    <Transform    
+        PositionX="-310.0"
+        PositionY="-70.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="-80.0"
+		VelocityY="20.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham13">
+    <Transform    
+        PositionX="75.0"
+        PositionY="-110.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="-20.0"
+		VelocityY="80.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham14">
+    <Transform    
+        PositionX="205.0"
+        PositionY="-100.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="80.0"
+		VelocityY="-10.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham15">
+    <Transform    
+        PositionX="485.0"
+        PositionY="-80.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="40.0"
+		VelocityY="-60.0"
+	/>
+</GameObject>
+
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham16">
+    <Transform    
+        PositionX="-500.0"
+        PositionY="-200.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="75.0"
+		VelocityY="25.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham17">
+    <Transform    
+        PositionX="-310.0"
+        PositionY="-210.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="-80.0"
+		VelocityY="20.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham18">
+    <Transform    
+        PositionX="75.0"
+        PositionY="-190.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="-20.0"
+		VelocityY="80.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham19">
+    <Transform    
+        PositionX="205.0"
+        PositionY="-200.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="40.0"
+		VelocityY="60.0"
+	/>
+</GameObject>
+<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="GoldenGraham20">
+    <Transform    
+        PositionX="485.0"
+        PositionY="-200.0"
+    />
+	<RigidBody
+        Name="CircleAsteroidBody"
+        Radius="32.0"
+        Weight="1.0"
+		VelocityX="40.0"
+		VelocityY="-60.0"
+	/>
+</GameObject>
+
+<GameObject 
+    Archetype="ShipArchetype"
+/>
+
+<GameObject Name="LeftWall">
+    <Transform
+        PositionX="-640.0"
+        PositionY="0.0"
+    />
+    <RigidBody
+        Name="LeftWallRigidBody"
+        Shape="Line"
+		Weight="100.0"
+		>
+        <LineSegment
+            P0X="-640.0"
+            P0Y="-360.0"
+            P1X="-640.0"
+            P1Y="360.0"
+        />
+    </RigidBody>
+</GameObject>
+<GameObject Name="RightWall">
+    <Transform
+        PositionX="640.0"
+        PositionY="0.0"
+    />
+    <RigidBody
+        Name="RightWallRigidBody"
+        Shape="Line"
+		Weight="100.0"
+		>
+        <LineSegment
+            P0X="640.0"
+            P0Y="360.0"
+            P1X="640.0"
+            P1Y="-360.0"
+        />
+    </RigidBody>
+</GameObject>
+<GameObject Name="TopWall">
+    <Transform
+        PositionX="0.0"
+        PositionY="360.0"
+    />
+    <RigidBody
+        Name="TopWallRigidBody"
+        Shape="Line"
+		Weight="100.0"
+		>
+        <LineSegment
+            P0X="-640.0"
+            P0Y="360.0"
+            P1X="640.0"
+            P1Y="360.0"
+        />
+    </RigidBody>
+</GameObject>
+<GameObject Name="BottomWall">
+    <Transform
+        PositionX="0.0"
+        PositionY="-360.0"
+    />
+    <RigidBody
+        Name="BottomWallRigidBody"
+        Shape="Line"
+		Weight="100.0"
+		>
+        <LineSegment
+            P0X="640.0"
+            P0Y="-360.0"
+            P1X="-640.0"
+            P1Y="-360.0"
+        />
+    </RigidBody>
+</GameObject>
