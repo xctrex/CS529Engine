@@ -114,6 +114,7 @@
         Weight="1.0"
 		VelocityX="0.0"
 		VelocityY="0.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="StaticGoldenGraham">

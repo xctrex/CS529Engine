@@ -22,6 +22,13 @@ enum SHAPE
     SHAPE_SHIP
 };
 
+enum ASTEROID_TYPE
+{
+    ASTEROID_TYPE_NORMAL,
+    ASTEROID_TYPE_SHRINKER,
+    ASTEROID_TYPE_SPLITTER
+};
+
 namespace Framework
 {
     // Forward declaration of Transform class
@@ -57,6 +64,7 @@ namespace Framework
         Transform* m_pTransform;
         Vector2D m_Velocity;
         SHAPE m_Shape;
+        ASTEROID_TYPE m_AsteroidType;
         float m_Radius;
         float m_Weight;
         Vector2D m_PreviousPosition;

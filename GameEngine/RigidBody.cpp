@@ -22,6 +22,7 @@ namespace Framework
         m_pTransform(NULL),
         m_Velocity(0.0f, 0.0f),
         m_Shape(SHAPE_CIRCLE),
+        m_AsteroidType(ASTEROID_TYPE_NORMAL),
         m_Radius(0.0f),
         m_Weight(FLT_MAX),
         m_PreviousPosition(0.0f, 0.0f),
@@ -90,6 +91,25 @@ namespace Framework
             else
             {
                 ThrowErrorIf(true, "Shape not recognized");
+            }
+        }
+        if (txmlElement->Attribute("AsteroidType"))
+        {
+            if (strcmp(txmlElement->Attribute("AsteroidType"), "Normal") == 0)
+            {
+                m_AsteroidType = ASTEROID_TYPE_NORMAL;
+            }
+            else if (strcmp(txmlElement->Attribute("AsteroidType"), "Shrinker") == 0)
+            {
+                m_AsteroidType = ASTEROID_TYPE_SHRINKER;
+            }
+            else if (strcmp(txmlElement->Attribute("AsteroidType"), "Splitter") == 0)
+            {
+                m_AsteroidType = ASTEROID_TYPE_SPLITTER;
+            }
+            else
+            {
+                ThrowErrorIf(true, "Asteroid type not recognized");
             }
         }
         if (txmlElement->Attribute("Radius"))
@@ -181,6 +201,24 @@ namespace Framework
                     // Damage asteroid
                     DamageEvent de(BULLET_TO_ASTEROID_DAMAGE);
                     this->m_Parent->OnEvent(&de);
+
+                    // Shrinkers get smaller and speed up as they are shot
+                    if(this->m_AsteroidType == ASTEROID_TYPE_SHRINKER)
+                    {
+                        // Shrink the radius
+                        m_Radius *= 0.9f;
+                        if(m_Radius < 10.0f) m_Radius = 10.0f;
+                        else
+                        {
+                            // Shrink the sprite
+                            Vector2DScale(m_pTransform->m_Scale, m_pTransform->m_Scale, 0.9f);
+                        }
+                        // Speed up
+                        Vector2DScale(m_Velocity, m_Velocity, 1.1f);
+                        // Turn milk chocolate
+                        ChocolateMilkEvent cme;
+                        g_CORE->BroadcastEvent(&cme);
+                    }
                 }
             }
             // Handle Ship Collision Logic

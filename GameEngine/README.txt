@@ -82,6 +82,7 @@ Game Requirements
     
     
     Collision between projectiles, player and enemies present
+    Two different types of enemies, regular asteroids and asteroids that shrink and get faster as their health goes down.
     Controls screen - left click to toggle controls screen
     Requirements easy to test - 
     Game has a win/lose condition - destroy all the asteroids to move on to the next level. Run into the asteroids too many times and

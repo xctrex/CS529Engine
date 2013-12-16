@@ -23,7 +23,8 @@ namespace Framework
         EVENT_TYPE_COLLISION,
         EVENT_TYPE_OBJECT_CLEANUP,
         EVENT_TYPE_DAMAGE,
-        EVENT_TYPE_OBJECT_DEATH
+        EVENT_TYPE_OBJECT_DEATH,
+        EVENT_TYPE_CHOCOLATE_MILK
     };
 
     enum OBJECT_TYPE
@@ -120,5 +121,14 @@ namespace Framework
         {};
 
         Vector2D m_MousePosition;
+    };
+
+    // Event signaling milk is turning chocolate
+    class ChocolateMilkEvent : public Event
+    {
+    public:
+        ChocolateMilkEvent() :
+            Event(EVENT_TYPE_CHOCOLATE_MILK)
+        {};
     };
 }

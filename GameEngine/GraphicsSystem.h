@@ -76,6 +76,7 @@ namespace Framework
         bool m_ShowLose;
         bool m_ShowControls;
     private:
+        float m_ChocolateMilkWeight;
 
     void CreateDeviceIndependentResources();
     void CreateDeviceResources();

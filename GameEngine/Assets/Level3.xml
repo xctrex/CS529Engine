@@ -101,6 +101,7 @@
         Weight="1.0"
 		VelocityX="75.0"
 		VelocityY="25.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff2">
@@ -114,6 +115,7 @@
         Weight="1.0"
 		VelocityX="-80.0"
 		VelocityY="20.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff3">
@@ -127,6 +129,7 @@
         Weight="1.0"
 		VelocityX="-20.0"
 		VelocityY="80.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff4">
@@ -140,6 +143,7 @@
         Weight="1.0"
 		VelocityX="40.0"
 		VelocityY="60.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff5">
@@ -153,6 +157,7 @@
         Weight="1.0"
 		VelocityX="40.0"
 		VelocityY="-60.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 
@@ -167,6 +172,7 @@
         Weight="1.0"
 		VelocityX="75.0"
 		VelocityY="65.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff7">
@@ -180,6 +186,7 @@
         Weight="1.0"
 		VelocityX="-80.0"
 		VelocityY="80.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff8">
@@ -193,6 +200,7 @@
         Weight="1.0"
 		VelocityX="-120.0"
 		VelocityY="20.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff9">
@@ -206,6 +214,7 @@
         Weight="1.0"
 		VelocityX="80.0"
 		VelocityY="70.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff10">
@@ -219,6 +228,7 @@
         Weight="1.0"
 		VelocityX="140.0"
 		VelocityY="-10.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 
@@ -233,6 +243,7 @@
         Weight="1.0"
 		VelocityX="75.0"
 		VelocityY="25.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff12">
@@ -246,6 +257,7 @@
         Weight="1.0"
 		VelocityX="-80.0"
 		VelocityY="20.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff13">
@@ -259,6 +271,7 @@
         Weight="1.0"
 		VelocityX="-20.0"
 		VelocityY="80.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff14">
@@ -272,6 +285,7 @@
         Weight="1.0"
 		VelocityX="80.0"
 		VelocityY="-10.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff15">
@@ -285,6 +299,7 @@
         Weight="1.0"
 		VelocityX="40.0"
 		VelocityY="-60.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 
@@ -299,6 +314,7 @@
         Weight="1.0"
 		VelocityX="75.0"
 		VelocityY="25.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff17">
@@ -312,6 +328,7 @@
         Weight="1.0"
 		VelocityX="-80.0"
 		VelocityY="20.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff18">
@@ -325,6 +342,7 @@
         Weight="1.0"
 		VelocityX="-20.0"
 		VelocityY="80.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff19">
@@ -338,6 +356,7 @@
         Weight="1.0"
 		VelocityX="40.0"
 		VelocityY="60.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 <GameObject Archetype="CocoPuffAsteroidArchetype" Name="CocoPuff20">
@@ -351,6 +370,7 @@
         Weight="1.0"
 		VelocityX="40.0"
 		VelocityY="-60.0"
+		AsteroidType="Shrinker"
 	/>
 </GameObject>
 

@@ -26,7 +26,7 @@ namespace Framework
         m_SpriteRotation(0.0f)
     {
         m_Type = COMPONENT_TYPE_SPRITE;        
-
+     
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
     };
     Sprite::~Sprite() 

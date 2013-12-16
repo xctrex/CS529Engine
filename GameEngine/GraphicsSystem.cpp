@@ -31,7 +31,8 @@ namespace Framework
         m_ShowLose(false),
         m_pControlsSprite(NULL),
         m_pLoseSprite(NULL),
-        m_pWinSprite(NULL)
+        m_pWinSprite(NULL),
+        m_ChocolateMilkWeight(0.0f)
     {
         CoInitialize(NULL);
         m_TextureMap.clear();
@@ -370,6 +371,7 @@ namespace Framework
 
     void GraphicsSystem::Initialize()
     {
+        m_ChocolateMilkWeight = 0.0f;
         // Initialize the sprite batch
         m_spSpriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(m_spD3DDeviceContext.Get()));
     }
@@ -502,7 +504,15 @@ namespace Framework
 	{
         m_spD3DDeviceContext->OMSetRenderTargets(1, m_spD3DRenderTargetView.GetAddressOf(), m_spD3DDepthStencilView.Get());
 		HRESULT hr = S_OK;
-        const float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+        const float chocolateColor[4] = { 0.54296875f, 0.26593f, 0.074218f, 1.0f };
+
+        float r = ((1.0f - m_ChocolateMilkWeight) + chocolateColor[0] * m_ChocolateMilkWeight);
+        float g = ((1.0f - m_ChocolateMilkWeight) + chocolateColor[1] * m_ChocolateMilkWeight);
+        float b = ((1.0f - m_ChocolateMilkWeight) + chocolateColor[2] * m_ChocolateMilkWeight);
+
+        const float clearColor[4] = {r, g, b, 1.0f};
+
         m_spD3DDeviceContext->ClearRenderTargetView(
 			m_spD3DRenderTargetView.Get(),
             clearColor
@@ -541,6 +551,11 @@ namespace Framework
             {
                 m_ShowControls = !m_ShowControls;
             }
+        }
+        else if(e->m_EventType == EVENT_TYPE_CHOCOLATE_MILK)
+        {
+            m_ChocolateMilkWeight += 0.001f;
+            if(m_ChocolateMilkWeight > 1.0f) m_ChocolateMilkWeight = 1.0f;
         }
     }
 
