@@ -21,6 +21,8 @@ namespace Framework
         m_TextureName("Default"),
         m_Color(Colors::White),
         m_Origin(128.0f, 128.0f),
+        m_Width(256.0f),
+        m_Height(256.0f),
         m_pTransform(NULL),
         m_Layer(0.0f),
         m_SpriteRotation(0.0f)
@@ -46,27 +48,15 @@ namespace Framework
         //================================================================
         // Sprite specific initialization
         //================================================================
-        if (txmlElement->Attribute("TextureName"))
-        {
-            m_TextureName = txmlElement->Attribute("TextureName");
-        }
+        
+        InitializeAttribute(txmlElement, m_TextureName, "TextureName");
         //TODO: add initialization for m_Color
-        if (txmlElement->Attribute("SpriteRotation"))
-        {
-            m_SpriteRotation = txmlElement->FloatAttribute("SpriteRotation");
-        }
-        if (txmlElement->Attribute("SpriteWidth"))
-        {
-            m_Origin.x = txmlElement->FloatAttribute("SpriteWidth") / 2.0f;
-        }
-        if (txmlElement->Attribute("SpriteHeight"))
-        {
-            m_Origin.y = txmlElement->FloatAttribute("SpriteHeight") / 2.0f;
-        }
-        if (txmlElement->Attribute("Layer"))
-        {
-            m_Layer = txmlElement->FloatAttribute("Layer");
-        }
+        InitializeAttribute(txmlElement, m_SpriteRotation, "SpriteRotation");
+        InitializeAttribute(txmlElement, m_Width, "SpriteWidth");
+        m_Origin.x = m_Width * 0.5f;
+        InitializeAttribute(txmlElement, m_Height, "SpriteHeight");
+        m_Origin.y = m_Height * 0.5f;
+        InitializeAttribute(txmlElement, m_Layer, "Layer");
 
         //================================================================
         // Transform attributes
@@ -81,14 +71,8 @@ namespace Framework
             // TODO: Would be better to enforce this in the .xml rather than the code, but this will do for now
             ThrowErrorIf(!m_pTransform, "Parent of a sprite component must have a transform");
         }
-        if (txmlElement->Attribute("ScaleX"))
-        {
-            m_pTransform->m_Scale.x = txmlElement->FloatAttribute("ScaleX");
-        }
-        if (txmlElement->Attribute("ScaleY"))
-        {
-            m_pTransform->m_Scale.y = txmlElement->FloatAttribute("ScaleY");
-        }
+        InitializeAttribute(txmlElement, m_pTransform->m_Scale.x, "ScaleX");
+        InitializeAttribute(txmlElement, m_pTransform->m_Scale.y, "ScaleY");
 
                
         if (m_RecursionLevel == 0)
@@ -138,30 +122,13 @@ namespace Framework
                         D2D1::Point2F(
                             g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position).x,
                             g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position).y
-                        ),
+                            ),
                         pBody->GetRadius(),
                         pBody->GetRadius()
-                    ),
+                        ),
                     spSolidColorBrush.Get(),
                     3.0f
                     );
-
-				/*
-                ID3D11ShaderResourceView* pSRV = g_GRAPHICS->GetTexture("Circle");
-                ThrowErrorIf(!pSRV, "Failed to get circle texture from GRAPHICS");
-                Vector2D origin(128.0f, 128.0f);
-                float scale = pBody->GetRadius() / 128.0f;
-                spSpriteBatch->Draw(
-                    pSRV,
-                    g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position),
-                    NULL,
-                    m_Color,
-                    0.0f,
-                    origin,
-                    m_pTransform->m_Scale,
-                    SpriteEffects::SpriteEffects_None,
-                    m_Layer
-                    );*/
             }
         }
     }
@@ -170,8 +137,6 @@ namespace Framework
     void Sprite::SetPosition(float x, float y)
     {
         m_pTransform->m_Position.x = x;
-        //m_Position.x = x;
         m_pTransform->m_Position.y = y;
-        //m_Position.y = y;
     }
 }

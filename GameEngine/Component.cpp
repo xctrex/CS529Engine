@@ -44,7 +44,7 @@ namespace Framework
     }
 
     // Initialization that is relevant to all component types
-    void Component::CommonComponentInitialization(tinyxml2::XMLElement* txmlElement)
+    void Component::CommonComponentInitialization(tinyxml2::XMLElement *txmlElement)
     {
         if (txmlElement->Attribute("Archetype"))
         {
@@ -70,12 +70,33 @@ namespace Framework
             ThrowErrorIf(!foundArchetype, "Failed to find a component archetype by that name.");
         }
 
-        if (txmlElement->Attribute("Name"))
-        {
-            m_Name = txmlElement->Attribute("Name");
-        }
+        InitializeAttribute(txmlElement, m_Name, "Name");
     }
 
+    void Component::InitializeAttribute(tinyxml2::XMLElement *txmlElement, int &MemberInt, char* AttributeName)
+    {
+        // If the attribute exists
+        if (txmlElement->Attribute(AttributeName))
+        {
+            MemberInt = txmlElement->IntAttribute(AttributeName);
+        }
+    }
+    void Component::InitializeAttribute(tinyxml2::XMLElement *txmlElement, float &MemberFloat, char* AttributeName)
+    {
+        // If the attribute exists
+        if (txmlElement->Attribute(AttributeName))
+        {
+            MemberFloat = txmlElement->FloatAttribute(AttributeName);
+        }
+    }
+    void Component::InitializeAttribute(tinyxml2::XMLElement *txmlElement, std::string &MemberString, char* AttributeName)
+    {
+        // If the attribute exists
+        if (txmlElement->Attribute(AttributeName))
+        {
+            MemberString = txmlElement->Attribute(AttributeName);
+        }
+    }
     //================================================================
     // ComponentHandle
     //================================================================

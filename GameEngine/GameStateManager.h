@@ -14,7 +14,13 @@ Creation date: 12/15/2013
 
 enum GAME_STATE
 {
-    GAME_STATE_
+    GAME_STATE_PLATFORMER = 0,
+
+    // special game state. Do not change
+    GAME_STATE_NEXT_LEVEL,
+    GAME_STATE_RESTART,
+    GAME_STATE_QUIT,
+    GAME_STATE_NUM
 };
 
 namespace Framework
@@ -24,12 +30,14 @@ namespace Framework
     public:
         GameStateManager();
         ~GameStateManager() {};
-        virtual void Initialize(tinyxml2::XMLElement* txmlElement);
+        virtual void Initialize(tinyxml2::XMLElement *txmlElement);
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc){};
         virtual void OnEvent(Event* e);
         virtual void Destroy(){};
     private:
-        int m_CurrentState;
+        GAME_STATE m_PreviousState;
+        GAME_STATE m_CurrentState;
+        GAME_STATE m_NextState;
         int m_NumAsteroids;
         int m_NumClicks;
     };

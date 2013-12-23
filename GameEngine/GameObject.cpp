@@ -35,7 +35,7 @@ namespace Framework
     }
 
     // TODO: This could be replaced by a component factory class
-    ComponentHandle GameObject::CreateComponent(tinyxml2::XMLElement* txmlElement)
+    ComponentHandle GameObject::CreateComponent(tinyxml2::XMLElement *txmlElement)
     {
         ComponentHandle c;
         COMPONENT_TYPE type = GetComponentTypeFromName(txmlElement->Name());
@@ -249,6 +249,19 @@ namespace Framework
             }
         }
         return NULL;
+    }
+    ComponentHandle GameObject::GetComponentHandle(COMPONENT_TYPE type)
+    {
+        for (size_t i = 0; i < m_ComponentVector.size(); ++i)
+        {
+            if (m_ComponentVector[i].ToComponent())
+            {
+                if (m_ComponentVector[i].ToComponent()->m_Type == type)
+                    return m_ComponentVector[i];
+            }
+        }
+        ComponentHandle ch;
+        return ch;
     }
     //================================================================
     // GameObjectHandle

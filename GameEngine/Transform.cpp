@@ -19,25 +19,10 @@ namespace Framework
         //================================================================
         // Transform specific initialization
         //================================================================
-        if (txmlElement->Attribute("PositionX"))
-        {
-            m_Position.x = txmlElement->FloatAttribute("PositionX");
-        }
-        if (txmlElement->Attribute("PositionY"))
-        {
-            m_Position.y = txmlElement->FloatAttribute("PositionY");
-        }
-        if (txmlElement->Attribute("Rotation"))
-        {
-            m_Rotation = txmlElement->FloatAttribute("Rotation");
-        }
-        if (txmlElement->Attribute("ScaleX"))
-        {
-            m_Scale.x = txmlElement->FloatAttribute("ScaleX");
-        }
-        if (txmlElement->Attribute("ScaleY"))
-        {
-            m_Scale.y = txmlElement->FloatAttribute("ScaleY");
-        }
+        InitializeAttribute(txmlElement, m_Position.x, "PositionX");
+        InitializeAttribute(txmlElement, m_Position.y, "PositionY");
+        InitializeAttribute(txmlElement, m_Rotation, "Rotation");
+        InitializeAttribute(txmlElement, m_Scale.x, "ScaleX");
+        InitializeAttribute(txmlElement, m_Scale.y, "ScaleY");
     }
 }

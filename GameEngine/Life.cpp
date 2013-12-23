@@ -27,11 +27,10 @@ namespace Framework
         //================================================================
         // Life specific initialization
         //================================================================
-        if (txmlElement->Attribute("HP"))
-        {
-            m_MaxHP = txmlElement->IntAttribute("HP");
-            m_HP = m_MaxHP;
-        }
+        InitializeAttribute(txmlElement, m_MaxHP, "HP");
+        // By default, HP starts out at max, but can optionally be overriddent to start lower
+        m_HP = m_MaxHP;
+        InitializeAttribute(txmlElement, m_HP, "StartingHP");
 
         if (m_RecursionLevel == 0)
         {

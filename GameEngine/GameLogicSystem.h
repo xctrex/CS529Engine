@@ -25,10 +25,10 @@ namespace Framework
         virtual void Initialize() {};
         virtual void Update(float dt);
         virtual void OnEvent(Event* e);
-        virtual std::string GetName() { return "Windows"; }
+        virtual std::string GetName() { return "GameLogicSystem"; }
 
         // TODO: For now, only allow one input handler
-        InputHandler* m_pInputHandler;
+        ComponentHandle m_hInputHandler;
         ComponentHandle m_hGameStateManager;
     };
 

@@ -38,14 +38,8 @@ namespace Framework
         //================================================================
         // Text specific initialization
         //================================================================
-        if (txmlElement->Attribute("TextContent"))
-        {
-            m_TextContent = txmlElement->Attribute("TextContent");
-        }
-        if (txmlElement->Attribute("Font"))
-        {
-            m_Font = txmlElement->Attribute("Font");
-        }
+        InitializeAttribute(txmlElement, m_TextContent, "TextContent");
+        InitializeAttribute(txmlElement, m_Font, "Font");
         
         //================================================================
         // Transform attributes
@@ -121,10 +115,13 @@ namespace Framework
 
     void Text::Draw(ComPtr<ID2D1DeviceContext> sp_DeviceContext, ComPtr<ID2D1SolidColorBrush> sp_Brush, ComPtr<IDWriteFactory1> sp_DWriteFactory)
     {
+        // Convert the text content and the font to wide strings
         wchar_t content[512];
         swprintf(content, m_TextContent.length(), L"%hs", m_TextContent.c_str());
         wchar_t font[512];
         swprintf(font, m_TextContent.length(), L"%hs", m_Font.c_str());
+
+        // Convert the position from world coordinates to window coordinates
         Vector2D WindowCoords = g_GRAPHICS->WorldCoordsToWindowCoords(m_pTransform->m_Position);
 
         m_Rect.left = WindowCoords.x;

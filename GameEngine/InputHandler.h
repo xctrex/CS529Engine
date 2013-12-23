@@ -34,6 +34,6 @@ namespace Framework
         float m_RotationSpeed;
         float m_BulletSpeed;
         ComponentHandle m_hTransform;
-        RigidBody* m_pRigidBody;
+        ComponentHandle m_hRigidBody;
     };
 }

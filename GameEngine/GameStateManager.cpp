@@ -16,7 +16,9 @@ Creation date: 12/15/2013
 namespace Framework
 {
     GameStateManager::GameStateManager() :
-        m_CurrentState(100),
+        m_PreviousState(GAME_STATE_PLATFORMER),
+        m_CurrentState(GAME_STATE_PLATFORMER),
+        m_NextState(GAME_STATE_PLATFORMER),
         m_NumAsteroids(100),
         m_NumClicks(10)
     {
@@ -25,21 +27,16 @@ namespace Framework
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
     };
 
-    void GameStateManager::Initialize(tinyxml2::XMLElement* txmlElement)
+    void GameStateManager::Initialize(tinyxml2::XMLElement *txmlElement)
     {
         CommonComponentInitialization(txmlElement);
 
         //================================================================
         // GameState specific initialization
         //================================================================
-        if (txmlElement->Attribute("NumAsteroids"))
-        {
-            m_NumAsteroids = txmlElement->IntAttribute("NumAsteroids");
-        }
-        if (txmlElement->Attribute("NumClicks"))
-        {
-            m_NumClicks = txmlElement->IntAttribute("NumClicks");
-        }
+        InitializeAttribute(txmlElement, m_NumAsteroids, "NumAsteroids");
+        InitializeAttribute(txmlElement, m_NumClicks, "NumClicks");
+
         if(m_RecursionLevel == 0)
         {
             g_LOGIC->m_hGameStateManager.Initialize(this->GetHandleIndex(), this->GetUniqueID());

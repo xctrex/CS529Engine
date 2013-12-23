@@ -55,7 +55,7 @@ namespace Framework
         virtual std::string GetName() {return "Graphics";}
 
         void LoadResources();
-        void LoadTextures(tinyxml2::XMLElement* txmlElement);
+        void LoadTextures(tinyxml2::XMLElement *txmlElement);
         void LoadTexture(std::string TextureName, std::string TextureFilePath);
         ID3D11ShaderResourceView *GetTexture(std::string TextureName);
         void DrawSprites();

@@ -46,6 +46,8 @@ namespace Framework
 
         XMVECTOR m_Color;
         Vector2D m_Origin;
+        float m_Width;
+        float m_Height;
         float m_Layer;
     };
 }

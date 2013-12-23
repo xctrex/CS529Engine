@@ -39,7 +39,7 @@ namespace Framework
     COMPONENT_TYPE GetComponentTypeFromName(const char* name);
 
     // Function for creating components //TODO: could be replaced by a component factory class
-    ComponentHandle CreateComponent(tinyxml2::XMLElement* txmlElement);
+    ComponentHandle CreateComponent(tinyxml2::XMLElement *txmlElement);
 
     unsigned int FindFreeSlotInGameObjectHandleTable();
     unsigned int GetGameObjectHandleIndexFromUniqueID(GameObjectID);
@@ -52,7 +52,7 @@ namespace Framework
         // The issue is that any derived class may have it's own initialization to do, but they will all share the game object initialization.
         ~GameObject();
 
-        void Initialize(tinyxml2::XMLElement* txmlElement);
+        void Initialize(tinyxml2::XMLElement *txmlElement);
         void Serialize(tinyxml2::XMLDocument* txmlDoc);
         void Destroy();
 
@@ -63,7 +63,8 @@ namespace Framework
 
         // Get the component if it exists, otherwise return NULL
         Component* GetComponent(COMPONENT_TYPE type);
-        ComponentHandle GameObject::CreateComponent(tinyxml2::XMLElement* txmlElement);
+        ComponentHandle GetComponentHandle(COMPONENT_TYPE type);
+        ComponentHandle GameObject::CreateComponent(tinyxml2::XMLElement *txmlElement);
         bool m_Cleanup;
     private:
         GameObjectID m_UniqueID;

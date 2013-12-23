@@ -112,22 +112,10 @@ namespace Framework
                 ThrowErrorIf(true, "Asteroid type not recognized");
             }
         }
-        if (txmlElement->Attribute("Radius"))
-        {
-            m_Radius = txmlElement->FloatAttribute("Radius");
-        }
-        if (txmlElement->Attribute("Weight"))
-        {
-            m_Weight = txmlElement->FloatAttribute("Weight");
-        }
-        if (txmlElement->Attribute("VelocityX"))
-        {
-            m_Velocity.x = txmlElement->FloatAttribute("VelocityX");
-        }
-        if (txmlElement->Attribute("VelocityY"))
-        {
-            m_Velocity.y = txmlElement->FloatAttribute("VelocityY");
-        }
+        InitializeAttribute(txmlElement, m_Radius, "Radius");
+        InitializeAttribute(txmlElement, m_Weight, "Weight");
+        InitializeAttribute(txmlElement, m_Velocity.x, "VelocityX");
+        InitializeAttribute(txmlElement, m_Velocity.y, "VelocityY");
 
         // Line Segment initialization
         tinyxml2::XMLElement* txmlLineSegmentElement = txmlElement->FirstChildElement("LineSegment");
@@ -138,17 +126,12 @@ namespace Framework
                 || !txmlLineSegmentElement->Attribute("P0Y")
                 || !txmlLineSegmentElement->Attribute("P1X")
                 || !txmlLineSegmentElement->Attribute("P1Y")),
-               // || !txmlLineSegmentElement->Attribute("NX")
-                //|| !txmlLineSegmentElement->Attribute("NY")),
                 "Line Segment not fully defined in the xml."
                 );
             m_LineSegment.m_P0.x = txmlLineSegmentElement->FloatAttribute("P0X");
             m_LineSegment.m_P0.y = txmlLineSegmentElement->FloatAttribute("P0Y");
             m_LineSegment.m_P1.x = txmlLineSegmentElement->FloatAttribute("P1X");
             m_LineSegment.m_P1.y = txmlLineSegmentElement->FloatAttribute("P1Y");
-            //m_LineSegment.m_N.x = txmlLineSegmentElement->FloatAttribute("NX");
-            //m_LineSegment.m_N.y = txmlLineSegmentElement->FloatAttribute("NY");
-            //m_LineSegment.m_NdotP0 = Vector2DDotProduct(m_LineSegment.m_N, m_LineSegment.m_P0);
         }
 
         //================================================================

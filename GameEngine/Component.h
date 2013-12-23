@@ -44,7 +44,7 @@ namespace Framework
     {
     public:
         Component();
-        virtual void Initialize(tinyxml2::XMLElement* txmlElement) = 0;
+        virtual void Initialize(tinyxml2::XMLElement *txmlElement) = 0;
         virtual void Serialize(tinyxml2::XMLDocument* txmlDoc) = 0;
         virtual void OnEvent(Event* e) = 0;
         virtual void Destroy() = 0;
@@ -52,7 +52,11 @@ namespace Framework
         unsigned int GetHandleIndex(){ return m_HandleIndex; }
 
         // Initialization that is common to all component types
-        void CommonComponentInitialization(tinyxml2::XMLElement* txmlElement);
+        void CommonComponentInitialization(tinyxml2::XMLElement *txmlElement);
+        // Initialize a variable with tinyxml
+        void InitializeAttribute(tinyxml2::XMLElement *txmlElement, int &MemberVariable, char* AttributeName);
+        void InitializeAttribute(tinyxml2::XMLElement *txmlElement, float &MemberVariable, char* AttributeName);
+        void InitializeAttribute(tinyxml2::XMLElement *txmlElement, std::string &MemberVariable, char* AttributeName);
  //       void SetParent(GameObjectHandle handle){ m_Parent = handle; }
 //        GameObjectHandle GetParent(){ return m_Parent; }
 

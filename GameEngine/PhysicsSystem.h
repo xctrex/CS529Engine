@@ -29,7 +29,7 @@ namespace Framework
         virtual void Update(float dt);
         virtual std::string GetName() { return "Physics"; }
         
-        std::list<RigidBody*> m_RigidBodyList;//TODO: investigate if we should use RigidBody* here, allowing the sprites to be modified by something other than the graphics compononent
+        std::list<RigidBody*> m_RigidBodyList;
         
     
     private:
