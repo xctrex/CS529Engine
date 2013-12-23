@@ -114,7 +114,7 @@ namespace Framework
         RigidBody* pBody = static_cast<RigidBody*>(m_Parent->GetComponent(COMPONENT_TYPE_RIGID_BODY));
         if (pBody && m_pTransform)
         {
-            if (pBody->GetShape() == SHAPE_CIRCLE || pBody->GetShape() == SHAPE_SHIP || pBody->GetShape() == SHAPE_SPOON)
+            if (pBody->GetShape() == SHAPE_CIRCLE || pBody->GetShape() == SHAPE_SHIP || pBody->GetShape() == SHAPE_SPOON || pBody->GetShape() == SHAPE_BOMB)
             {
                 // Draw a circle around the object
                 spD2DDeviceContext->DrawEllipse(

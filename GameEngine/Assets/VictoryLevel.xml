@@ -43,6 +43,10 @@
 		Name="InBetweenLevel"
 		Path="Assets\InBetweenLevel.png"
 	/>
+	<Texture
+		Name="Cookie"
+		Path="Assets\cookie.png"
+	/>
 </Textures>
 
 <Screens>

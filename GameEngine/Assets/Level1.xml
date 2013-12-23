@@ -39,6 +39,10 @@
         Name="Controls"
         Path="Assets\controls.png"
     />
+	<Texture
+		Name="Cookie"
+		Path="Assets\cookie.png"
+	/>
 </Textures>
 <Screens>
     <WinScreenSprite>

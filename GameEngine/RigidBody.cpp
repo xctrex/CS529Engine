@@ -15,6 +15,7 @@ Creation date: 12/15/2013
 
 #define BULLET_TO_ASTEROID_DAMAGE 10
 #define ASTEROID_TO_SHIP_DAMAGE 20
+#define BOMB_TO_ASTEROID_DAMAGE 2000
 
 namespace Framework
 {
@@ -26,7 +27,8 @@ namespace Framework
         m_Radius(0.0f),
         m_Weight(FLT_MAX),
         m_PreviousPosition(0.0f, 0.0f),
-        m_PreviousVelocity(0.0f, 0.0f)
+        m_PreviousVelocity(0.0f, 0.0f),
+        m_BombSecondsLeft(3.0f)
     {
         m_Type = COMPONENT_TYPE_RIGID_BODY;
 
@@ -87,6 +89,10 @@ namespace Framework
             else if (strcmp(txmlElement->Attribute("Shape"), "Ship") == 0)
             {
                 m_Shape = SHAPE_SHIP;
+            }
+            else if (strcmp(txmlElement->Attribute("Shape"), "Bomb") == 0)
+            {
+                m_Shape = SHAPE_BOMB;
             }
             else
             {
@@ -203,6 +209,21 @@ namespace Framework
                         g_CORE->BroadcastEvent(&cme);
                     }
                 }
+                // If this asteroid was hit by a bomb
+                if (collider->m_Shape == SHAPE_BOMB)
+                {
+                    // Damage asteroid
+                    DamageEvent de(BOMB_TO_ASTEROID_DAMAGE);
+                    this->m_Parent->OnEvent(&de);
+
+                    // Shrinkers get smaller and speed up as they are shot
+                    if(this->m_AsteroidType == ASTEROID_TYPE_SHRINKER)
+                    {
+                        // Turn milk chocolate
+                        ChocolateMilkEvent cme;
+                        g_CORE->BroadcastEvent(&cme);
+                    }
+                }
             }
             // Handle Ship Collision Logic
             else if (this->m_Shape == SHAPE_SHIP)
@@ -219,6 +240,11 @@ namespace Framework
             else if (this->m_Shape == SHAPE_LINE)
             {
                 // Lines don't need to do anything
+                return;
+            }
+            else if (this->m_Shape == SHAPE_BOMB)
+            {
+                // Bomb's do need to do anything when hit
                 return;
             }
 
@@ -300,6 +326,20 @@ namespace Framework
 
     void RigidBody::UpdatePosition(float dt)
     {
+        if(m_Shape == SHAPE_BOMB)
+        {
+            // Position doesn't change but radius increase each frame for 270 frames
+            m_Radius += 30.0f * dt;
+            Vector2DSet(m_pTransform->m_Scale, m_Radius / 128.0f, m_Radius / 128.0f);
+            m_BombSecondsLeft -= dt;
+            // Kill the bomb after 3 seconds
+            if(m_BombSecondsLeft <= 0)
+            {
+                ObjectCleanupEvent oce;
+                m_Parent->OnEvent(&oce);
+            }
+            return;
+        }
         // Keep track of old position and velocity in case of collision
         m_PreviousPosition = m_pTransform->m_Position;
         m_PreviousVelocity = m_Velocity;
@@ -322,7 +362,7 @@ namespace Framework
     {
         if (m_Shape == SHAPE_CIRCLE)
         {
-            if (body2->m_Shape == SHAPE_CIRCLE || body2->m_Shape == SHAPE_SHIP || body2->m_Shape == SHAPE_SPOON)
+            if (body2->m_Shape == SHAPE_CIRCLE || body2->m_Shape == SHAPE_SHIP || body2->m_Shape == SHAPE_SPOON || body2->m_Shape == SHAPE_BOMB)
             {
                 return StaticCircleToStaticCircle(m_pTransform->m_Position, m_Radius, body2->m_pTransform->m_Position, body2->m_Radius);
             }

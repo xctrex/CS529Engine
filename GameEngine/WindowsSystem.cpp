@@ -28,11 +28,11 @@ namespace Framework
         case WM_CHAR: //A character key was pressed
         {
             //Create a key event
-            CharacterKeyEvent key;
+            //CharacterKeyEvent key;
             //Set the character pressed (the wParam is the ascii value)
-            key.m_Character = wParam;
+            //key.m_Character = wParam;
             //Broadcast the message to all systems
-            g_CORE->BroadcastEvent(&key);
+            //g_CORE->BroadcastEvent(&key);
             break;
         }
         case WM_LBUTTONDOWN:
@@ -74,6 +74,21 @@ namespace Framework
             break;
         case WM_KEYUP: //A key was released
             //TODO: Handle any key logic you might need for game controls
+            if(wParam == VK_CONTROL)
+            {
+                // If within the bounds of the window
+                if(g_WINDOWSSYSTEM->m_MousePosition.x > 0.0f && g_WINDOWSSYSTEM->m_MousePosition.x < 1280.0f &&
+                    g_WINDOWSSYSTEM->m_MousePosition.y > 0.0f && g_WINDOWSSYSTEM->m_MousePosition.y < 720.0f)
+                {
+                    CharacterKeyEvent mKE(
+                        Vector2D(
+                            g_WINDOWSSYSTEM->m_MousePosition.x - 1280.0f * 0.5f,
+                            720.0f * 0.5f - g_WINDOWSSYSTEM->m_MousePosition.y
+                            )
+                        );
+                    g_CORE->BroadcastEvent(&mKE);
+                }
+            }
             break;
             // this message is read when the window is closed
             case WM_DESTROY:

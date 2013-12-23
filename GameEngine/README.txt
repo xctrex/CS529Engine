@@ -9,6 +9,7 @@ Controls:
 Click the left mouse button to toggle the controls screen on and off
 Click the right mouse button to toggle debug drawing
 Space fires bullets
+Ctrl sets off a bomb at mouse's location. Limit 2 bombs per level
 Up arrow accelerates
 Down arrow decelerates
 Left and right arrows rotate
@@ -83,6 +84,7 @@ Game Requirements
     
     Collision between projectiles, player and enemies present
     Two different types of enemies, regular asteroids and asteroids that shrink and get faster as their health goes down.
+    Two weapons - regular bullets shot by space bar and bombs placed at mouses location by hitting Ctrl
     Controls screen - left click to toggle controls screen
     Requirements easy to test - 
     Game has a win/lose condition - destroy all the asteroids to move on to the next level. Run into the asteroids too many times and

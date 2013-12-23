@@ -41,5 +41,9 @@ namespace Framework
         {
             m_hGameStateManager.ToComponent()->OnEvent(e);
         }
+        if (e->m_EventType == EVENT_TYPE_CHARACTER_KEY)
+        {
+            m_pInputHandler->OnEvent(e);
+        }
     }
 }
