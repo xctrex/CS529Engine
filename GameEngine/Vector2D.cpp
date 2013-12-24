@@ -146,3 +146,24 @@ void Vector2DFromAngleRad(Vector2D &Result, float angle)
 }
 
 // ---------------------------------------------------------------------------
+
+float AngleDegFromVector2D(const Vector2D &vector)
+{
+    return RadiansToDegrees(AngleRadFromVector2D(vector));
+}
+
+// ---------------------------------------------------------------------------
+
+float AngleRadFromVector2D(const Vector2D &vector)
+{
+    float angle = atan2(vector.y, vector.x);
+    // Convert the range of the angle from (-Pi to Pi) to (0 to 2Pi)
+    if (angle < 0.0f)
+    {
+        angle += 2.0f * PI;
+    }
+
+    return angle;
+}
+
+// ---------------------------------------------------------------------------

@@ -51,6 +51,7 @@ namespace Framework
         void Accelerate(float accel, float dt);
         void ApplyGravity(float dt);
         void UpdatePosition(float dt);
+        void BinaryMapCollision(float dt);
         int CollidesWith(RigidBody* body2);
 
         void SetPosition(float x, float y) { m_pTransform->m_Position.x = x; m_pTransform->m_Position.y = y; }

@@ -16,9 +16,53 @@ Creation date: 12/15/2013
 #define BULLET_TO_ASTEROID_DAMAGE 10
 #define ASTEROID_TO_SHIP_DAMAGE 20
 #define BOMB_TO_ASTEROID_DAMAGE 2000
+#define EPSILON 0.00001f
+
+//Collision flags
+#define	COLLISION_LEFT		0x00000001	//0001
+#define	COLLISION_RIGHT		0x00000002	//0010
+#define	COLLISION_TOP		0x00000004	//0100
+#define	COLLISION_BOTTOM	0x00000008	//1000
+
 
 namespace Framework
 {
+    int CheckInstanceBinaryMapCollision(float PosX, float PosY, float scaleX, float scaleY)
+    {
+        // Initialize flag
+        int flag = 0;
+
+
+        // Build hotspots
+        Vector2D TopL, TopR, BottomL, BottomR, LeftT, LeftB, RightT, RightB;
+        TopL.y = TopR.y = PosY + 0.5f * scaleY;// + EPSILON;
+        TopL.x = BottomL.x = PosX - 0.25f * scaleX;// - EPSILON;
+        TopR.x = BottomR.x = PosX + 0.25f * scaleX;// + EPSILON;
+        BottomL.y = BottomR.y = PosY - 0.5f * scaleY;// - EPSILON;
+
+        LeftT.x = LeftB.x = PosX - 0.5f * scaleX;// - EPSILON;
+        LeftT.y = RightT.y = PosY + 0.25f * scaleY;// + EPSILON;
+        LeftB.y = RightB.y = PosY - 0.25f * scaleY;// - EPSILON;
+        RightT.x = RightB.x = PosX + 0.5f * scaleX;// + EPSILON;
+
+        // Check collision for hotspots and set flag in case of collision
+        if (g_PHYSICS->GetCellValue((int)TopL.x, (int)TopL.y) == 1 || g_PHYSICS->GetCellValue((int)TopR.x, (int)TopR.y) == 1)
+            flag |= COLLISION_TOP;
+        if (g_PHYSICS->GetCellValue((int)BottomL.x, (int)BottomL.y) == 1 || g_PHYSICS->GetCellValue((int)BottomR.x, (int)BottomR.y) == 1)
+            flag |= COLLISION_BOTTOM;
+        if (g_PHYSICS->GetCellValue((int)LeftT.x, (int)LeftT.y) == 1 || g_PHYSICS->GetCellValue((int)LeftB.x, (int)LeftB.y) == 1)
+            flag |= COLLISION_LEFT;
+        if (g_PHYSICS->GetCellValue((int)RightT.x, (int)RightT.y) == 1 || g_PHYSICS->GetCellValue((int)RightB.x, (int)RightB.y) == 1)
+            flag |= COLLISION_RIGHT;
+
+        return flag;
+    }
+
+    void SnapToCell(float *Coordinate)
+    {
+        *Coordinate = (float)((int)*Coordinate) + 0.5f;
+    }
+
     RigidBody::RigidBody() :
         m_pTransform(NULL),
         m_Velocity(0.0f, 0.0f),
@@ -342,6 +386,23 @@ namespace Framework
 
         // newPosition = velocity * dt + currentPosition
         Vector2DScaleAdd(m_pTransform->m_Position, m_Velocity, m_pTransform->m_Position, dt);
+    }
+
+    void RigidBody::BinaryMapCollision(float dt)
+    {
+        int gridCollisionFlag = CheckInstanceBinaryMapCollision(m_pTransform->m_Position.x, m_pTransform->m_Position.y, m_pTransform->m_Scale.x + EPSILON, m_pTransform->m_Scale.y + EPSILON);
+        if (0 != (gridCollisionFlag & COLLISION_BOTTOM) ||
+            0 != (gridCollisionFlag & COLLISION_TOP))
+        {
+            SnapToCell(&(m_pTransform->m_Position.y));
+            m_Velocity.y = 0;
+        }
+        if (0 != (gridCollisionFlag & COLLISION_LEFT) ||
+            0 != (gridCollisionFlag & COLLISION_RIGHT))
+        {
+            SnapToCell(&(m_pTransform->m_Position.x));
+            m_Velocity.x = 0;
+        }
     }
 
     int RigidBody::CollidesWith(RigidBody* body2)

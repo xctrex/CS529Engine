@@ -117,3 +117,13 @@ void Vector2DFromAngleDeg(Vector2D &Result, float angle);
 This function computes the coordinates of the vector represented by the angle "angle", which is in Radian
 */
 void Vector2DFromAngleRad(Vector2D &Result, float angle);
+
+/*
+This function computes the angle in degrees of a vector
+*/
+float AngleDegFromVector2D(const Vector2D &vector);
+
+/*
+This function computes the angle in radians of a vector
+*/
+float AngleRadFromVector2D(const Vector2D &vector);

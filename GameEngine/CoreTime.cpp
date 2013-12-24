@@ -26,7 +26,7 @@ namespace Framework
         // Get the current time
         QueryPerformanceCounter(&PerformanceCounterCurrent);
         // Return the difference between the current time and the start time
-        return (unsigned int)((PerformanceCounterCurrent.QuadPart - PerformanceCounterStart.QuadPart) / (TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
+        return (unsigned int)((float)(PerformanceCounterCurrent.QuadPart - PerformanceCounterStart.QuadPart) / (float)(TicksPerSecond.QuadPart)) * MILLESECONDS_PER_SECOND;
     }
 
     float CoreTime::GetFrameTimeInMilliseconds()

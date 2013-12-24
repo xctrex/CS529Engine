@@ -25,16 +25,23 @@ namespace Framework
         ~PhysicsSystem();
 
         // ISystem class virtual functions
-        virtual void Initialize(){};
+        virtual void Initialize();
         virtual void Update(float dt);
         virtual std::string GetName() { return "Physics"; }
-        
+        int GetCellValue(int X, int Y);
+
         std::list<RigidBody*> m_RigidBodyList;
         
     
     private:
 
         void HandleCollisions(float dt);
+        int ImportMapDataFromFile(char *FileName);
+        void FreeMapData();
+        int m_BinaryMapWidth;
+        int m_BinaryMapHeight;
+        int** MapData;//TODO: Initialize MapData and BinaryCollisionArray
+        int** BinaryCollisionArray;
 
     };
 

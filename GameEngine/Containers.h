@@ -15,3 +15,5 @@ Creation date: 10/3/2013
 #include <list>
 #include <hash_map>
 #include <memory>
+
+int cstrtoi(char* cstr, int length);
