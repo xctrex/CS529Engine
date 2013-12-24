@@ -43,7 +43,7 @@ namespace Framework
         }
         if (e->m_EventType == EVENT_TYPE_CHARACTER_KEY)
         {
-            m_pInputHandler->OnEvent(e);
+            m_hInputHandler.ToComponent()->OnEvent(e);
         }
     }
 }

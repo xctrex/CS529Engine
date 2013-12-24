@@ -30,11 +30,11 @@ namespace Framework
         m_Type = COMPONENT_TYPE_SPRITE;        
      
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
-    };
+    }
     Sprite::~Sprite() 
     {
         
-    };
+    }
     void Sprite::Destroy()
     {
         g_GRAPHICS->m_SpriteList.remove(ComponentHandle(*this));

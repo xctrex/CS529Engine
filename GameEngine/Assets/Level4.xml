@@ -4,10 +4,6 @@
         Path="Assets\Default.png"
     />
     <Texture
-        Name="Circle"
-        Path="Assets\Circle.png"
-    />
-    <Texture
         Name="CocoPuff"
         Path="Assets\cocopuff.png"
     />

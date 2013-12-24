@@ -25,7 +25,7 @@ namespace Framework
         m_Type = COMPONENT_TYPE_GAME_STATE_MANAGER;
 
         g_ComponentHandleTable[this->GetHandleIndex()] = this;
-    };
+    }
 
     void GameStateManager::Initialize(tinyxml2::XMLElement *txmlElement)
     {
@@ -78,5 +78,5 @@ namespace Framework
                 }
             }
         }
-    };
+    }
 }

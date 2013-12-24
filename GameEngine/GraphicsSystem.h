@@ -48,7 +48,6 @@ namespace Framework
         void Destroy();
 
         // ISystem class virtual functions
-        //virtual void SendMessage(Message* message) {};
         virtual void Initialize();
         virtual void Update(float dt);
         virtual void OnEvent(Event* e);

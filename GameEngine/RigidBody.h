@@ -49,6 +49,7 @@ namespace Framework
         virtual void Destroy();
 
         void Accelerate(float accel, float dt);
+        void ApplyGravity(float dt);
         void UpdatePosition(float dt);
         int CollidesWith(RigidBody* body2);
 
@@ -73,6 +74,8 @@ namespace Framework
         LineSegment2D m_LineSegment;
         float m_BombSecondsLeft;
         int m_BombsLeft;
+        float m_Gravity;
+        float m_MaxVelocity;
     };
 
 

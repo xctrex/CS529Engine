@@ -32,7 +32,10 @@ namespace Framework
 
         std::list<RigidBody*>::iterator it = m_RigidBodyList.begin();
         for (; it != m_RigidBodyList.end(); ++it)
+        {
+            (*it)->ApplyGravity(dt);
             (*it)->UpdatePosition(dt);
+        }
         // Update the input handler
         HandleCollisions(dt);
     }
