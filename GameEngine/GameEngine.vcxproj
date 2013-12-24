@@ -84,6 +84,7 @@
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Life.cpp" />
+    <ClCompile Include="LineDrawing.cpp" />
     <ClCompile Include="LineSegment2D.cpp" />
     <ClCompile Include="Math2D.cpp" />
     <ClCompile Include="Matrix2D.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="LineDrawing.h" />
     <ClInclude Include="LineSegment2D.h" />
     <ClInclude Include="Math2D.h" />
     <ClInclude Include="Matrix2D.h" />

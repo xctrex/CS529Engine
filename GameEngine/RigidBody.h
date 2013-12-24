@@ -61,6 +61,8 @@ namespace Framework
         void SetPreviousVelocity(float x, float y) { m_PreviousVelocity.x = x; m_PreviousVelocity.y = y; }
         float GetRadius(){ return m_Radius; }
         SHAPE GetShape(){ return m_Shape; }
+        Vector2D GetP0(){ return m_LineSegment.m_P0; }
+        Vector2D GetP1(){ return m_LineSegment.m_P1; }
     private:
 
         

@@ -23,6 +23,7 @@ Creation date: 12/15/2013
 #include "Sprite.h"
 #include "Text.h"
 #include "Transform.h"
+#include "LineDrawing.h"
 
 // Physics Components
 #include "RigidBody.h"

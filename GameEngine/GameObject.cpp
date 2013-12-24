@@ -30,6 +30,8 @@ namespace Framework
             return COMPONENT_TYPE_LIFE;
         else if (strcmp(name, "GameStateManager") == 0)
             return COMPONENT_TYPE_GAME_STATE_MANAGER;
+        else if (strcmp(name, "LineDrawing") == 0)
+            return COMPONENT_TYPE_LINE_DRAWING;
         else
             return COMPONENT_TYPE_NONE;
     }
@@ -95,6 +97,14 @@ namespace Framework
             pGSM->m_Parent = this;
             pGSM->Initialize(txmlElement);
             c.Initialize(pGSM->GetHandleIndex(), pGSM->GetUniqueID());
+            break;
+        }
+        case COMPONENT_TYPE_LINE_DRAWING:
+        {
+            LineDrawing* pLD = new LineDrawing();
+            pLD->m_Parent = this;
+            pLD->Initialize(txmlElement);
+            c.Initialize(pLD->GetHandleIndex(), pLD->GetUniqueID());
             break;
         }
         default :

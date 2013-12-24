@@ -215,82 +215,16 @@ namespace Framework
         if (e->m_EventType == EVENT_TYPE_COLLISION)
         {
             RigidBody* collider = static_cast<CollisionEvent*>(e)->m_pCollidedWith;
-
-            // Handle bullet collision logic
-            if (this->m_Shape == SHAPE_SPOON)
+            
+            if (this->m_Shape == SHAPE_SHIP && collider->m_Shape == SHAPE_CIRCLE)
             {
-                // If a bullet collides with an asteroid or wall, delete the bullet
-                if (collider->m_Shape == SHAPE_LINE || collider->m_Shape == SHAPE_CIRCLE)
-                {
-                    ObjectCleanupEvent oce;
-                    m_Parent->OnEvent(&oce);
-                }
-                return;
-            }
-            // Handle Asteroid Collision logic
-            else if (this->m_Shape == SHAPE_CIRCLE)
-            {
-                // If this asteroid was hit by a bullet
-                if (collider->m_Shape == SHAPE_SPOON)
-                {
-                    // Damage asteroid
-                    DamageEvent de(BULLET_TO_ASTEROID_DAMAGE);
-                    this->m_Parent->OnEvent(&de);
-
-                    // Shrinkers get smaller and speed up as they are shot
-                    if(this->m_AsteroidType == ASTEROID_TYPE_SHRINKER)
-                    {
-                        // Shrink the radius
-                        m_Radius *= 0.9f;
-                        if(m_Radius < 10.0f) m_Radius = 10.0f;
-                        else
-                        {
-                            // Shrink the sprite
-                            Vector2DScale(m_pTransform->m_Scale, m_pTransform->m_Scale, 0.9f);
-                        }
-                        // Speed up
-                        Vector2DScale(m_Velocity, m_Velocity, 1.1f);
-                        // Turn milk chocolate
-                        ChocolateMilkEvent cme;
-                        g_CORE->BroadcastEvent(&cme);
-                    }
-                }
-                // If this asteroid was hit by a bomb
-                if (collider->m_Shape == SHAPE_BOMB)
-                {
-                    // Damage asteroid
-                    DamageEvent de(BOMB_TO_ASTEROID_DAMAGE);
-                    this->m_Parent->OnEvent(&de);
-
-                    // Shrinkers get smaller and speed up as they are shot
-                    if(this->m_AsteroidType == ASTEROID_TYPE_SHRINKER)
-                    {
-                        // Turn milk chocolate
-                        ChocolateMilkEvent cme;
-                        g_CORE->BroadcastEvent(&cme);
-                    }
-                }
-            }
-            // Handle Ship Collision Logic
-            else if (this->m_Shape == SHAPE_SHIP)
-            {
-                // If this ship was hit by an asteroid
-                if (collider->m_Shape == SHAPE_CIRCLE)
-                {
-                    // Damage ship
-                    DamageEvent de(ASTEROID_TO_SHIP_DAMAGE);
-                    this->m_Parent->OnEvent(&de);
-                }
+                // Do nothing (I only put this here so I could set a breakpoint
+                collider->GetHandleIndex();
             }
             // Handle Line collision logic
-            else if (this->m_Shape == SHAPE_LINE)
+            if (this->m_Shape == SHAPE_LINE)
             {
                 // Lines don't need to do anything
-                return;
-            }
-            else if (this->m_Shape == SHAPE_BOMB)
-            {
-                // Bomb's do need to do anything when hit
                 return;
             }
 
@@ -348,10 +282,22 @@ namespace Framework
                 // Update the position of this
                 Vector2DAdd(this->m_pTransform->m_Position, CenterAtImpact, R);
 
-                Vector2DNormalize(R, R);
-                Vector2DScale(this->m_Velocity, R, 
-                    (Vector2DLength(this->m_Velocity) + Vector2DLength(collider->m_Velocity)) * 0.5f
-                    );
+                // Determine the angle of the collision and use this information to know if a rigid body was hit vertically or horizontally
+                float angle = AngleDegFromVector2D(R);
+                
+                // If the body collided horizontally, set the x velocity to 0
+                if ((0.0f <= angle && angle <= 45.0f)
+                    || (315.0f <= angle && angle <= 360.0f)
+                    || (135.0f <= angle && angle <= 225.0f))
+                {
+                    m_Velocity.x = 0.0f;
+                }
+                // If the body collided vertically, set the y velocity to 0
+                if ((45.0f <= angle && angle <= 135.0f)
+                    || (225.0f <= angle && angle <= 315.0f))
+                {
+                    m_Velocity.y = 0.0f;
+                }
             }
         }
     }

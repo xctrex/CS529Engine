@@ -483,7 +483,23 @@ namespace Framework
         for (; it != m_TextList.end(); ++it)
             static_cast<Text*>(it->ToComponent())->Draw(m_spD2DDeviceContext, m_spWhiteBrush, m_spDWriteFactory);
 
-        m_spD2DDeviceContext->EndDraw();
+        DXThrowIfFailed(
+            m_spD2DDeviceContext->EndDraw()
+            );
+    }
+
+    void GraphicsSystem::DrawLines()
+    {
+        m_spD2DDeviceContext->BeginDraw();
+
+        //Iterate through the linked list of sprites
+        std::list<ComponentHandle>::iterator it = m_LineDrawingList.begin();
+        for (; it != m_LineDrawingList.end(); ++it)
+            static_cast<LineDrawing*>(it->ToComponent())->Draw(m_spD2DDeviceContext, m_spDebugBrush);
+
+        DXThrowIfFailed(
+            m_spD2DDeviceContext->EndDraw()
+            );
     }
 
     void GraphicsSystem::DrawDebug()
@@ -497,7 +513,7 @@ namespace Framework
 
         DXThrowIfFailed(
             m_spD2DDeviceContext->EndDraw()
-        );
+            );
     }
 
     void GraphicsSystem::Update(float timeslice)
@@ -517,6 +533,8 @@ namespace Framework
 			m_spD3DRenderTargetView.Get(),
             clearColor
             );
+
+        DrawLines();
 
         DrawSprites();
         

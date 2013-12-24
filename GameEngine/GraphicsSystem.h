@@ -26,6 +26,7 @@ Creation date: 12/15/2013
 
 #include "Sprite.h"
 #include "Text.h"
+#include "LineDrawing.h"
 
 namespace Framework
 {
@@ -59,6 +60,7 @@ namespace Framework
         ID3D11ShaderResourceView *GetTexture(std::string TextureName);
         void DrawSprites();
         void DrawText();
+        void DrawLines();
         void DrawDebug();
 
         Vector2D WorldCoordsToWindowCoords(Vector2D &WorldCoords);
@@ -71,6 +73,7 @@ namespace Framework
         GameObject* m_pHUDText;
         
         std::list<ComponentHandle> m_TextList;
+        std::list<ComponentHandle> m_LineDrawingList;
         bool m_DrawDebug;
         bool m_ShowWin;
         bool m_ShowLose;

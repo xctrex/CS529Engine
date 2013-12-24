@@ -30,6 +30,11 @@ namespace Framework
 
     };
 
+    void Text::Destroy()
+    {
+        g_GRAPHICS->m_TextList.remove(ComponentHandle(*this));
+    }
+
     void Text::Initialize(tinyxml2::XMLElement *txmlElement)
     {
 
@@ -163,10 +168,6 @@ namespace Framework
             sp_DWriteTextFormat.Get(),
             m_Rect,
             sp_Brush.Get()
-            );
-
-        DXThrowIfFailed(
-            sp_DeviceContext->EndDraw()
             );
     }
 

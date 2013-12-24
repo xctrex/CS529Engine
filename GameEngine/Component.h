@@ -25,7 +25,8 @@ enum COMPONENT_TYPE
     COMPONENT_TYPE_INPUT_HANDLER,
     COMPONENT_TYPE_RIGID_BODY,
     COMPONENT_TYPE_LIFE,
-    COMPONENT_TYPE_GAME_STATE_MANAGER
+    COMPONENT_TYPE_GAME_STATE_MANAGER,
+    COMPONENT_TYPE_LINE_DRAWING
 };
 
 //TODO: having handles for components and handles for game objects duplicates a lot of code

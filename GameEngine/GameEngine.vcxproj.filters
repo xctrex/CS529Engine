@@ -123,6 +123,9 @@
     <ClCompile Include="GameStateManager.cpp">
       <Filter>Systems\GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="LineDrawing.cpp">
+      <Filter>Systems\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsSystem.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="GameStateManager.h">
       <Filter>Systems\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="LineDrawing.h">
+      <Filter>Systems\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
