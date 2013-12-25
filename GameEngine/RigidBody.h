@@ -51,6 +51,7 @@ namespace Framework
         void Accelerate(float accel, float dt);
         void AccelerateLeft();
         void AccelerateRight();
+        void DecelerateHorizontal();
         void ApplyGravity(float dt);
         void UpdatePosition(float dt);
         void BinaryMapCollision(float dt);

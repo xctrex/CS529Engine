@@ -356,6 +356,14 @@ namespace Framework
         }
     }
 
+    void RigidBody::DecelerateHorizontal()
+    {
+        if (m_Velocity.x > 0)
+            m_Velocity.x -= min(m_Velocity.x, m_MovementVelocity / 10.0f);
+        else if (m_Velocity.x < 0)
+            m_Velocity.x += min(-(m_Velocity.x), m_MovementVelocity / 10.0f);
+    }
+
     void RigidBody::ApplyGravity(float dt)
     {
         if (m_Shape != SHAPE_LINE)

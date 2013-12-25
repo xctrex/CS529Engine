@@ -78,10 +78,10 @@ namespace Framework
         }
         if (IsLeftHeld())
             static_cast<RigidBody*>(m_hRigidBody.ToComponent())->AccelerateLeft();
-        if (IsRightHeld())
+        else if (IsRightHeld())
             static_cast<RigidBody*>(m_hRigidBody.ToComponent())->AccelerateRight();
-        if (IsSpaceHeld())
-            CreateBullet();
+        else
+            static_cast<RigidBody*>(m_hRigidBody.ToComponent())->DecelerateHorizontal();
     }
 
     void InputHandler::OnEvent(Event *e)
