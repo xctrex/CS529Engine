@@ -395,7 +395,7 @@ float ReflectAnimatedCircleOnStaticLineSegment(const Vector2D &Ps, const Vector2
     // Call ReflectAnimatedPointToStaticLineSegment
     ret = ReflectAnimatedPointOnStaticLineSegment(CPs, CPe, LS, Pi, R);
     // Adjust Pi by R
-    Vector2DScaleAdd(Pi, nHat, Pi, -D);
+    //Vector2DScaleAdd(Pi, nHat, Pi, -D);
     return ret;
     // Note: Same pitfall as AnimatedCircleToStaticLineSegment:    
     // If part of the circle that was not initially closest to the line

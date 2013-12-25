@@ -77,9 +77,9 @@ namespace Framework
             static_cast<RigidBody*>(m_hRigidBody.ToComponent())->Accelerate(m_DeccelerationSpeed, dt);
         }
         if (IsLeftHeld())
-            static_cast<Transform*>(m_hTransform.ToComponent())->m_Rotation += m_RotationSpeed * dt;
+            static_cast<RigidBody*>(m_hRigidBody.ToComponent())->AccelerateLeft();
         if (IsRightHeld())
-            static_cast<Transform*>(m_hTransform.ToComponent())->m_Rotation -= m_RotationSpeed * dt;
+            static_cast<RigidBody*>(m_hRigidBody.ToComponent())->AccelerateRight();
         if (IsSpaceHeld())
             CreateBullet();
     }

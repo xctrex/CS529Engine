@@ -49,6 +49,8 @@ namespace Framework
         virtual void Destroy();
 
         void Accelerate(float accel, float dt);
+        void AccelerateLeft();
+        void AccelerateRight();
         void ApplyGravity(float dt);
         void UpdatePosition(float dt);
         void BinaryMapCollision(float dt);
@@ -78,6 +80,7 @@ namespace Framework
         float m_BombSecondsLeft;
         int m_BombsLeft;
         float m_Gravity;
+        float m_MovementVelocity;
         float m_MaxVelocity;
     };
 

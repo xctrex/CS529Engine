@@ -74,6 +74,7 @@ namespace Framework
         m_PreviousVelocity(0.0f, 0.0f),
         m_BombSecondsLeft(3.0f),
         m_Gravity(-20.0f),
+        m_MovementVelocity(4.0f),
         m_MaxVelocity(40.0f)
     {
         m_Type = COMPONENT_TYPE_RIGID_BODY;
@@ -168,6 +169,9 @@ namespace Framework
         InitializeAttribute(txmlElement, m_Weight, "Weight");
         InitializeAttribute(txmlElement, m_Velocity.x, "VelocityX");
         InitializeAttribute(txmlElement, m_Velocity.y, "VelocityY");
+        InitializeAttribute(txmlElement, m_Gravity, "Gravity");
+        InitializeAttribute(txmlElement, m_MovementVelocity, "MovementVelocity");
+        InitializeAttribute(txmlElement, m_MaxVelocity, "MaxVelocity");
 
         // Line Segment initialization
         tinyxml2::XMLElement* txmlLineSegmentElement = txmlElement->FirstChildElement("LineSegment");
@@ -274,29 +278,47 @@ namespace Framework
                         R
                         );
                 }
-
+                
+                if (ti < 0) return;
                 // Get center position at time of impact
                 Vector2D CenterAtImpact = this->m_PreviousPosition;
                 CenterAtImpact.x += (this->m_PreviousPosition.x - thisNewPosition.x) * ti;
                 CenterAtImpact.y += (this->m_PreviousPosition.y - thisNewPosition.y) * ti;
-                // Update the position of this
-                Vector2DAdd(this->m_pTransform->m_Position, CenterAtImpact, R);
 
+                Vector2DSub(R, CenterAtImpact, Pi);
+                // Update the position of this
+                //Vector2DAdd(this->m_pTransform->m_Position, CenterAtImpact, R);
+                //Vector2DSet(this->m_pTransform->m_Position, CenterAtImpact.x, CenterAtImpact.y);
                 // Determine the angle of the collision and use this information to know if a rigid body was hit vertically or horizontally
                 float angle = AngleDegFromVector2D(R);
                 
                 // If the body collided horizontally, set the x velocity to 0
                 if ((0.0f <= angle && angle <= 45.0f)
-                    || (315.0f <= angle && angle <= 360.0f)
-                    || (135.0f <= angle && angle <= 225.0f))
+                    || (315.0f <= angle && angle <= 360.0f))
                 {
                     m_Velocity.x = 0.0f;
+                    if (collider->m_Shape == SHAPE_LINE)
+                        m_pTransform->m_Position.x = collider->m_pTransform->m_Position.x + m_Radius;
+                }
+                else if (135.0f <= angle && angle <= 225.0f)
+                {
+                    m_Velocity.x = 0.0f;
+                    if (collider->m_Shape == SHAPE_LINE)
+                        m_pTransform->m_Position.x = collider->m_pTransform->m_Position.x - m_Radius;
                 }
                 // If the body collided vertically, set the y velocity to 0
                 if ((45.0f <= angle && angle <= 135.0f)
-                    || (225.0f <= angle && angle <= 315.0f))
+                    )
                 {
                     m_Velocity.y = 0.0f;
+                    if (collider->m_Shape == SHAPE_LINE)
+                        m_pTransform->m_Position.y = collider->m_pTransform->m_Position.y + m_Radius;
+                }
+                else if (225.0f <= angle && angle <= 315.0f)
+                {
+                    m_Velocity.y = 0.0f;
+                    if (collider->m_Shape == SHAPE_LINE)
+                        m_pTransform->m_Position.y = collider->m_pTransform->m_Position.y - m_Radius;
                 }
             }
         }
@@ -316,12 +338,33 @@ namespace Framework
         }
     }
 
+    void RigidBody::AccelerateLeft()
+    {
+        m_Velocity.x -= m_MovementVelocity;
+        if (m_Velocity.x < -m_MovementVelocity)
+        {
+            m_Velocity.x = -m_MovementVelocity;
+        }
+    }
+
+    void RigidBody::AccelerateRight()
+    {
+        m_Velocity.x += m_MovementVelocity;
+        if (m_Velocity.x > m_MovementVelocity)
+        {
+            m_Velocity.x = m_MovementVelocity;
+        }
+    }
+
     void RigidBody::ApplyGravity(float dt)
     {
-        // Velocity Y = Gravity * Frame Time + Velocity Y
-        m_Velocity.y += m_Gravity * dt;
-        if (m_Velocity.y < -m_MaxVelocity)
-            m_Velocity.y = -m_MaxVelocity;
+        if (m_Shape != SHAPE_LINE)
+        {
+            // Velocity Y = Gravity * Frame Time + Velocity Y
+            m_Velocity.y += m_Gravity * dt;
+            if (m_Velocity.y < -m_MaxVelocity)
+                m_Velocity.y = -m_MaxVelocity;
+        }
     }
 
     void RigidBody::UpdatePosition(float dt)

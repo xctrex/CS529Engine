@@ -103,20 +103,6 @@
 		VelocityY="0.0"
 	/>
 </GameObject>
-<GameObject Archetype="CocoPuffAsteroidArchetype" Name="StaticCocoPuff">
-    <Transform    
-        PositionX="0.0"
-        PositionY="-200.0"
-    />
-	<RigidBody
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
-		VelocityX="0.0"
-		VelocityY="0.0"
-		AsteroidType="Shrinker"
-	/>
-</GameObject>
 <GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="StaticGoldenGraham">
     <Transform    
         PositionX="200.0"

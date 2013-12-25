@@ -11,6 +11,9 @@
         Radius="32.0"
         Weight="1.0"
         Shape="Ship"
+        Gravity="-200.0f"
+        MaxVelocity="400.0f"
+        MovementVelocity="200.0f"
     />
     <InputHandler
         AccelerationSpeed="1000.0"
