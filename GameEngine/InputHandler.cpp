@@ -88,12 +88,21 @@ namespace Framework
     {
         if(e->m_EventType == EVENT_TYPE_CHARACTER_KEY)
         {
-            if(m_BombsLeft > 0)
+            CharacterKeyEvent* cke = static_cast<CharacterKeyEvent*>(e);
+            switch (cke->m_Character)
             {
-                CharacterKeyEvent* cke = static_cast<CharacterKeyEvent*>(e);
-                CreateBomb(cke->m_Position);
-                --m_BombsLeft;
-            }
+            case 'a':
+                static_cast<RigidBody*>(m_hRigidBody.ToComponent())->AccelerateLeft();
+                break;
+            case 'd':
+                static_cast<RigidBody*>(m_hRigidBody.ToComponent())->AccelerateRight();
+                break;
+            case ' ':
+                static_cast<RigidBody*>(m_hRigidBody.ToComponent())->Jump();
+                break;
+            default:
+                break;
+            }            
         }
     }
 

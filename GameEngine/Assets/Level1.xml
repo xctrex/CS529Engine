@@ -90,35 +90,46 @@
     />
 </GameObject>
 
-<GameObject Archetype="CheerioAsteroidArchetype" Name="StaticCheerio">
-    <Transform    
-        PositionX="0.0"
-        PositionY="200.0"
-    />
-	<RigidBody
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
-		VelocityX="0.0"
-		VelocityY="0.0"
-	/>
-</GameObject>
-<GameObject Archetype="GoldenGrahamAsteroidArchetype" Name="StaticGoldenGraham">
-    <Transform    
-        PositionX="200.0"
-        PositionY="0.0"
-    />
-	<RigidBody
-        Name="CircleAsteroidBody"
-        Radius="32.0"
-        Weight="1.0"
-		VelocityX="0.0"
-		VelocityY="0.0"
-	/>
-</GameObject>
 <GameObject 
     Archetype="ShipArchetype"
 />
+
+
+<GameObject Name="Platform1">
+    <Transform
+        PositionX="-300.0"
+        PositionY="-290.0"
+    />
+    <RigidBody
+        Name="Platform1RigidBody"
+        Shape="Line">
+        <LineSegment
+            P0X="-200.0"
+            P0Y="-290.0"
+            P1X="-400.0"
+            P1Y="-290.0"
+        />
+    </RigidBody>
+    <LineDrawing/>
+</GameObject>
+
+<GameObject Name="Platform2">
+    <Transform
+        PositionX="0.0"
+        PositionY="-190.0"
+    />
+    <RigidBody
+        Name="Platform1RigidBody"
+        Shape="Line">
+        <LineSegment
+            P0X="100.0"
+            P0Y="-190.0"
+            P1X="-100.0"
+            P1Y="-190.0"
+        />
+    </RigidBody>
+    <LineDrawing/>
+</GameObject>
 
 <GameObject Name="LeftWall">
     <Transform

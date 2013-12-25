@@ -73,9 +73,10 @@ namespace Framework
         m_PreviousPosition(0.0f, 0.0f),
         m_PreviousVelocity(0.0f, 0.0f),
         m_BombSecondsLeft(3.0f),
-        m_Gravity(-20.0f),
-        m_MovementVelocity(4.0f),
-        m_MaxVelocity(40.0f)
+        m_Gravity(-200.0f),
+        m_MovementVelocity(40.0f),
+        m_MaxVelocity(400.0f),
+        m_JumpVelocity(110.0f)
     {
         m_Type = COMPONENT_TYPE_RIGID_BODY;
 
@@ -172,6 +173,7 @@ namespace Framework
         InitializeAttribute(txmlElement, m_Gravity, "Gravity");
         InitializeAttribute(txmlElement, m_MovementVelocity, "MovementVelocity");
         InitializeAttribute(txmlElement, m_MaxVelocity, "MaxVelocity");
+        InitializeAttribute(txmlElement, m_JumpVelocity, "JumpVelocity");
 
         // Line Segment initialization
         tinyxml2::XMLElement* txmlLineSegmentElement = txmlElement->FirstChildElement("LineSegment");
@@ -362,6 +364,11 @@ namespace Framework
             m_Velocity.x -= min(m_Velocity.x, m_MovementVelocity / 10.0f);
         else if (m_Velocity.x < 0)
             m_Velocity.x += min(-(m_Velocity.x), m_MovementVelocity / 10.0f);
+    }
+
+    void RigidBody::Jump()
+    {
+        m_Velocity.y = m_JumpVelocity;
     }
 
     void RigidBody::ApplyGravity(float dt)

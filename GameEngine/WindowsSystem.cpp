@@ -28,11 +28,11 @@ namespace Framework
         case WM_CHAR: //A character key was pressed
         {
             //Create a key event
-            //CharacterKeyEvent key;
+            CharacterKeyEvent cke(Vector2D(g_WINDOWSSYSTEM->m_MousePosition.x, g_WINDOWSSYSTEM->m_MousePosition.y));
             //Set the character pressed (the wParam is the ascii value)
-            //key.m_Character = wParam;
+            cke.m_Character = wParam;
             //Broadcast the message to all systems
-            //g_CORE->BroadcastEvent(&key);
+            g_CORE->BroadcastEvent(&cke);
             break;
         }
         case WM_LBUTTONDOWN:
