@@ -38,10 +38,7 @@ namespace Framework
 
     // Function for getting a component type from a c_str
     COMPONENT_TYPE GetComponentTypeFromName(const char* name);
-
-    // Function for creating components //TODO: could be replaced by a component factory class
-    ComponentHandle CreateComponent(tinyxml2::XMLElement *txmlElement);
-
+    
     unsigned int FindFreeSlotInGameObjectHandleTable();
     unsigned int GetGameObjectHandleIndexFromUniqueID(GameObjectID);
 
