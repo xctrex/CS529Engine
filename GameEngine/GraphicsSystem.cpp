@@ -90,9 +90,13 @@ namespace Framework
 
     void GraphicsSystem::CreateDeviceResources()
     {
-        // This flag adds support for surfaces with a different color channel ordering
+        // BGRA_SUPPORT flag adds support for surfaces with a different color channel ordering
         // than the API default. It is required for compatibility with Direct2D.
         UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+
+        // SINGLETHREADED flag improves performance. It will need to change if we make multithreaded graphics calls
+        creationFlags |= D3D11_CREATE_DEVICE_SINGLETHREADED;
+
         /*
 #if defined(_DEBUG)
         if (DX::SdkLayersAvailable())
@@ -128,11 +132,12 @@ namespace Framework
                 featureLevels,              // List of feature levels this app can support.
                 ARRAYSIZE(featureLevels),
                 D3D11_SDK_VERSION,          // Always set this to D3D11_SDK_VERSION for Windows Store apps.
-                &spDevice,                    // Returns the Direct3D device created.
+                &spDevice,                  // Returns the Direct3D device created.
                 &m_FeatureLevel,            // Returns feature level of device created.
-                &spContext                    // Returns the device immediate context.
+                &spContext                  // Returns the device immediate context.
             );
 
+        // Fall back to software if hardware creation fails
 		if(DXGI_ERROR_UNSUPPORTED == hr)
 		{
 			DXThrowIfFailed(
@@ -144,9 +149,9 @@ namespace Framework
 					featureLevels,              // List of feature levels this app can support.
 					ARRAYSIZE(featureLevels),
 					D3D11_SDK_VERSION,          // Always set this to D3D11_SDK_VERSION for Windows Store apps.
-					&spDevice,                    // Returns the Direct3D device created.
+					&spDevice,                  // Returns the Direct3D device created.
 					&m_FeatureLevel,            // Returns feature level of device created.
-					&spContext                    // Returns the device immediate context.
+					&spContext                  // Returns the device immediate context.
                 )
 			);
 		}
@@ -161,15 +166,14 @@ namespace Framework
             );
 
         // Get the underlying DXGI device of the Direct3D device.
-
-		ComPtr<IDXGIDevice2> dxgiDevice;
+		ComPtr<IDXGIDevice2> spDXGIDevice;
         DXThrowIfFailed(
-            m_spD3DDevice.As(&dxgiDevice)
+            m_spD3DDevice.As(&spDXGIDevice)
             );
 
         // Create the Direct2D device object and a corresponding context.
         DXThrowIfFailed(
-            m_spD2DFactory->CreateDevice(dxgiDevice.Get(), &m_spD2DDevice)
+            m_spD2DFactory->CreateDevice(spDXGIDevice.Get(), &m_spD2DDevice)
             );
 
         DXThrowIfFailed(
@@ -212,40 +216,40 @@ namespace Framework
 
             ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC1));
 
-            swapChainDesc.Width = m_ScreenWidth;                                     // Use automatic sizing.
+            swapChainDesc.Width = m_ScreenWidth;                            // Use automatic sizing.
             swapChainDesc.Height = m_ScreenHeight;
-            swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;           // This is the most common swap chain format.
+            swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;              // This is the most common swap chain format.
             swapChainDesc.Stereo = false;
-            swapChainDesc.SampleDesc.Count = 1;                          // Don't use multi-sampling.
+            swapChainDesc.SampleDesc.Count = 4;                             // Use 4x MSAA (all D3D 11 devices support 4x MSAA)
             swapChainDesc.SampleDesc.Quality = 0;
-            swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+            swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;    // Use RENDER_TARGET_OUTPUT because we are going to be rendering to the back buffer
 
             // When you call IDXGIFactory::CreateSwapChain to create a full-screen swap chain, you typically include the front buffer in this value.
-            swapChainDesc.BufferCount = 2;                               // Use double-buffering to minimize latency.
+            swapChainDesc.BufferCount = 1;                           // Use one back buffer for double-buffering to minimize latency.
             swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
-            swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // All Windows Store apps must use this SwapEffect.
+            swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;    // Let the display driver select the most efficient presentation method.
             swapChainDesc.Flags = 0;
             swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
-			ComPtr<IDXGIDevice2> dxgiDevice;
+			ComPtr<IDXGIDevice2> spDXGIDevice;
             DXThrowIfFailed(
-                m_spD3DDevice.As(&dxgiDevice)
+                m_spD3DDevice.As(&spDXGIDevice)
                 );
 
-            ComPtr<IDXGIAdapter> dxgiAdapter;
+            ComPtr<IDXGIAdapter> spDXGIAdapter;
             DXThrowIfFailed(
-                dxgiDevice->GetAdapter(&dxgiAdapter)
+                spDXGIDevice->GetAdapter(&spDXGIAdapter)
                 );
 
-            ComPtr<IDXGIFactory2> dxgiFactory;
+            ComPtr<IDXGIFactory2> spDXGIFactory;
             DXThrowIfFailed(
-                dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory))
+                spDXGIAdapter->GetParent(IID_PPV_ARGS(&spDXGIFactory))
                 );
 
             
             //CoreWindow window = m_window.Get();
             DXThrowIfFailed(
-                dxgiFactory->CreateSwapChainForHwnd(
+                spDXGIFactory->CreateSwapChainForHwnd(
                     m_spD3DDevice.Get(),
                     m_HWnd,
                     &swapChainDesc,
@@ -258,19 +262,19 @@ namespace Framework
             // Ensure that DXGI does not queue more than one frame at a time. This both reduces latency and
             // ensures that the application will only render after each VSync, minimizing power consumption.
             DXThrowIfFailed(
-                dxgiDevice->SetMaximumFrameLatency(1)
+                spDXGIDevice->SetMaximumFrameLatency(1)
                 );
         //}
 
         // Create a Direct3D render target view of the swap chain back buffer.
-        ComPtr<ID3D11Texture2D> backBuffer;
+        ComPtr<ID3D11Texture2D> spBackBuffer;
         DXThrowIfFailed(
-            m_spSwapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer))
+            m_spSwapChain->GetBuffer(0, IID_PPV_ARGS(&spBackBuffer))
             );
 
         DXThrowIfFailed(
             m_spD3DDevice->CreateRenderTargetView(
-                backBuffer.Get(),
+                spBackBuffer.Get(),
                 nullptr,
                 &m_spD3DRenderTargetView
                 )
@@ -278,31 +282,31 @@ namespace Framework
 
         // Cache the rendertarget dimensions in our helper class for convenient use.
         D3D11_TEXTURE2D_DESC backBufferDesc = { 0 };
-        backBuffer->GetDesc(&backBufferDesc);
+        spBackBuffer->GetDesc(&backBufferDesc);
 
         // Create a depth stencil view for use with 3D rendering if needed.
         CD3D11_TEXTURE2D_DESC depthStencilDesc(
             DXGI_FORMAT_D24_UNORM_S8_UINT,
             backBufferDesc.Width,
             backBufferDesc.Height,
-            1,
-            1,
+            1, // One MipMap level
+            1, // One texture in the texture array
             D3D11_BIND_DEPTH_STENCIL
             );
 
-        ComPtr<ID3D11Texture2D> depthStencil;
+        ComPtr<ID3D11Texture2D> spDepthStencil;
         DXThrowIfFailed(
             m_spD3DDevice->CreateTexture2D(
                 &depthStencilDesc,
                 nullptr,
-                &depthStencil
+                &spDepthStencil
                 )
             );
 
         auto viewDesc = CD3D11_DEPTH_STENCIL_VIEW_DESC(D3D11_DSV_DIMENSION_TEXTURE2D);
         DXThrowIfFailed(
             m_spD3DDevice->CreateDepthStencilView(
-                depthStencil.Get(),
+                spDepthStencil.Get(),
                 &viewDesc,
                 &m_spD3DDepthStencilView
                 )
@@ -361,12 +365,28 @@ namespace Framework
             );
     }
 
+    // Define Input Layouts
+    void GraphicsSystem::CreateInputLayouts()
+    {/*
+        D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+        {
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+        };
+
+        m_spD3DDevice->CreateInputLayout(
+            vertexDesc,
+            3,)*/
+    }
+
     void GraphicsSystem::LoadResources()
     {
         CreateDeviceIndependentResources();
         CreateDeviceResources();
         CreateWindowSizeDependentResources();
         CreateBrushes();
+        CreateInputLayouts();
     }
 
     void GraphicsSystem::Initialize()

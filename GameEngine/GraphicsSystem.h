@@ -30,6 +30,13 @@ Creation date: 12/15/2013
 
 namespace Framework
 {
+    struct Vertex
+    {
+        XMFLOAT3 Pos;
+        XMFLOAT3 Normal;
+        XMFLOAT4 Color;
+    };
+
     // Throw on error //TODO: Convert DirectX error codes to exceptions.
     inline void DXThrowIfFailed(HRESULT hr)
     {
@@ -85,6 +92,7 @@ namespace Framework
     void CreateDeviceResources();
     void CreateWindowSizeDependentResources();
     void CreateBrushes();
+    void CreateInputLayouts();
 	
     // DXGI Resources
     ComPtr<IDXGISwapChain1> m_spSwapChain;
@@ -95,29 +103,19 @@ namespace Framework
 	ComPtr<ID3D11RenderTargetView> m_spD3DRenderTargetView;
     ComPtr<ID3D11DepthStencilView> m_spD3DDepthStencilView;
     D3D_FEATURE_LEVEL m_FeatureLevel;
+    ComPtr<ID3D11InputLayout> m_spInputLayout;
 
-    // D2D Resources
-	
-#ifdef WIN_8
-    ComPtr<ID2D1Factory2> m_spD2DFactory;
-    ComPtr<ID2D1Device1> m_spD2DDevice;
-    ComPtr<ID2D1DeviceContext1> m_spD2DDeviceContext;
-#else
+    // D2D Resources	
 	ComPtr<ID2D1Factory1> m_spD2DFactory;
 	ComPtr<ID2D1Device> m_spD2DDevice;
 	ComPtr<ID2D1DeviceContext> m_spD2DDeviceContext;
-#endif
     ComPtr<ID2D1RenderTarget> m_spD2DRenderTarget;
     ComPtr<ID2D1Bitmap1> m_spD2DTargetBitmap;
     ComPtr<ID2D1SolidColorBrush> m_spWhiteBrush;
     ComPtr<ID2D1SolidColorBrush> m_spDebugBrush;
 
     // DWrite Resources
-#ifdef WIN_8
-    ComPtr<IDWriteFactory2> m_spDWriteFactory;
-#else
 	ComPtr<IDWriteFactory1> m_spDWriteFactory;
-#endif
 
     // WIC Resources
     ComPtr<IWICImagingFactory2> m_spWICFactory;
