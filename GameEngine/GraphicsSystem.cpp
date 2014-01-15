@@ -20,7 +20,7 @@ namespace Framework
     GraphicsSystem* g_GRAPHICS = NULL;
 
     GraphicsSystem::GraphicsSystem(HWND hw, int w, int h) : 
-		m_HWnd(hw),
+		m_hWnd(hw),
 		m_ScreenWidth(w),
 		m_ScreenHeight(h),
         m_DPIX(96.0f),
@@ -251,7 +251,7 @@ namespace Framework
             DXThrowIfFailed(
                 spDXGIFactory->CreateSwapChainForHwnd(
                     m_spD3DDevice.Get(),
-                    m_HWnd,
+                    m_hWnd,
                     &swapChainDesc,
                     nullptr,
                     nullptr,
@@ -365,28 +365,192 @@ namespace Framework
             );
     }
 
-    // Define Input Layouts
-    void GraphicsSystem::CreateInputLayouts()
-    {/*
-        D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
-        {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-        };
+	void GraphicsSystem::CompileShaderFromFile(WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ComPtr<ID3DBlob> &m_spBlobOut)
+	{
+		HRESULT hr = S_OK;
 
-        m_spD3DDevice->CreateInputLayout(
-            vertexDesc,
-            3,)*/
-    }
+		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined( DEBUG ) || defined( _DEBUG )
+		// Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
+		// Setting this flag improves the shader debugging experience, but still allows 
+		// the shaders to be optimized and to run exactly the way they will run in 
+		// the release configuration of this program.
+		dwShaderFlags |= D3DCOMPILE_DEBUG;
+#endif
 
+		ComPtr<ID3DBlob> spErrorBlob;
+		hr = D3DCompileFromFile(szFileName, nullptr, nullptr, szEntryPoint, szShaderModel,
+			dwShaderFlags, 0, &m_spBlobOut, &spErrorBlob);
+		if (FAILED(hr))
+		{
+			if (spErrorBlob)
+			{
+				OutputDebugStringA(reinterpret_cast<const char*>(spErrorBlob->GetBufferPointer()));
+			}
+			DXThrowIfFailed(hr);
+		}
+	}
+
+	void GraphicsSystem::CreateShaders()
+	{
+		// Compile the vertex shader
+		ComPtr<ID3DBlob> spVSBlob;
+		CompileShaderFromFile(L"SimpleShader.fx", "VS", "vs_5_0", spVSBlob);
+
+		// Create the vertex shader
+		DXThrowIfFailed(
+			m_spD3DDevice->CreateVertexShader(
+				spVSBlob->GetBufferPointer(),
+				spVSBlob->GetBufferSize(),
+				nullptr, &m_spVertexShader)
+			);
+
+		// Define the input layout
+		D3D11_INPUT_ELEMENT_DESC layout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+		UINT numElements = ARRAYSIZE(layout);
+
+		// Create the input layout
+		DXThrowIfFailed(
+			m_spD3DDevice->CreateInputLayout(
+				layout,
+				numElements,
+				spVSBlob->GetBufferPointer(),
+				spVSBlob->GetBufferSize(), &m_spVertexLayout
+				)
+			);
+
+		// Set the input layout
+		m_spD3DDeviceContext->IASetInputLayout(m_spVertexLayout.Get());
+
+		// Compile the pixel shader
+		ComPtr<ID3DBlob> spPSBlob;
+		CompileShaderFromFile(L"SimpleShader.fx", "PS", "ps_5_0", spPSBlob);
+
+		// Create the pixel shader
+		DXThrowIfFailed(
+			m_spD3DDevice->CreatePixelShader(spPSBlob->GetBufferPointer(), spPSBlob->GetBufferSize(), nullptr, &m_spPixelShader)
+			);
+	}
+
+	void GraphicsSystem::CreateBuffers()
+	{
+		// Create vertex buffer
+		SimpleCubeVertex vertices[] =
+		{
+			{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },
+			{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
+			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
+		};
+		D3D11_BUFFER_DESC bd;
+		ZeroMemory(&bd, sizeof(bd));
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(SimpleCubeVertex)* 8;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bd.CPUAccessFlags = 0;
+		D3D11_SUBRESOURCE_DATA InitData;
+		ZeroMemory(&InitData, sizeof(InitData));
+		InitData.pSysMem = vertices;
+		DXThrowIfFailed(
+			m_spD3DDevice->CreateBuffer(
+				&bd, 
+				&InitData, 
+                m_spVertexBuffer.ReleaseAndGetAddressOf()
+				)
+			);
+
+		// Set vertex buffer
+		UINT stride = sizeof(SimpleCubeVertex);
+		UINT offset = 0;
+		m_spD3DDeviceContext->IASetVertexBuffers(0, 1, m_spVertexBuffer.GetAddressOf(), &stride, &offset);
+
+		// Create index buffer
+		WORD indices[] =
+		{
+			3, 1, 0,
+			2, 1, 3,
+
+			0, 5, 4,
+			1, 5, 0,
+
+			3, 4, 7,
+			0, 4, 3,
+
+			1, 6, 5,
+			2, 6, 1,
+
+			2, 7, 6,
+			3, 7, 2,
+
+			6, 4, 5,
+			7, 4, 6,
+		};
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(WORD)* 36;        // 36 vertices needed for 12 triangles in a triangle list
+		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		bd.CPUAccessFlags = 0;
+		InitData.pSysMem = indices;
+		DXThrowIfFailed(
+			m_spD3DDevice->CreateBuffer(&bd, &InitData, m_spIndexBuffer.ReleaseAndGetAddressOf())
+			);
+
+		// Set index buffer
+		m_spD3DDeviceContext->IASetIndexBuffer(m_spIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+
+		// Set primitive topology
+		m_spD3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		
+		// Create the constant buffer
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(ConstantBuffer);
+		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bd.CPUAccessFlags = 0;
+		DXThrowIfFailed(
+			m_spD3DDevice->CreateBuffer(
+				&bd,
+				nullptr,
+                m_spConstantBuffer.ReleaseAndGetAddressOf()
+				)
+			);
+	}
+
+	void GraphicsSystem::InitializeMatrices()
+	{
+		// Initialize the world matrix
+		m_CB.world = m_World = XMMatrixIdentity();
+
+		// Initialize the view matrix
+		XMVECTOR Eye = XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
+		XMVECTOR At = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		m_CB.view = m_View = XMMatrixLookAtLH(Eye, At, Up);
+
+        RECT rc;
+        GetClientRect(m_hWnd, &rc);
+        UINT width = rc.right - rc.left;
+        UINT height = rc.bottom - rc.top;
+
+		// Initialize the projection matrix
+		m_CB.projection = m_Projection = XMMatrixPerspectiveFovLH(XM_PIDIV2, width / (FLOAT)height, 0.01f, 100.0f);
+	}
+	
     void GraphicsSystem::LoadResources()
     {
         CreateDeviceIndependentResources();
         CreateDeviceResources();
         CreateWindowSizeDependentResources();
         CreateBrushes();
-        CreateInputLayouts();
+        CreateShaders();
+        CreateBuffers();
+        InitializeMatrices();
     }
 
     void GraphicsSystem::Initialize()
@@ -522,6 +686,26 @@ namespace Framework
             );
     }
 
+    void GraphicsSystem::DrawModels()
+    {
+        //
+        // Update variables
+        //
+//        m_CB.world = XMMatrixTranspose(m_World);
+  //      m_CB.view = XMMatrixTranspose(m_View);
+    //    m_CB.projection = XMMatrixTranspose(m_Projection);
+        m_spD3DDeviceContext->UpdateSubresource(m_spConstantBuffer.Get(), 0, nullptr, &m_CB, 0, 0);
+
+        //
+        // Renders a triangle
+        //
+        m_spD3DDeviceContext->VSSetShader(m_spVertexShader.Get(), nullptr, 0);
+        m_spD3DDeviceContext->VSSetConstantBuffers(0, 1, m_spConstantBuffer.GetAddressOf());
+        m_spD3DDeviceContext->PSSetShader(m_spPixelShader.Get(), nullptr, 0);
+        m_spD3DDeviceContext->DrawIndexed(36, 0, 0);        // 36 vertices needed for 12 triangles in a triangle list
+
+    }
+
     void GraphicsSystem::DrawDebug()
     {      
         m_spD2DDeviceContext->BeginDraw();
@@ -554,11 +738,13 @@ namespace Framework
             clearColor
             );
 
-        DrawLines();
+        DrawModels();
 
-        DrawSprites();
+        //DrawLines();
+
+        //DrawSprites();
         
-        DrawText();
+        //DrawText();
 
         if(m_DrawDebug)
             DrawDebug();
@@ -569,10 +755,10 @@ namespace Framework
         // Discard the contents of the render target.
         // This is a valid operation only when the existing contents will be entirely
         // overwritten. If dirty or scroll rects are used, this call should be removed.
-        m_spD3DDeviceContext->DiscardView(m_spD3DRenderTargetView.Get());
+        //m_spD3DDeviceContext->DiscardView(m_spD3DRenderTargetView.Get());
 
         // Discard the contents of the depth stencil.
-        m_spD3DDeviceContext->DiscardView(m_spD3DDepthStencilView.Get());
+        //m_spD3DDeviceContext->DiscardView(m_spD3DDepthStencilView.Get());
         
     }
 

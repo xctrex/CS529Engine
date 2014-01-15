@@ -49,6 +49,9 @@
     <Filter Include="Resource Files\Assets">
       <UniqueIdentifier>{6f20f95c-6df0-40e7-bfc8-6df08c1838f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Graphics\Shaders">
+      <UniqueIdentifier>{c0c3ca6d-89c7-491d-96f3-3f60aab17e15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -288,5 +291,16 @@
     <Xml Include="Assets\Textures.xml">
       <Filter>Resource Files\Assets</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="SimpleShader.fx">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="SimpleShader_VS.hlsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="SimpleShader_PS.hlsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

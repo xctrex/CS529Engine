@@ -19,6 +19,7 @@ Creation date: 12/15/2013
 #include <dwrite_1.h>
 #include <wincodec.h>
 #include <DirectXMath.h>
+#include <d3dcompiler.h>
 
 #include "tinyXML2\tinyxml2.h"
 #include <WICTextureLoader.h>
@@ -36,6 +37,19 @@ namespace Framework
         XMFLOAT3 Normal;
         XMFLOAT4 Color;
     };
+
+	struct SimpleCubeVertex
+	{
+		XMFLOAT3 pos;   // position
+		XMFLOAT4 color; // color
+	};
+
+	struct ConstantBuffer
+	{
+		XMMATRIX world;
+        XMMATRIX view;
+        XMMATRIX projection;
+	};
 
     // Throw on error //TODO: Convert DirectX error codes to exceptions.
     inline void DXThrowIfFailed(HRESULT hr)
@@ -68,6 +82,7 @@ namespace Framework
         void DrawSprites();
         void DrawText();
         void DrawLines();
+        void DrawModels();
         void DrawDebug();
 
         Vector2D WorldCoordsToWindowCoords(Vector2D &WorldCoords);
@@ -92,8 +107,23 @@ namespace Framework
     void CreateDeviceResources();
     void CreateWindowSizeDependentResources();
     void CreateBrushes();
-    void CreateInputLayouts();
-	
+
+	// 3D Resource Creation
+	void CreateShaders();
+	void CreateBuffers();
+	void InitializeMatrices();
+	void CompileShaderFromFile(WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ComPtr<ID3DBlob> &m_spBlobOut);
+	ComPtr<ID3D11VertexShader> m_spVertexShader;
+	ComPtr<ID3D11PixelShader> m_spPixelShader;
+	ComPtr<ID3D11InputLayout> m_spVertexLayout;
+	ComPtr<ID3D11Buffer> m_spVertexBuffer;
+	ComPtr<ID3D11Buffer> m_spIndexBuffer;
+	ComPtr<ID3D11Buffer> m_spConstantBuffer;
+	XMMATRIX    m_World;
+	XMMATRIX	m_View;
+	XMMATRIX	m_Projection;
+    ConstantBuffer m_CB;
+
     // DXGI Resources
     ComPtr<IDXGISwapChain1> m_spSwapChain;
 
@@ -103,13 +133,11 @@ namespace Framework
 	ComPtr<ID3D11RenderTargetView> m_spD3DRenderTargetView;
     ComPtr<ID3D11DepthStencilView> m_spD3DDepthStencilView;
     D3D_FEATURE_LEVEL m_FeatureLevel;
-    ComPtr<ID3D11InputLayout> m_spInputLayout;
 
     // D2D Resources	
 	ComPtr<ID2D1Factory1> m_spD2DFactory;
 	ComPtr<ID2D1Device> m_spD2DDevice;
 	ComPtr<ID2D1DeviceContext> m_spD2DDeviceContext;
-    ComPtr<ID2D1RenderTarget> m_spD2DRenderTarget;
     ComPtr<ID2D1Bitmap1> m_spD2DTargetBitmap;
     ComPtr<ID2D1SolidColorBrush> m_spWhiteBrush;
     ComPtr<ID2D1SolidColorBrush> m_spDebugBrush;
@@ -123,7 +151,7 @@ namespace Framework
     std::unique_ptr<SpriteBatch> m_spSpriteBatch;
     std::hash_map<std::string, ID3D11ShaderResourceView* > m_TextureMap;
 	// Window Properties
-	HWND m_HWnd;
+	HWND m_hWnd;
 	int m_ScreenWidth;
 	int m_ScreenHeight;
     float m_DPIX;
