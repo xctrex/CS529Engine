@@ -158,17 +158,17 @@ namespace Framework
 
         // Get the Direct3D 11.1 API device and context interfaces.
         DXThrowIfFailed(
-            spDevice.As(&m_spD3DDevice)
+            spDevice.As(&m_spD3DDevice1)
             );
 
         DXThrowIfFailed(
-            spContext.As(&m_spD3DDeviceContext)
+            spContext.As(&m_spD3DDeviceContext1)
             );
 
         // Get the underlying DXGI device of the Direct3D device.
 		ComPtr<IDXGIDevice2> spDXGIDevice;
         DXThrowIfFailed(
-            m_spD3DDevice.As(&spDXGIDevice)
+            m_spD3DDevice1.As(&spDXGIDevice)
             );
 
         // Create the Direct2D device object and a corresponding context.
@@ -233,7 +233,7 @@ namespace Framework
 
 			ComPtr<IDXGIDevice2> spDXGIDevice;
             DXThrowIfFailed(
-                m_spD3DDevice.As(&spDXGIDevice)
+                m_spD3DDevice1.As(&spDXGIDevice)
                 );
 
             ComPtr<IDXGIAdapter> spDXGIAdapter;
@@ -250,12 +250,12 @@ namespace Framework
             //CoreWindow window = m_window.Get();
             DXThrowIfFailed(
                 spDXGIFactory->CreateSwapChainForHwnd(
-                    m_spD3DDevice.Get(),
+                    m_spD3DDevice1.Get(),
                     m_hWnd,
                     &swapChainDesc,
                     nullptr,
                     nullptr,
-                    &m_spSwapChain
+                    &m_spSwapChain1
                     )
                 );
 
@@ -269,11 +269,11 @@ namespace Framework
         // Create a Direct3D render target view of the swap chain back buffer.
         ComPtr<ID3D11Texture2D> spBackBuffer;
         DXThrowIfFailed(
-            m_spSwapChain->GetBuffer(0, IID_PPV_ARGS(&spBackBuffer))
+            m_spSwapChain1->GetBuffer(0, IID_PPV_ARGS(&spBackBuffer))
             );
 
         DXThrowIfFailed(
-            m_spD3DDevice->CreateRenderTargetView(
+            m_spD3DDevice1->CreateRenderTargetView(
                 spBackBuffer.Get(),
                 nullptr,
                 &m_spD3DRenderTargetView
@@ -296,7 +296,7 @@ namespace Framework
 
         ComPtr<ID3D11Texture2D> spDepthStencil;
         DXThrowIfFailed(
-            m_spD3DDevice->CreateTexture2D(
+            m_spD3DDevice1->CreateTexture2D(
                 &depthStencilDesc,
                 nullptr,
                 &spDepthStencil
@@ -305,7 +305,7 @@ namespace Framework
 
         auto viewDesc = CD3D11_DEPTH_STENCIL_VIEW_DESC(D3D11_DSV_DIMENSION_TEXTURE2D);
         DXThrowIfFailed(
-            m_spD3DDevice->CreateDepthStencilView(
+            m_spD3DDevice1->CreateDepthStencilView(
                 spDepthStencil.Get(),
                 &viewDesc,
                 &m_spD3DDepthStencilView
@@ -320,7 +320,7 @@ namespace Framework
             static_cast<float>(backBufferDesc.Height)
             );
 
-        m_spD3DDeviceContext->RSSetViewports(1, &viewport);
+        m_spD3DDeviceContext1->RSSetViewports(1, &viewport);
 
         // Create a Direct2D target bitmap associated with the
         // swap chain back buffer and set it as the current target.
@@ -334,7 +334,7 @@ namespace Framework
 
         ComPtr<IDXGISurface2> dxgiBackBuffer;
         DXThrowIfFailed(
-            m_spSwapChain->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer))
+            m_spSwapChain1->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer))
             );
 
         DXThrowIfFailed(
@@ -399,32 +399,37 @@ namespace Framework
 
 		// Create the vertex shader
 		DXThrowIfFailed(
-			m_spD3DDevice->CreateVertexShader(
+			m_spD3DDevice1->CreateVertexShader(
 				spVSBlob->GetBufferPointer(),
 				spVSBlob->GetBufferSize(),
-				nullptr, &m_spVertexShader)
+				nullptr, m_spVertexShader.GetAddressOf())
 			);
-
+		
 		// Define the input layout
 		D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
+		/*D3D11_INPUT_ELEMENT_DESC layout[] =
+			{
+				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			};*/
 		UINT numElements = ARRAYSIZE(layout);
 
 		// Create the input layout
 		DXThrowIfFailed(
-			m_spD3DDevice->CreateInputLayout(
+			m_spD3DDevice1->CreateInputLayout(
 				layout,
 				numElements,
 				spVSBlob->GetBufferPointer(),
-				spVSBlob->GetBufferSize(), &m_spVertexLayout
+				spVSBlob->GetBufferSize(),
+                m_spVertexLayout.GetAddressOf()
 				)
 			);
-
+		
 		// Set the input layout
-		m_spD3DDeviceContext->IASetInputLayout(m_spVertexLayout.Get());
+		m_spD3DDeviceContext1->IASetInputLayout(m_spVertexLayout.Get());
 
 		// Compile the pixel shader
 		ComPtr<ID3DBlob> spPSBlob;
@@ -432,14 +437,14 @@ namespace Framework
 
 		// Create the pixel shader
 		DXThrowIfFailed(
-			m_spD3DDevice->CreatePixelShader(spPSBlob->GetBufferPointer(), spPSBlob->GetBufferSize(), nullptr, &m_spPixelShader)
+			m_spD3DDevice1->CreatePixelShader(spPSBlob->GetBufferPointer(), spPSBlob->GetBufferSize(), nullptr, m_spPixelShader.GetAddressOf())
 			);
 	}
 
 	void GraphicsSystem::CreateBuffers()
 	{
 		// Create vertex buffer
-		SimpleCubeVertex vertices[] =
+		/*SimpleCubeVertex vertices[] =
 		{
 			{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
 			{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
@@ -455,24 +460,39 @@ namespace Framework
 		bd.Usage = D3D11_USAGE_DEFAULT;
 		bd.ByteWidth = sizeof(SimpleCubeVertex)* 8;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bd.CPUAccessFlags = 0;*/
+		// Create vertex buffer
+		SimpleCubeVertex vertices[] =
+		{
+            { XMFLOAT3(0.0f, 0.5f, 0.5f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+            { XMFLOAT3(0.5f, -0.5f, 0.5f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+            { XMFLOAT3(-0.5f, -0.5f, 0.5f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+		};
+		D3D11_BUFFER_DESC bd;
+		ZeroMemory(&bd, sizeof(bd));
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(SimpleCubeVertex)* 3;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = 0;
+
 		D3D11_SUBRESOURCE_DATA InitData;
 		ZeroMemory(&InitData, sizeof(InitData));
 		InitData.pSysMem = vertices;
 		DXThrowIfFailed(
-			m_spD3DDevice->CreateBuffer(
+			m_spD3DDevice1->CreateBuffer(
 				&bd, 
 				&InitData, 
-                m_spVertexBuffer.ReleaseAndGetAddressOf()
+                m_spVertexBuffer.GetAddressOf()
 				)
 			);
 
 		// Set vertex buffer
 		UINT stride = sizeof(SimpleCubeVertex);
+		//UINT stride = sizeof(SimpleVertex);
 		UINT offset = 0;
-		m_spD3DDeviceContext->IASetVertexBuffers(0, 1, m_spVertexBuffer.GetAddressOf(), &stride, &offset);
+		m_spD3DDeviceContext1->IASetVertexBuffers(0, 1, m_spVertexBuffer.GetAddressOf(), &stride, &offset);
 
-		// Create index buffer
+		/*// Create index buffer
 		WORD indices[] =
 		{
 			3, 1, 0,
@@ -504,12 +524,12 @@ namespace Framework
 
 		// Set index buffer
 		m_spD3DDeviceContext->IASetIndexBuffer(m_spIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-
+		*/
 		// Set primitive topology
-		m_spD3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		m_spD3DDeviceContext1->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		
 		// Create the constant buffer
-		bd.Usage = D3D11_USAGE_DEFAULT;
+		/*bd.Usage = D3D11_USAGE_DEFAULT;
 		bd.ByteWidth = sizeof(ConstantBuffer);
 		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		bd.CPUAccessFlags = 0;
@@ -519,7 +539,7 @@ namespace Framework
 				nullptr,
                 m_spConstantBuffer.ReleaseAndGetAddressOf()
 				)
-			);
+			);*/
 	}
 
 	void GraphicsSystem::InitializeMatrices()
@@ -548,6 +568,26 @@ namespace Framework
         CreateDeviceResources();
         CreateWindowSizeDependentResources();
         CreateBrushes();
+
+		HRESULT hr = S_OK;
+
+		RECT rc;
+		GetClientRect(m_hWnd, &rc);
+		UINT width = rc.right - rc.left;
+		UINT height = rc.bottom - rc.top;
+		
+		m_spD3DDeviceContext1->OMSetRenderTargets(1, m_spD3DRenderTargetView.GetAddressOf(), nullptr);
+
+		// Setup the viewport
+		D3D11_VIEWPORT vp;
+		vp.Width = (FLOAT)m_ScreenWidth;
+		vp.Height = (FLOAT)m_ScreenHeight;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0;
+		vp.TopLeftY = 0;
+		m_spD3DDeviceContext1->RSSetViewports(1, &vp);
+
         CreateShaders();
         CreateBuffers();
         InitializeMatrices();
@@ -557,7 +597,7 @@ namespace Framework
     {
         m_ChocolateMilkWeight = 0.0f;
         // Initialize the sprite batch
-        m_spSpriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(m_spD3DDeviceContext.Get()));
+        m_spSpriteBatch = std::unique_ptr<SpriteBatch>(new SpriteBatch(m_spD3DDeviceContext1.Get()));
     }
 
     void GraphicsSystem::LoadTextures(tinyxml2::XMLElement *txmlElement)
@@ -588,8 +628,8 @@ namespace Framework
         //Use D3DX to load the texture
         DXThrowIfFailed(
             DirectX::CreateWICTextureFromFile(
-                m_spD3DDevice.Get(),
-                m_spD3DDeviceContext.Get(),
+                m_spD3DDevice1.Get(),
+                m_spD3DDeviceContext1.Get(),
                 filePath,
                 0,
                 &pSRV
@@ -694,7 +734,7 @@ namespace Framework
 //        m_CB.world = XMMatrixTranspose(m_World);
   //      m_CB.view = XMMatrixTranspose(m_View);
     //    m_CB.projection = XMMatrixTranspose(m_Projection);
-        m_spD3DDeviceContext->UpdateSubresource(m_spConstantBuffer.Get(), 0, nullptr, &m_CB, 0, 0);
+       /* m_spD3DDeviceContext->UpdateSubresource(m_spConstantBuffer.Get(), 0, nullptr, &m_CB, 0, 0);
 
         //
         // Renders a triangle
@@ -702,7 +742,15 @@ namespace Framework
         m_spD3DDeviceContext->VSSetShader(m_spVertexShader.Get(), nullptr, 0);
         m_spD3DDeviceContext->VSSetConstantBuffers(0, 1, m_spConstantBuffer.GetAddressOf());
         m_spD3DDeviceContext->PSSetShader(m_spPixelShader.Get(), nullptr, 0);
-        m_spD3DDeviceContext->DrawIndexed(36, 0, 0);        // 36 vertices needed for 12 triangles in a triangle list
+        m_spD3DDeviceContext->DrawIndexed(36, 0, 0);        // 36 vertices needed for 12 triangles in a triangle list*/
+
+		// Clear the back buffer 
+		m_spD3DDeviceContext1->ClearRenderTargetView(m_spD3DRenderTargetView.Get(), Colors::MidnightBlue);
+
+		// Render a triangle
+		m_spD3DDeviceContext1->VSSetShader(m_spVertexShader.Get(), nullptr, 0);
+		m_spD3DDeviceContext1->PSSetShader(m_spPixelShader.Get(), nullptr, 0);
+		m_spD3DDeviceContext1->Draw(3, 0);
 
     }
 
@@ -722,7 +770,7 @@ namespace Framework
 
     void GraphicsSystem::Update(float timeslice)
 	{
-        m_spD3DDeviceContext->OMSetRenderTargets(1, m_spD3DRenderTargetView.GetAddressOf(), m_spD3DDepthStencilView.Get());
+/*        m_spD3DDeviceContext->OMSetRenderTargets(1, m_spD3DRenderTargetView.GetAddressOf(), m_spD3DDepthStencilView.Get());
 		HRESULT hr = S_OK;
 
         const float chocolateColor[4] = { 0.54296875f, 0.26593f, 0.074218f, 1.0f };
@@ -737,10 +785,10 @@ namespace Framework
 			m_spD3DRenderTargetView.Get(),
             clearColor
             );
-
+			*/
         DrawModels();
 
-        //DrawLines();
+        DrawLines();
 
         //DrawSprites();
         
@@ -750,15 +798,15 @@ namespace Framework
             DrawDebug();
 
         DXThrowIfFailed(
-            m_spSwapChain->Present(1, 0)
+            m_spSwapChain1->Present(1, 0)
             );
         // Discard the contents of the render target.
         // This is a valid operation only when the existing contents will be entirely
         // overwritten. If dirty or scroll rects are used, this call should be removed.
-        //m_spD3DDeviceContext->DiscardView(m_spD3DRenderTargetView.Get());
+        m_spD3DDeviceContext1->DiscardView(m_spD3DRenderTargetView.Get());
 
         // Discard the contents of the depth stencil.
-        //m_spD3DDeviceContext->DiscardView(m_spD3DDepthStencilView.Get());
+        m_spD3DDeviceContext1->DiscardView(m_spD3DDepthStencilView.Get());
         
     }
 
