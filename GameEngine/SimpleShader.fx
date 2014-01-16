@@ -5,6 +5,7 @@
 //--------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------
+<<<<<<< HEAD
 struct VS_OUTPUT
 {
     float4 Pos : SV_POSITION;
@@ -12,21 +13,27 @@ struct VS_OUTPUT
 };
 
 //--------------------------------------------------------------------------------------
+=======
+>>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 // Vertex Shader
 //--------------------------------------------------------------------------------------
-VS_OUTPUT VS(float4 Pos : POSITION, float4 Color : COLOR)
+float4 VS(float4 Pos : POSITION) : SV_POSITION
 {
+<<<<<<< HEAD
     VS_OUTPUT output = (VS_OUTPUT)0;
     output.Pos = Pos;
     output.Color = Color;
 	return output;
+=======
+	return Pos;
+>>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 }
 
 
 //--------------------------------------------------------------------------------------
 // Pixel Shader
 //--------------------------------------------------------------------------------------
-float4 PS(VS_OUTPUT input) : SV_Target
+float4 PS(float4 Pos : SV_POSITION) : SV_Target
 {
 	return float4(1.0f, 1.0f, 0.0f, 1.0f);    // Yellow, with Alpha = 1
 }
