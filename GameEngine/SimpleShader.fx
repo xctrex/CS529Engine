@@ -5,7 +5,6 @@
 //--------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------
-<<<<<<< HEAD
 struct VS_OUTPUT
 {
     float4 Pos : SV_POSITION;
@@ -13,20 +12,14 @@ struct VS_OUTPUT
 };
 
 //--------------------------------------------------------------------------------------
-=======
->>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 // Vertex Shader
 //--------------------------------------------------------------------------------------
-float4 VS(float4 Pos : POSITION) : SV_POSITION
+VS_OUTPUT VS(float4 Pos : POSITION, float4 Color : COLOR)
 {
-<<<<<<< HEAD
     VS_OUTPUT output = (VS_OUTPUT)0;
     output.Pos = Pos;
     output.Color = Color;
 	return output;
-=======
-	return Pos;
->>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 }
 
 
