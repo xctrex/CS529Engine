@@ -44,6 +44,11 @@ namespace Framework
 		XMFLOAT4 color; // color
 	};
 
+	struct SimpleVertex
+	{
+		XMFLOAT3 Pos;
+	};
+
 	struct ConstantBuffer
 	{
 		XMMATRIX world;
@@ -123,13 +128,17 @@ namespace Framework
 	XMMATRIX	m_View;
 	XMMATRIX	m_Projection;
     ConstantBuffer m_CB;
+	D3D_DRIVER_TYPE m_DriverType;
 
     // DXGI Resources
-    ComPtr<IDXGISwapChain1> m_spSwapChain;
+	ComPtr<IDXGISwapChain1> m_spSwapChain1;
+	ComPtr<IDXGISwapChain> m_spSwapChain;
 
     // D3D Resources
-	ComPtr<ID3D11Device1> m_spD3DDevice;
-	ComPtr<ID3D11DeviceContext1> m_spD3DDeviceContext;
+	ComPtr<ID3D11Device1> m_spD3DDevice1;
+	ComPtr<ID3D11Device> m_spD3DDevice;
+	ComPtr<ID3D11DeviceContext1> m_spD3DDeviceContext1;
+	ComPtr<ID3D11DeviceContext> m_spD3DDeviceContext;
 	ComPtr<ID3D11RenderTargetView> m_spD3DRenderTargetView;
     ComPtr<ID3D11DepthStencilView> m_spD3DDepthStencilView;
     D3D_FEATURE_LEVEL m_FeatureLevel;
