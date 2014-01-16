@@ -404,29 +404,17 @@ namespace Framework
 				spVSBlob->GetBufferSize(),
 				nullptr, m_spVertexShader.GetAddressOf())
 			);
-<<<<<<< HEAD
-		
-=======
-		/*
->>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 		// Define the input layout
 		D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-<<<<<<< HEAD
 		};
 		/*D3D11_INPUT_ELEMENT_DESC layout[] =
 			{
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			};*/
-=======
-		};*/
-		D3D11_INPUT_ELEMENT_DESC layout[] =
-			{
-				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			};
->>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
+
 		UINT numElements = ARRAYSIZE(layout);
 
 		// Create the input layout
@@ -435,12 +423,8 @@ namespace Framework
 				layout,
 				numElements,
 				spVSBlob->GetBufferPointer(),
-<<<<<<< HEAD
 				spVSBlob->GetBufferSize(),
                 m_spVertexLayout.GetAddressOf()
-=======
-				spVSBlob->GetBufferSize(), m_spVertexLayout.GetAddressOf()
->>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 				)
 			);
 		
@@ -478,28 +462,16 @@ namespace Framework
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = 0;*/
 		// Create vertex buffer
-<<<<<<< HEAD
 		SimpleCubeVertex vertices[] =
 		{
             { XMFLOAT3(0.0f, 0.5f, 0.5f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
             { XMFLOAT3(0.5f, -0.5f, 0.5f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
             { XMFLOAT3(-0.5f, -0.5f, 0.5f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-=======
-		SimpleVertex vertices[] =
-		{
-			XMFLOAT3(0.0f, 0.5f, 0.5f),
-			XMFLOAT3(0.5f, -0.5f, 0.5f),
-			XMFLOAT3(-0.5f, -0.5f, 0.5f),
->>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 		};
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(bd));
 		bd.Usage = D3D11_USAGE_DEFAULT;
-<<<<<<< HEAD
 		bd.ByteWidth = sizeof(SimpleCubeVertex)* 3;
-=======
-		bd.ByteWidth = sizeof(SimpleVertex)* 3;
->>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 
@@ -515,13 +487,8 @@ namespace Framework
 			);
 
 		// Set vertex buffer
-<<<<<<< HEAD
 		UINT stride = sizeof(SimpleCubeVertex);
 		//UINT stride = sizeof(SimpleVertex);
-=======
-		//UINT stride = sizeof(SimpleCubeVertex);
-		UINT stride = sizeof(SimpleVertex);
->>>>>>> fa42524c4fc50432a21b00ed087b1fbb8874c5bc
 		UINT offset = 0;
 		m_spD3DDeviceContext1->IASetVertexBuffers(0, 1, m_spVertexBuffer.GetAddressOf(), &stride, &offset);
 
