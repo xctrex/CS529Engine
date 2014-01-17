@@ -40,8 +40,8 @@ namespace Framework
 
 	struct SimpleCubeVertex
 	{
-		XMFLOAT3 pos;   // position
-		XMFLOAT4 color; // color
+		XMFLOAT3 Pos;   // position
+		XMFLOAT4 Color; // color
 	};
 
 	struct SimpleVertex
@@ -129,6 +129,7 @@ namespace Framework
 	XMMATRIX	m_Projection;
     ConstantBuffer m_CB;
 	D3D_DRIVER_TYPE m_DriverType;
+    float m_Rotate;
 
     // DXGI Resources
 	ComPtr<IDXGISwapChain1> m_spSwapChain1;
