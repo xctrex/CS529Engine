@@ -51,9 +51,9 @@ namespace Framework
 
 	struct ConstantBuffer
 	{
-		XMMATRIX world;
-        XMMATRIX view;
-        XMMATRIX projection;
+		XMFLOAT4X4 world;
+        XMFLOAT4X4 view;
+        XMFLOAT4X4 projection;
 	};
 
     // Throw on error //TODO: Convert DirectX error codes to exceptions.
@@ -124,9 +124,9 @@ namespace Framework
 	ComPtr<ID3D11Buffer> m_spVertexBuffer;
 	ComPtr<ID3D11Buffer> m_spIndexBuffer;
 	ComPtr<ID3D11Buffer> m_spConstantBuffer;
-	XMMATRIX    m_World;
-	XMMATRIX	m_View;
-	XMMATRIX	m_Projection;
+	XMFLOAT4X4    m_World;
+    XMFLOAT4X4	m_View;
+    XMFLOAT4X4	m_Projection;
     ConstantBuffer m_CB;
 	D3D_DRIVER_TYPE m_DriverType;
     float m_Rotate;

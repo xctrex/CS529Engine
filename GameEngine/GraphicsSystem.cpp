@@ -534,13 +534,13 @@ namespace Framework
 	void GraphicsSystem::InitializeMatrices()
 	{
 		// Initialize the world matrix
-		m_World = XMMatrixIdentity();
+        XMStoreFloat4x4(&m_World, XMMatrixIdentity());
 
 		// Initialize the view matrix
 		XMVECTOR Eye = XMVectorSet(0.0f, 5.0f, 5.0f, 0.0f);
 		XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-		m_View = XMMatrixLookAtLH(Eye, At, Up);
+        XMStoreFloat4x4(&m_View, XMMatrixLookAtLH(Eye, At, Up));
 
         RECT rc;
         GetClientRect(m_hWnd, &rc);
@@ -548,7 +548,7 @@ namespace Framework
         UINT height = rc.bottom - rc.top;
 
 		// Initialize the projection matrix
-		m_Projection = XMMatrixPerspectiveFovLH(XM_PIDIV2, width / (FLOAT)height, 0.01f, 100.0f);
+        XMStoreFloat4x4(&m_Projection, XMMatrixPerspectiveFovLH(XM_PIDIV2, width / (FLOAT)height, 0.01f, 100.0f));
         
         m_Rotate = 0.0f;
     }
@@ -738,9 +738,9 @@ namespace Framework
         //m_CB.view = XMMatrixTranspose(m_View);
         //m_CB.projection = XMMatrixTranspose(m_Projection);
         ConstantBuffer cb;
-        cb.world = XMMatrixTranspose(m_World);
-        cb.view = XMMatrixTranspose(m_View);
-        cb.projection = XMMatrixTranspose(m_Projection);
+        XMStoreFloat4x4(&(cb.world), XMMatrixTranspose(XMLoadFloat4x4(&m_World)));
+        XMStoreFloat4x4(&(cb.view), XMMatrixTranspose(XMLoadFloat4x4(&m_View)));
+        XMStoreFloat4x4(&(cb.projection), XMMatrixTranspose(XMLoadFloat4x4(&m_Projection)));
 
         m_spD3DDeviceContext1->UpdateSubresource(m_spConstantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 
@@ -784,8 +784,8 @@ namespace Framework
             clearColor
             );
 			*/
-        //m_Rotate += 0.01f;
-        m_World = XMMatrixRotationY(m_Rotate);
+        m_Rotate += 0.001f;
+        XMStoreFloat4x4(&m_World, XMMatrixRotationY(m_Rotate));
         DrawModels();
 
         //DrawLines();
